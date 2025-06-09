@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Budgetwise</string>
+    <string name="bottom_nav_expenses">Расходы</string>
+    <string name="bottom_nav_income">Доходы</string>
+    <string name="bottom_nav_balance">Счет</string>
+    <string name="bottom_nav_expense_items">Статьи</string>
+    <string name="bottom_nav_settings">Настройки</string>
 </resources>

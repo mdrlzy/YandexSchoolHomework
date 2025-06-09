@@ -1,4 +1,4 @@
-package com.mdrlzy.budgetwise.ui.theme
+package com.mdrlzy.budgetwise.presentation.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

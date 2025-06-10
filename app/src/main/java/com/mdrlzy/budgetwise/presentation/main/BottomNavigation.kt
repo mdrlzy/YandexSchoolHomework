@@ -15,6 +15,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import com.mdrlzy.budgetwise.R
+import com.ramcosta.composedestinations.generated.destinations.ExpensesScreenDestination
 
 sealed class BottomNavItem(
     @StringRes val title: Int,
@@ -24,7 +25,7 @@ sealed class BottomNavItem(
     data object Expenses : BottomNavItem(
         R.string.bottom_nav_expenses,
         R.drawable.bottom_nav_1,
-        "1",
+        ExpensesScreenDestination.route,
     )
 
     data object Income : BottomNavItem(

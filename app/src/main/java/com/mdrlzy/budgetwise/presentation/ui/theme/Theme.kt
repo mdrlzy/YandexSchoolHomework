@@ -1,4 +1,4 @@
-package com.mdrlzy.budgetwise.presentation.theme
+package com.mdrlzy.budgetwise.presentation.ui.theme
 
 import android.app.Activity
 import android.os.Build

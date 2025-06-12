@@ -15,6 +15,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import com.mdrlzy.budgetwise.R
+import com.ramcosta.composedestinations.generated.destinations.AccountScreenDestination
 import com.ramcosta.composedestinations.generated.destinations.ExpensesScreenDestination
 import com.ramcosta.composedestinations.generated.destinations.IncomeScreenDestination
 
@@ -35,10 +36,10 @@ sealed class BottomNavItem(
         IncomeScreenDestination.route,
     )
 
-    data object Balance : BottomNavItem(
-        R.string.bottom_nav_balance,
+    data object Account : BottomNavItem(
+        R.string.bottom_nav_account,
         R.drawable.bottom_nav_3,
-        "3",
+        AccountScreenDestination.route,
     )
 
     data object ExpenseItems : BottomNavItem(
@@ -54,21 +55,21 @@ sealed class BottomNavItem(
     )
 }
 
+private val bottomBarItems = listOf(
+    BottomNavItem.Expenses,
+    BottomNavItem.Income,
+    BottomNavItem.Account,
+    BottomNavItem.ExpenseItems,
+    BottomNavItem.Settings,
+)
+
 @Composable
 fun BottomNavigation(
     currentRoute: String,
     onBottomBarItemClick: (String) -> Unit,
 ) {
-    val items =
-        listOf(
-            BottomNavItem.Expenses,
-            BottomNavItem.Income,
-            BottomNavItem.Balance,
-            BottomNavItem.ExpenseItems,
-            BottomNavItem.Settings,
-        )
     BottomAppBar {
-        items.forEach { item ->
+        bottomBarItems.forEach { item ->
             val selected = currentRoute.contains(item.route)
             NavigationBarItem(
                 selected = selected,

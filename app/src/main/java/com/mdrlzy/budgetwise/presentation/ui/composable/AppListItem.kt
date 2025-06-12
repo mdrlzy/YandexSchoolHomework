@@ -75,7 +75,10 @@ fun AppListItemEmoji(
     leadingText: String,
     trailingText: String? = null,
     descText: String? = null,
+    height: Dp,
     emoji: String = ":)",
+    background: Color = Color.Transparent,
+    emojiBackground: Color = Color(0xFFD4FAE6),
 ) {
     AppListItem(
         leadingText = leadingText,
@@ -86,7 +89,7 @@ fun AppListItemEmoji(
                 modifier = Modifier
                     .padding(end = 16.dp)
                     .size(24.dp)
-                    .background(MaterialTheme.colorScheme.secondary, shape = CircleShape)
+                    .background(emojiBackground, shape = CircleShape)
             ) {
                 Text(
                     modifier = Modifier.align(Alignment.Center),
@@ -104,7 +107,8 @@ fun AppListItemEmoji(
                 contentDescription = null,
             )
         },
-        height = 70.dp,
+        background = background,
+        height = height,
     )
 }
 
@@ -113,6 +117,8 @@ fun AppListItemMore(
     leadingText: String,
     trailingText: String? = null,
     descText: String? = null,
+    background: Color = Color.Transparent,
+    height: Dp,
 ) {
     AppListItem(
         leadingText = leadingText,
@@ -127,6 +133,7 @@ fun AppListItemMore(
                 contentDescription = null,
             )
         },
-        height = 70.dp,
+        background = background,
+        height = height,
     )
 }

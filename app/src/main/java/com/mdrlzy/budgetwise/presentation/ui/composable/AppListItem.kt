@@ -19,11 +19,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.mdrlzy.budgetwise.R
 
 @Composable
 fun AppListItem(
@@ -79,6 +78,7 @@ fun AppListItemEmoji(
     emoji: String = ":)",
     background: Color = Color.Transparent,
     emojiBackground: Color = Color(0xFFD4FAE6),
+    trailingIcon: Painter? = null,
 ) {
     AppListItem(
         leadingText = leadingText,
@@ -99,13 +99,15 @@ fun AppListItemEmoji(
             }
         },
         trailingContent = {
-            Icon(
-                modifier = Modifier
-                    .padding(start = 16.dp)
-                    .size(24.dp),
-                painter = painterResource(R.drawable.ic_more),
-                contentDescription = null,
-            )
+            trailingIcon?.let {
+                Icon(
+                    modifier = Modifier
+                        .padding(start = 16.dp)
+                        .size(24.dp),
+                    painter = trailingIcon,
+                    contentDescription = null,
+                )
+            }
         },
         background = background,
         height = height,
@@ -113,11 +115,12 @@ fun AppListItemEmoji(
 }
 
 @Composable
-fun AppListItemMore(
+fun AppListItemIcon(
     leadingText: String,
     trailingText: String? = null,
     descText: String? = null,
     background: Color = Color.Transparent,
+    trailingIcon: Painter,
     height: Dp,
 ) {
     AppListItem(
@@ -129,7 +132,7 @@ fun AppListItemMore(
                 modifier = Modifier
                     .padding(start = 16.dp)
                     .size(24.dp),
-                painter = painterResource(R.drawable.ic_more),
+                painter = trailingIcon,
                 contentDescription = null,
             )
         },

@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.dp
 import com.mdrlzy.budgetwise.R
 import com.mdrlzy.budgetwise.presentation.ui.composable.AppHorDiv
 import com.mdrlzy.budgetwise.presentation.ui.composable.AppListItemEmoji
-import com.mdrlzy.budgetwise.presentation.ui.composable.AppListItemMore
+import com.mdrlzy.budgetwise.presentation.ui.composable.AppListItemIcon
 import com.mdrlzy.budgetwise.presentation.ui.composable.AppTopBar
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootGraph
@@ -39,11 +39,12 @@ fun AccountScreen() {
                 emojiBackground = Color.White,
             )
             AppHorDiv()
-            AppListItemMore(
+            AppListItemIcon(
                 leadingText = stringResource(R.string.currency),
                 trailingText = "₽",
                 background = MaterialTheme.colorScheme.secondary,
                 height = 56.dp,
+                trailingIcon = painterResource(R.drawable.ic_more)
             )
         }
     }

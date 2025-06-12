@@ -17,6 +17,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import com.mdrlzy.budgetwise.R
 import com.ramcosta.composedestinations.generated.destinations.AccountScreenDestination
 import com.ramcosta.composedestinations.generated.destinations.ExpensesScreenDestination
+import com.ramcosta.composedestinations.generated.destinations.ExpensesTodayScreenDestination
 import com.ramcosta.composedestinations.generated.destinations.IncomeScreenDestination
 
 sealed class BottomNavItem(
@@ -24,10 +25,10 @@ sealed class BottomNavItem(
     @DrawableRes val icon: Int,
     val route: String,
 ) {
-    data object Expenses : BottomNavItem(
-        R.string.bottom_nav_expenses,
+    data object ExpensesToday : BottomNavItem(
+        R.string.bottom_nav_expenses_today,
         R.drawable.bottom_nav_1,
-        ExpensesScreenDestination.route,
+        ExpensesTodayScreenDestination.route,
     )
 
     data object Income : BottomNavItem(
@@ -42,10 +43,10 @@ sealed class BottomNavItem(
         AccountScreenDestination.route,
     )
 
-    data object ExpenseItems : BottomNavItem(
-        R.string.bottom_nav_expense_items,
+    data object Expenses : BottomNavItem(
+        R.string.bottom_nav_expenses,
         R.drawable.bottom_nav_4,
-        "4",
+        ExpensesScreenDestination.route,
     )
 
     data object Settings : BottomNavItem(
@@ -56,10 +57,10 @@ sealed class BottomNavItem(
 }
 
 private val bottomBarItems = listOf(
-    BottomNavItem.Expenses,
+    BottomNavItem.ExpensesToday,
     BottomNavItem.Income,
     BottomNavItem.Account,
-    BottomNavItem.ExpenseItems,
+    BottomNavItem.Expenses,
     BottomNavItem.Settings,
 )
 

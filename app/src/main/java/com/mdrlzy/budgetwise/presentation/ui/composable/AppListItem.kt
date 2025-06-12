@@ -107,3 +107,26 @@ fun AppListItemEmoji(
         height = 70.dp,
     )
 }
+
+@Composable
+fun AppListItemMore(
+    leadingText: String,
+    trailingText: String? = null,
+    descText: String? = null,
+) {
+    AppListItem(
+        leadingText = leadingText,
+        trailingText = trailingText,
+        descText = descText,
+        trailingContent = {
+            Icon(
+                modifier = Modifier
+                    .padding(start = 16.dp)
+                    .size(24.dp),
+                painter = painterResource(R.drawable.ic_more),
+                contentDescription = null,
+            )
+        },
+        height = 70.dp,
+    )
+}

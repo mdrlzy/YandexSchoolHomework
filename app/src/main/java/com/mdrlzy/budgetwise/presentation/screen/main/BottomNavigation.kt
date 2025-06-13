@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalAnimationApi::class)
 
-package com.mdrlzy.budgetwise.presentation.main
+package com.mdrlzy.budgetwise.presentation.screen.main
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes

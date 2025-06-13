@@ -1,4 +1,4 @@
-package com.mdrlzy.budgetwise.presentation.main
+package com.mdrlzy.budgetwise.presentation.screen.main
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.safeDrawingPadding
@@ -33,7 +33,7 @@ fun MainScreen() {
     val navController = engine.rememberNavController()
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
-    val currentRoute = navBackStackEntry?.destination?.route ?: NavGraphs.root.startRoute.route
+    val currentRoute = navBackStackEntry?.destination?.route ?: NavGraphs.main.startRoute.route
 
     val isKeyboardOpen by keyboardAsState()
     val bottomBarVisible = remember { mutableStateOf(false) }
@@ -48,14 +48,14 @@ fun MainScreen() {
             modifier = Modifier.weight(1f),
             engine = engine,
             navController = navController,
-            navGraph = NavGraphs.root,
+            navGraph = NavGraphs.main,
         )
         AnimatedBottomNavigation(currentRoute, bottomBarVisible) {
             navController.navigate(it)  {
                 // Pop up to the start destination of the graph to
                 // avoid building up a large stack of destinations
                 // on the back stack as users select items
-                popUpTo(navController.graph.findStartDestination().id) {
+                popUpTo(ExpensesTodayScreenDestination.route) {
                     saveState = true
                 }
                 // Avoid multiple copies of the same destination when

@@ -1,4 +1,4 @@
-package com.mdrlzy.budgetwise.presentation.settings
+package com.mdrlzy.budgetwise.presentation.screen.settings
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
@@ -17,14 +17,18 @@ import com.mdrlzy.budgetwise.presentation.ui.composable.AppListItem
 import com.mdrlzy.budgetwise.presentation.ui.composable.AppListItemIcon
 import com.mdrlzy.budgetwise.presentation.ui.composable.AppTopBar
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.mdrlzy.budgetwise.presentation.screen.main.MainNavGraph
 import com.mdrlzy.budgetwise.presentation.ui.composable.AppHorDiv
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootGraph
+import org.orbitmvi.orbit.compose.collectAsState
 
-@Destination<RootGraph>
+@Destination<MainNavGraph>
 @Composable
 fun SettingsScreen() {
-    var isDarkTheme by remember { mutableStateOf(false) }
+    val viewModel: SettingsViewModel = viewModel()
+    val state by viewModel.collectAsState()
 
     Scaffold(
         topBar = {
@@ -39,8 +43,8 @@ fun SettingsScreen() {
                 height = 56.dp,
                 trailingContent = {
                     Switch(
-                        checked = isDarkTheme,
-                        onCheckedChange = { isDarkTheme = it }
+                        checked = state.isDarkTheme,
+                        onCheckedChange = viewModel::onToggleDarkTheme,
                     )
                 }
             )

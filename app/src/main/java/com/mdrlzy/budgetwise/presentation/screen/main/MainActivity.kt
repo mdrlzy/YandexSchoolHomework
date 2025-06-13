@@ -1,4 +1,4 @@
-package com.mdrlzy.budgetwise.presentation.main
+package com.mdrlzy.budgetwise.presentation.screen.main
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity

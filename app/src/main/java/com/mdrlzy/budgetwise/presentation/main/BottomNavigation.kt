@@ -1,7 +1,14 @@
+@file:OptIn(ExperimentalAnimationApi::class)
+
 package com.mdrlzy.budgetwise.presentation.main
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
+import androidx.compose.animation.with
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -9,6 +16,7 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -64,6 +72,24 @@ private val bottomBarItems = listOf(
     BottomNavItem.Expenses,
     BottomNavItem.Settings,
 )
+
+@Composable
+fun AnimatedBottomNavigation(
+    currentRoute: String,
+    bottomBarVisible: State<Boolean>,
+    onBottomBarItemClick: (String) -> Unit,
+) {
+    AnimatedContent(
+        targetState = bottomBarVisible.value,
+        transitionSpec = {
+            slideInVertically { height -> height } with
+                    slideOutVertically { height -> height }
+        },
+    ) { expanded ->
+        if (expanded)
+            BottomNavigation(currentRoute, onBottomBarItemClick)
+    }
+}
 
 @Composable
 fun BottomNavigation(

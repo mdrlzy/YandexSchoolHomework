@@ -4,12 +4,28 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.mdrlzy.budgetwise.presentation.ui.utils.keyboardAsState
 import com.ramcosta.composedestinations.DestinationsNavHost
 import com.ramcosta.composedestinations.generated.NavGraphs
+import com.ramcosta.composedestinations.generated.destinations.AccountScreenDestination
+import com.ramcosta.composedestinations.generated.destinations.ExpensesScreenDestination
+import com.ramcosta.composedestinations.generated.destinations.ExpensesTodayScreenDestination
+import com.ramcosta.composedestinations.generated.destinations.IncomeScreenDestination
+import com.ramcosta.composedestinations.generated.destinations.SettingsScreenDestination
 import com.ramcosta.composedestinations.rememberNavHostEngine
+
+private val bottomBarVisibleRoutes = listOf(
+    ExpensesTodayScreenDestination.route,
+    IncomeScreenDestination.route,
+    AccountScreenDestination.route,
+    ExpensesScreenDestination.route,
+    SettingsScreenDestination.route,
+)
 
 @Composable
 fun MainScreen() {
@@ -19,6 +35,13 @@ fun MainScreen() {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route ?: NavGraphs.root.startRoute.route
 
+    val isKeyboardOpen by keyboardAsState()
+    val bottomBarVisible = remember { mutableStateOf(false) }
+
+    bottomBarVisible.value = currentRoute in bottomBarVisibleRoutes
+
+    if (isKeyboardOpen)
+        bottomBarVisible.value = false
 
     Column(Modifier.safeDrawingPadding()) {
         DestinationsNavHost(
@@ -27,7 +50,7 @@ fun MainScreen() {
             navController = navController,
             navGraph = NavGraphs.root,
         )
-        BottomNavigation(currentRoute) {
+        AnimatedBottomNavigation(currentRoute, bottomBarVisible) {
             navController.navigate(it)  {
                 // Pop up to the start destination of the graph to
                 // avoid building up a large stack of destinations

@@ -16,7 +16,7 @@ import com.mdrlzy.budgetwise.presentation.ui.composable.AppListItem
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootGraph
 
-@Destination<RootGraph>(start = true)
+@Destination<RootGraph>()
 @Composable
 fun ExpensesTodayScreen() {
     Scaffold {

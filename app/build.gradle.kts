@@ -56,6 +56,8 @@ dependencies {
     implementation(libs.compose.destinations.core)
     ksp(libs.compose.destinations.compiler)
 
+    implementation(libs.lottie.compose)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

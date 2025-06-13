@@ -115,6 +115,7 @@ fun ExpensesScreen() {
                     leadingText = it,
                     emoji = "\uD83D\uDCB0",
                     height = 70.dp,
+                    onClick = {}
                 )
                 AppHorDiv()
             }

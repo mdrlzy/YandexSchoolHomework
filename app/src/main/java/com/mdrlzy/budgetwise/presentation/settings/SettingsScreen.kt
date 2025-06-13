@@ -66,5 +66,6 @@ private fun SettingsListItem(
         leadingText = text,
         height = 56.dp,
         trailingIcon = painterResource(R.drawable.ic_arrow_right),
+        onClick = onClick,
     )
 }

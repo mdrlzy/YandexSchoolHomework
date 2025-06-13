@@ -39,6 +39,7 @@ fun ExpensesTodayScreen() {
                 descText = "Дженни",
                 emoji = "\uD83D\uDE0A",
                 height = 70.dp,
+                onClick = {}
             )
             AppHorDiv()
         }

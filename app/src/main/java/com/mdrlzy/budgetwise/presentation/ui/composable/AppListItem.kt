@@ -3,6 +3,7 @@
 package com.mdrlzy.budgetwise.presentation.ui.composable
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -31,11 +32,17 @@ fun AppListItem(
     descText: String? = null,
     background: Color = Color.Transparent,
     height: Dp,
+    onClick: (() -> Unit)? = null,
     leadingContent: (@Composable () -> Unit)? = null,
     trailingContent: (@Composable () -> Unit)? = null,
 ) {
     Row(
         modifier = Modifier
+            .let { mod ->
+                onClick?.let {
+                    mod.clickable { onClick() }
+                } ?: mod
+            }
             .height(height)
             .background(background)
             .padding(horizontal = 16.dp, vertical = 8.dp),
@@ -74,9 +81,10 @@ fun AppListItemEmoji(
     leadingText: String,
     trailingText: String? = null,
     descText: String? = null,
-    height: Dp,
-    emoji: String = ":)",
     background: Color = Color.Transparent,
+    height: Dp,
+    onClick: (() -> Unit)? = null,
+    emoji: String = ":)",
     emojiBackground: Color = Color(0xFFD4FAE6),
     trailingIcon: Painter? = null,
 ) {
@@ -111,6 +119,7 @@ fun AppListItemEmoji(
         },
         background = background,
         height = height,
+        onClick = onClick,
     )
 }
 
@@ -122,6 +131,7 @@ fun AppListItemIcon(
     background: Color = Color.Transparent,
     trailingIcon: Painter,
     height: Dp,
+    onClick: (() -> Unit)? = null,
 ) {
     AppListItem(
         leadingText = leadingText,
@@ -138,5 +148,6 @@ fun AppListItemIcon(
         },
         background = background,
         height = height,
+        onClick = onClick,
     )
 }

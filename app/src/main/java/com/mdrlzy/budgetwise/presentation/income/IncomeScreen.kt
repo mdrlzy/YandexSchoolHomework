@@ -45,6 +45,7 @@ fun IncomeScreen() {
                 trailingText = "500 000 ₽",
                 height = 70.dp,
                 trailingIcon = painterResource(R.drawable.ic_more),
+                onClick = {},
             )
             AppHorDiv()
             AppListItemIcon(
@@ -52,6 +53,7 @@ fun IncomeScreen() {
                 trailingText = "100 000 ₽",
                 height = 70.dp,
                 trailingIcon = painterResource(R.drawable.ic_more),
+                onClick = {},
             )
             AppHorDiv()
         }

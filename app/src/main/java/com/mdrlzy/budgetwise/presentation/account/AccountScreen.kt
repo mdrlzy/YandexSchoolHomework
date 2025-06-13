@@ -37,6 +37,7 @@ fun AccountScreen() {
                 height = 56.dp,
                 emoji = "\uD83D\uDCB0",
                 emojiBackground = Color.White,
+                onClick = {}
             )
             AppHorDiv()
             AppListItemIcon(
@@ -44,7 +45,8 @@ fun AccountScreen() {
                 trailingText = "₽",
                 background = MaterialTheme.colorScheme.secondary,
                 height = 56.dp,
-                trailingIcon = painterResource(R.drawable.ic_more)
+                trailingIcon = painterResource(R.drawable.ic_more),
+                onClick = {}
             )
         }
     }

@@ -17,7 +17,6 @@ import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -36,31 +35,31 @@ sealed class BottomNavItem(
 ) {
     data object ExpensesToday : BottomNavItem(
         R.string.bottom_nav_expenses_today,
-        R.drawable.bottom_nav_1,
+        R.drawable.bottom_nav_expenses_today,
         ExpensesTodayScreenDestination.route,
     )
 
     data object Income : BottomNavItem(
         R.string.bottom_nav_income,
-        R.drawable.bottom_nav_2,
+        R.drawable.bottom_nav_income,
         IncomeScreenDestination.route,
     )
 
     data object Account : BottomNavItem(
         R.string.bottom_nav_account,
-        R.drawable.bottom_nav_3,
+        R.drawable.bottom_nav_account,
         AccountScreenDestination.route,
     )
 
     data object Expenses : BottomNavItem(
         R.string.bottom_nav_expenses,
-        R.drawable.bottom_nav_4,
+        R.drawable.bottom_nav_expenses,
         ExpensesScreenDestination.route,
     )
 
     data object Settings : BottomNavItem(
         R.string.bottom_nav_settings,
-        R.drawable.bottom_nav_5,
+        R.drawable.bottom_nav_settings,
         SettingsScreenDestination.route,
     )
 }
@@ -112,7 +111,11 @@ fun BottomNavigation(
                     Text(
                         text = stringResource(item.title),
                         style = MaterialTheme.typography.labelMedium.copy(
-                            fontWeight = if (selected) FontWeight.W600 else FontWeight.W500
+                            fontWeight = if (selected) FontWeight.W600 else FontWeight.W500,
+                            color = if (selected)
+                                MaterialTheme.colorScheme.onSurface
+                            else
+                                MaterialTheme.colorScheme.onSurfaceVariant
                         ),
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
@@ -123,12 +126,10 @@ fun BottomNavigation(
                         selectedIconColor = MaterialTheme.colorScheme.primary,
                         selectedTextColor = MaterialTheme.colorScheme.onSurface,
                         indicatorColor = MaterialTheme.colorScheme.secondary,
-                        unselectedTextColor = BottomNavUnselected,
-                        unselectedIconColor = BottomNavUnselected,
+                        unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                        unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
                     ),
             )
         }
     }
 }
-
-private val BottomNavUnselected = Color(0xFF49454F)

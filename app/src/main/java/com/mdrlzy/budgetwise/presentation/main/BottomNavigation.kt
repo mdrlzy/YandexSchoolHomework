@@ -19,6 +19,7 @@ import com.ramcosta.composedestinations.generated.destinations.AccountScreenDest
 import com.ramcosta.composedestinations.generated.destinations.ExpensesScreenDestination
 import com.ramcosta.composedestinations.generated.destinations.ExpensesTodayScreenDestination
 import com.ramcosta.composedestinations.generated.destinations.IncomeScreenDestination
+import com.ramcosta.composedestinations.generated.destinations.SettingsScreenDestination
 
 sealed class BottomNavItem(
     @StringRes val title: Int,
@@ -52,7 +53,7 @@ sealed class BottomNavItem(
     data object Settings : BottomNavItem(
         R.string.bottom_nav_settings,
         R.drawable.bottom_nav_5,
-        "5",
+        SettingsScreenDestination.route,
     )
 }
 

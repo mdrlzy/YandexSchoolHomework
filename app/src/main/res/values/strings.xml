@@ -12,4 +12,10 @@
     <string name="currency">Валюта</string>
     <string name="my_expenses">Мои статьи</string>
     <string name="find_expense">Найти статью</string>
+    <string name="settings">Настройки</string>
+    <string name="sounds">Звуки</string>
+    <string name="code_password">Код пароль</string>
+    <string name="language">Язык</string>
+    <string name="about_app">О программе</string>
+    <string name="dark_theme">Темная тема</string>
 </resources>

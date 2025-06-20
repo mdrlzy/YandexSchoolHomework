@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Context
 import com.mdrlzy.budgetwise.di.module.NetworkModule
 import com.mdrlzy.budgetwise.di.module.RepoModule
+import com.mdrlzy.budgetwise.presentation.screen.account.AccountViewModelFactory
 import com.mdrlzy.budgetwise.presentation.screen.expensestoday.ExpensesTodayViewModelFactory
 import com.mdrlzy.budgetwise.presentation.screen.income.IncomeViewModelFactory
 import dagger.BindsInstance
@@ -22,6 +23,8 @@ interface AppComponent {
     fun expensesTodayViewModelFactory(): ExpensesTodayViewModelFactory
 
     fun incomeViewModelFactory(): IncomeViewModelFactory
+
+    fun accountViewModelFactory(): AccountViewModelFactory
 
 
     @Component.Factory

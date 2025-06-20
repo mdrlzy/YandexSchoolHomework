@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -18,6 +20,9 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        val token = getLocalProps().getProperty("bearer.token") ?: ""
+        buildConfigField("String", "BEARER_TOKEN", "\"$token\"")
     }
 
     buildTypes {
@@ -37,6 +42,7 @@ android {
         jvmTarget = "21"
     }
     buildFeatures {
+        buildConfig = true
         compose = true
     }
 }
@@ -78,4 +84,17 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+}
+
+fun getLocalProps(): Properties {
+    val props = Properties()
+    val localPropsFile = File(rootDir, "local.properties")
+
+    if (localPropsFile.exists()) {
+        localPropsFile.inputStream().use { stream ->
+            props.load(stream)
+        }
+    }
+
+    return props
 }

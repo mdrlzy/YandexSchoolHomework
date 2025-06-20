@@ -16,11 +16,11 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mdrlzy.budgetwise.R
 import com.mdrlzy.budgetwise.presentation.screen.main.MainNavGraph
-import com.mdrlzy.budgetwise.presentation.ui.composable.AppFab
-import com.mdrlzy.budgetwise.presentation.ui.composable.AppHorDiv
-import com.mdrlzy.budgetwise.presentation.ui.composable.AppListItemEmoji
-import com.mdrlzy.budgetwise.presentation.ui.composable.AppListItemIcon
-import com.mdrlzy.budgetwise.presentation.ui.composable.AppTopBar
+import com.mdrlzy.budgetwise.presentation.ui.composable.BWAddFab
+import com.mdrlzy.budgetwise.presentation.ui.composable.BWHorDiv
+import com.mdrlzy.budgetwise.presentation.ui.composable.BWListItemEmoji
+import com.mdrlzy.budgetwise.presentation.ui.composable.BWListItemIcon
+import com.mdrlzy.budgetwise.presentation.ui.composable.BWTopBar
 import com.mdrlzy.budgetwise.presentation.ui.composable.BWErrorRetryScreen
 import com.mdrlzy.budgetwise.presentation.ui.composable.BWLoadingScreen
 import com.mdrlzy.budgetwise.presentation.ui.composable.ListenActiveScreenEffect
@@ -44,13 +44,13 @@ fun AccountScreen() {
 
     Scaffold(
         topBar = {
-            AppTopBar(
+            BWTopBar(
                 title = stringResource(R.string.my_account),
                 trailingIcon = painterResource(R.drawable.ic_edit)
             )
         },
         floatingActionButton = {
-            AppFab { }
+            BWAddFab { }
         }
     ) {
         Box(Modifier.padding(it)) {
@@ -66,7 +66,7 @@ fun AccountScreen() {
 @Composable
 private fun Content(state: AccountScreenState.Success) {
     Column() {
-        AppListItemEmoji(
+        BWListItemEmoji(
             leadingText = stringResource(R.string.balance),
             trailingText = state.account.balance,
             background = MaterialTheme.colorScheme.secondary,
@@ -76,8 +76,8 @@ private fun Content(state: AccountScreenState.Success) {
             trailingIcon = painterResource(R.drawable.ic_more),
             onClick = {}
         )
-        AppHorDiv()
-        AppListItemIcon(
+        BWHorDiv()
+        BWListItemIcon(
             leadingText = stringResource(R.string.currency),
             trailingText = CurrencyUtils.getSymbolOrCode(state.account.currency),
             background = MaterialTheme.colorScheme.secondary,

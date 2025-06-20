@@ -15,15 +15,15 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import com.mdrlzy.budgetwise.R
-import com.mdrlzy.budgetwise.presentation.ui.composable.AppListItemEmoji
-import com.mdrlzy.budgetwise.presentation.ui.composable.AppTopBar
+import com.mdrlzy.budgetwise.presentation.ui.composable.BWListItemEmoji
+import com.mdrlzy.budgetwise.presentation.ui.composable.BWTopBar
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.mdrlzy.budgetwise.presentation.screen.main.MainNavGraph
-import com.mdrlzy.budgetwise.presentation.ui.composable.AppFab
-import com.mdrlzy.budgetwise.presentation.ui.composable.AppHorDiv
-import com.mdrlzy.budgetwise.presentation.ui.composable.AppListItem
+import com.mdrlzy.budgetwise.presentation.ui.composable.BWAddFab
+import com.mdrlzy.budgetwise.presentation.ui.composable.BWHorDiv
+import com.mdrlzy.budgetwise.presentation.ui.composable.BWListItem
 import com.mdrlzy.budgetwise.presentation.ui.composable.BWErrorRetryScreen
 import com.mdrlzy.budgetwise.presentation.ui.composable.BWLoadingScreen
 import com.mdrlzy.budgetwise.presentation.ui.composable.ListenActiveScreenEffect
@@ -53,7 +53,7 @@ fun ExpensesTodayScreen(
 
     Scaffold(
         topBar = {
-            AppTopBar(
+            BWTopBar(
                 title = stringResource(R.string.expenses_today),
                 trailingIcon = painterResource(R.drawable.ic_history),
                 onTrailingIconClick = {
@@ -67,7 +67,7 @@ fun ExpensesTodayScreen(
         },
         floatingActionButton = {
             if (state is ExpensesTodayState.Success)
-                AppFab { }
+                BWAddFab { }
         }
     ) {
         Box(Modifier.padding(it)) {
@@ -84,16 +84,16 @@ fun ExpensesTodayScreen(
 private fun Content(state: ExpensesTodayState.Success) {
     LazyColumn {
         item {
-            AppListItem(
+            BWListItem(
                 leadingText = stringResource(R.string.all),
                 trailingText = "${state.sum} ${CurrencyUtils.getSymbolOrCode(state.currency)}",
                 background = MaterialTheme.colorScheme.secondary,
                 height = 56.dp,
             )
-            AppHorDiv()
+            BWHorDiv()
         }
         items(state.transactions) {
-            AppListItemEmoji(
+            BWListItemEmoji(
                 leadingText = it.categoryName,
                 trailingText = it.amount,
                 leadDescText = it.comment,
@@ -102,7 +102,7 @@ private fun Content(state: ExpensesTodayState.Success) {
                 trailingIcon = painterResource(R.drawable.ic_more),
                 onClick = {}
             )
-            AppHorDiv()
+            BWHorDiv()
         }
         item {
             Spacer(Modifier.height(70.dp))

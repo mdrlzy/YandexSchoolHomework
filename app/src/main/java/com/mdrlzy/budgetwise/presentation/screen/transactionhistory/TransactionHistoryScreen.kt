@@ -17,12 +17,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.mdrlzy.budgetwise.presentation.ui.composable.AppTopBar
+import com.mdrlzy.budgetwise.presentation.ui.composable.BWTopBar
 import com.mdrlzy.budgetwise.R
 import com.mdrlzy.budgetwise.presentation.screen.main.MainNavGraph
-import com.mdrlzy.budgetwise.presentation.ui.composable.AppHorDiv
-import com.mdrlzy.budgetwise.presentation.ui.composable.AppListItem
-import com.mdrlzy.budgetwise.presentation.ui.composable.AppListItemEmoji
+import com.mdrlzy.budgetwise.presentation.ui.composable.BWHorDiv
+import com.mdrlzy.budgetwise.presentation.ui.composable.BWListItem
+import com.mdrlzy.budgetwise.presentation.ui.composable.BWListItemEmoji
 import com.mdrlzy.budgetwise.presentation.ui.composable.BWDatePicker
 import com.mdrlzy.budgetwise.presentation.ui.composable.BWErrorRetryScreen
 import com.mdrlzy.budgetwise.presentation.ui.composable.BWLoadingScreen
@@ -47,7 +47,7 @@ fun TransactionHistoryScreen(
 
     Scaffold(
         topBar = {
-            AppTopBar(
+            BWTopBar(
                 title = "Моя история",
                 leadingIcon = painterResource(R.drawable.ic_back),
                 trailingIcon = painterResource(R.drawable.ic_analyse),
@@ -103,32 +103,32 @@ private fun Content(
 
     LazyColumn {
         item {
-            AppListItem(
+            BWListItem(
                 leadingText = stringResource(R.string.start),
                 trailingText = DateTimeHelper.fullDate(state.startDate),
                 background = MaterialTheme.colorScheme.secondary,
                 height = 56.dp,
                 onClick = { showStartDatePicker = true },
             )
-            AppHorDiv()
-            AppListItem(
+            BWHorDiv()
+            BWListItem(
                 leadingText = stringResource(R.string.end),
                 trailingText = DateTimeHelper.fullDate(state.endDate),
                 background = MaterialTheme.colorScheme.secondary,
                 height = 56.dp,
                 onClick = { showEndDatePicker = true },
             )
-            AppHorDiv()
-            AppListItem(
+            BWHorDiv()
+            BWListItem(
                 leadingText = stringResource(R.string.sum),
                 trailingText = "${state.sum} ${CurrencyUtils.getSymbolOrCode(state.currency)}",
                 background = MaterialTheme.colorScheme.secondary,
                 height = 56.dp,
             )
-            AppHorDiv()
+            BWHorDiv()
         }
         items(state.transactions) {
-            AppListItemEmoji(
+            BWListItemEmoji(
                 leadingText = it.categoryName,
                 trailingText = it.amount,
                 leadDescText = it.comment,
@@ -138,7 +138,7 @@ private fun Content(
                 trailingIcon = painterResource(R.drawable.ic_more),
                 onClick = {}
             )
-            AppHorDiv()
+            BWHorDiv()
         }
     }
 }

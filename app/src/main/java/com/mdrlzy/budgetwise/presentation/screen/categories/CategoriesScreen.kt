@@ -35,9 +35,9 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mdrlzy.budgetwise.R
 import com.mdrlzy.budgetwise.presentation.screen.main.MainNavGraph
-import com.mdrlzy.budgetwise.presentation.ui.composable.AppHorDiv
-import com.mdrlzy.budgetwise.presentation.ui.composable.AppListItemEmoji
-import com.mdrlzy.budgetwise.presentation.ui.composable.AppTopBar
+import com.mdrlzy.budgetwise.presentation.ui.composable.BWHorDiv
+import com.mdrlzy.budgetwise.presentation.ui.composable.BWListItemEmoji
+import com.mdrlzy.budgetwise.presentation.ui.composable.BWTopBar
 import com.mdrlzy.budgetwise.presentation.ui.composable.BWErrorRetryScreen
 import com.mdrlzy.budgetwise.presentation.ui.composable.BWLoadingScreen
 import com.mdrlzy.budgetwise.presentation.ui.composable.ListenActiveScreenEffect
@@ -60,7 +60,7 @@ fun CategoriesScreen() {
 
     Scaffold(
         topBar = {
-            AppTopBar(
+            BWTopBar(
                 title = stringResource(R.string.my_expenses)
             )
         }
@@ -137,16 +137,16 @@ private fun Content(
                     tint = Color.Unspecified,
                 )
             }
-            AppHorDiv()
+            BWHorDiv()
         }
         items(state.categories) {
-            AppListItemEmoji(
+            BWListItemEmoji(
                 leadingText = it.name,
                 emoji = it.emoji,
                 height = 70.dp,
                 onClick = {}
             )
-            AppHorDiv()
+            BWHorDiv()
         }
     }
 }

@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun AppListItem(
+fun BWListItem(
     leadingText: String,
     trailingText: String? = null,
     leadDescText: String? = null,
@@ -86,7 +86,7 @@ fun AppListItem(
 }
 
 @Composable
-fun AppListItemEmoji(
+fun BWListItemEmoji(
     leadingText: String,
     trailingText: String? = null,
     leadDescText: String? = null,
@@ -98,7 +98,7 @@ fun AppListItemEmoji(
     emojiBackground: Color = Color(0xFFD4FAE6),
     trailingIcon: Painter? = null,
 ) {
-    AppListItem(
+    BWListItem(
         leadingText = leadingText,
         trailingText = trailingText,
         leadDescText = leadDescText,
@@ -135,7 +135,7 @@ fun AppListItemEmoji(
 }
 
 @Composable
-fun AppListItemIcon(
+fun BWListItemIcon(
     leadingText: String,
     trailingText: String? = null,
     descText: String? = null,
@@ -144,7 +144,7 @@ fun AppListItemIcon(
     height: Dp,
     onClick: (() -> Unit)? = null,
 ) {
-    AppListItem(
+    BWListItem(
         leadingText = leadingText,
         trailingText = trailingText,
         leadDescText = descText,

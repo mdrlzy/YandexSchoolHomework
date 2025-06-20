@@ -1,9 +1,6 @@
 package com.mdrlzy.budgetwise.presentation.screen.income
 
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -18,20 +15,18 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mdrlzy.budgetwise.R
-import com.mdrlzy.budgetwise.presentation.screen.expensestoday.ExpensesTodayState
 import com.mdrlzy.budgetwise.presentation.screen.main.MainNavGraph
-import com.mdrlzy.budgetwise.presentation.ui.composable.AppFab
-import com.mdrlzy.budgetwise.presentation.ui.composable.AppHorDiv
-import com.mdrlzy.budgetwise.presentation.ui.composable.AppListItem
-import com.mdrlzy.budgetwise.presentation.ui.composable.AppListItemIcon
-import com.mdrlzy.budgetwise.presentation.ui.composable.AppTopBar
+import com.mdrlzy.budgetwise.presentation.ui.composable.BWAddFab
+import com.mdrlzy.budgetwise.presentation.ui.composable.BWHorDiv
+import com.mdrlzy.budgetwise.presentation.ui.composable.BWListItem
+import com.mdrlzy.budgetwise.presentation.ui.composable.BWListItemIcon
+import com.mdrlzy.budgetwise.presentation.ui.composable.BWTopBar
 import com.mdrlzy.budgetwise.presentation.ui.composable.BWErrorRetryScreen
 import com.mdrlzy.budgetwise.presentation.ui.composable.BWLoadingScreen
 import com.mdrlzy.budgetwise.presentation.ui.composable.ListenActiveScreenEffect
 import com.mdrlzy.budgetwise.presentation.ui.utils.CurrencyUtils
 import com.mdrlzy.budgetwise.presentation.ui.utils.appComponent
 import com.ramcosta.composedestinations.annotation.Destination
-import com.ramcosta.composedestinations.annotation.RootGraph
 import com.ramcosta.composedestinations.generated.destinations.TransactionHistoryScreenDestination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import org.orbitmvi.orbit.compose.collectAsState
@@ -53,7 +48,7 @@ fun IncomeScreen(
 
     Scaffold(
         topBar = {
-            AppTopBar(
+            BWTopBar(
                 title = stringResource(R.string.income_today),
                 trailingIcon = painterResource(R.drawable.ic_history),
                 onTrailingIconClick = {
@@ -67,7 +62,7 @@ fun IncomeScreen(
         },
         floatingActionButton = {
             if (state is IncomeScreenState.Success)
-                AppFab { }
+                BWAddFab { }
         }
     ) {
         Box(Modifier.padding(it)) {
@@ -84,23 +79,23 @@ fun IncomeScreen(
 private fun Content(state: IncomeScreenState.Success) {
     LazyColumn {
         item {
-            AppListItem(
+            BWListItem(
                 leadingText = stringResource(R.string.all),
                 trailingText = "${state.sum} ${CurrencyUtils.getSymbolOrCode(state.currency)}",
                 background = MaterialTheme.colorScheme.secondary,
                 height = 56.dp,
             )
-            AppHorDiv()
+            BWHorDiv()
         }
         items(state.transactions) {
-            AppListItemIcon(
+            BWListItemIcon(
                 leadingText = it.categoryName,
                 trailingText = it.amount,
                 height = 70.dp,
                 trailingIcon = painterResource(R.drawable.ic_more),
                 onClick = {},
             )
-            AppHorDiv()
+            BWHorDiv()
         }
     }
 }

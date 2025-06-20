@@ -1,44 +1,92 @@
 package com.mdrlzy.budgetwise.presentation.screen.income
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import com.mdrlzy.budgetwise.domain.repo.AccountRepo
+import com.mdrlzy.budgetwise.domain.usecase.GetIncomeTransactionsUseCase
 import com.mdrlzy.budgetwise.presentation.model.TransactionUiModel
+import com.mdrlzy.budgetwise.presentation.model.toUiModel
+import kotlinx.coroutines.Job
 import org.orbitmvi.orbit.Container
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.viewmodel.container
+import java.math.BigDecimal
 import java.time.OffsetDateTime
+import javax.inject.Inject
 
-data class IncomeScreenState (
-    val sumAmount: String,
-    val incomeItems: List<TransactionUiModel>,
-)
+sealed class IncomeScreenState {
+    data object Loading : IncomeScreenState()
+
+    data class Success(
+        val sum: BigDecimal = BigDecimal.ZERO,
+        val currency: String = "",
+        val transactions: List<TransactionUiModel> = emptyList(),
+    ) : IncomeScreenState()
+
+    data object Error : IncomeScreenState()
+}
 
 sealed class IncomeScreenEffect
 
-class IncomeViewModel: ViewModel(), ContainerHost<IncomeScreenState, IncomeScreenEffect> {
+class IncomeViewModel(
+    private val accountRepo: AccountRepo,
+    private val getIncomeTransactionsUseCase: GetIncomeTransactionsUseCase,
+) : ViewModel(), ContainerHost<IncomeScreenState, IncomeScreenEffect> {
     override val container: Container<IncomeScreenState, IncomeScreenEffect> =
-        container(
-            IncomeScreenState(
-            sumAmount = "600 000 ₽",
-            incomeItems = listOf(
-                mockTransaction("Зарплата", "500 000 ₽"),
-                mockTransaction("Подработка", "100 000 ₽"),
+        container(IncomeScreenState.Loading)
+
+    private var initJob: Job? = null
+
+    fun onActive() = init()
+
+    fun onInactive() {
+        initJob?.cancel()
+    }
+
+    fun onRetry() = init()
+
+    private fun init() {
+        initJob = intent {
+            if (state is IncomeScreenState.Success) return@intent
+
+            reduce {
+                IncomeScreenState.Loading
+            }
+
+            val today = OffsetDateTime.now()
+            val transactionsResult = getIncomeTransactionsUseCase.invoke(
+                today.withHour(0).withMinute(0),
+                today.withHour(23).withMinute(59)
             )
-        )
-        )
+            val accountResult = accountRepo.getAccount()
+
+            if (transactionsResult.isRight() && accountResult.isRight()) {
+                val transactions = transactionsResult.getOrNull()!!.map { it.toUiModel() }
+                val account = accountResult.getOrNull()!!
+                val sum = transactions.sumOf { BigDecimal(it.amount) }
+
+                reduce {
+                    IncomeScreenState.Success(
+                        sum = sum,
+                        currency = account.currency,
+                        transactions = transactions,
+                    )
+                }
+
+            } else {
+                reduce {
+                    IncomeScreenState.Error
+                }
+            }
+        }
+    }
 }
 
-private fun mockTransaction(
-    name: String,
-    amount: String,
-) = TransactionUiModel(
-    id = 0L,
-    accountId = 0L,
-    categoryId = 0L,
-    categoryName = name,
-    amount = amount,
-    transactionDate = OffsetDateTime.now(),
-    comment = null,
-    emoji = "",
-    createdAt = OffsetDateTime.now(),
-    updatedAt = OffsetDateTime.now(),
-)
+class IncomeViewModelFactory @Inject constructor(
+    private val accountRepo: AccountRepo,
+    private val getIncomeTransactionsUseCase: GetIncomeTransactionsUseCase,
+) : ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        return IncomeViewModel(accountRepo, getIncomeTransactionsUseCase) as T
+    }
+}

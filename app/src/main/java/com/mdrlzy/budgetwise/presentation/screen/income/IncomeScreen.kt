@@ -1,5 +1,6 @@
 package com.mdrlzy.budgetwise.presentation.screen.income
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
@@ -11,17 +12,24 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mdrlzy.budgetwise.R
+import com.mdrlzy.budgetwise.presentation.screen.expensestoday.ExpensesTodayState
 import com.mdrlzy.budgetwise.presentation.screen.main.MainNavGraph
 import com.mdrlzy.budgetwise.presentation.ui.composable.AppFab
 import com.mdrlzy.budgetwise.presentation.ui.composable.AppHorDiv
 import com.mdrlzy.budgetwise.presentation.ui.composable.AppListItem
 import com.mdrlzy.budgetwise.presentation.ui.composable.AppListItemIcon
 import com.mdrlzy.budgetwise.presentation.ui.composable.AppTopBar
+import com.mdrlzy.budgetwise.presentation.ui.composable.BWErrorRetryScreen
+import com.mdrlzy.budgetwise.presentation.ui.composable.BWLoadingScreen
+import com.mdrlzy.budgetwise.presentation.ui.composable.ListenActiveScreenEffect
+import com.mdrlzy.budgetwise.presentation.ui.utils.CurrencyUtils
+import com.mdrlzy.budgetwise.presentation.ui.utils.appComponent
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootGraph
 import org.orbitmvi.orbit.compose.collectAsState
@@ -29,8 +37,15 @@ import org.orbitmvi.orbit.compose.collectAsState
 @Destination<MainNavGraph>
 @Composable
 fun IncomeScreen() {
-    val viewModel: IncomeViewModel = viewModel()
+    val context = LocalContext.current
+    val viewModel: IncomeViewModel =
+        viewModel(factory = context.appComponent.incomeViewModelFactory())
     val state by viewModel.collectAsState()
+
+    ListenActiveScreenEffect(
+        onActive = viewModel::onActive,
+        onInactive = viewModel::onInactive,
+    )
 
     Scaffold(
         topBar = {
@@ -40,29 +55,41 @@ fun IncomeScreen() {
             )
         },
         floatingActionButton = {
-            AppFab {  }
+            if (state is IncomeScreenState.Success)
+                AppFab { }
         }
     ) {
-        LazyColumn(modifier = Modifier.padding(it)) {
-            item {
-                AppListItem(
-                    leadingText = stringResource(R.string.all),
-                    trailingText = state.sumAmount,
-                    background = MaterialTheme.colorScheme.secondary,
-                    height = 56.dp,
-                )
-                AppHorDiv()
+        Box(Modifier.padding(it)) {
+            when (state) {
+                IncomeScreenState.Error -> BWErrorRetryScreen { viewModel.onRetry() }
+                IncomeScreenState.Loading -> BWLoadingScreen()
+                is IncomeScreenState.Success -> Content(state as IncomeScreenState.Success)
             }
-            items(state.incomeItems) {
-                AppListItemIcon(
-                    leadingText = it.categoryName,
-                    trailingText = it.amount,
-                    height = 70.dp,
-                    trailingIcon = painterResource(R.drawable.ic_more),
-                    onClick = {},
-                )
-                AppHorDiv()
-            }
+        }
+    }
+}
+
+@Composable
+private fun Content(state: IncomeScreenState.Success) {
+    LazyColumn {
+        item {
+            AppListItem(
+                leadingText = stringResource(R.string.all),
+                trailingText = "${state.sum} ${CurrencyUtils.getSymbolOrCode(state.currency)}",
+                background = MaterialTheme.colorScheme.secondary,
+                height = 56.dp,
+            )
+            AppHorDiv()
+        }
+        items(state.transactions) {
+            AppListItemIcon(
+                leadingText = it.categoryName,
+                trailingText = it.amount,
+                height = 70.dp,
+                trailingIcon = painterResource(R.drawable.ic_more),
+                onClick = {},
+            )
+            AppHorDiv()
         }
     }
 }

@@ -13,7 +13,7 @@ import com.mdrlzy.budgetwise.presentation.ui.utils.keyboardAsState
 import com.ramcosta.composedestinations.DestinationsNavHost
 import com.ramcosta.composedestinations.generated.NavGraphs
 import com.ramcosta.composedestinations.generated.destinations.AccountScreenDestination
-import com.ramcosta.composedestinations.generated.destinations.ExpensesScreenDestination
+import com.ramcosta.composedestinations.generated.destinations.CategoriesScreenDestination
 import com.ramcosta.composedestinations.generated.destinations.ExpensesTodayScreenDestination
 import com.ramcosta.composedestinations.generated.destinations.IncomeScreenDestination
 import com.ramcosta.composedestinations.generated.destinations.SettingsScreenDestination
@@ -23,7 +23,7 @@ private val bottomBarVisibleRoutes = listOf(
     ExpensesTodayScreenDestination.route,
     IncomeScreenDestination.route,
     AccountScreenDestination.route,
-    ExpensesScreenDestination.route,
+    CategoriesScreenDestination.route,
     SettingsScreenDestination.route,
 )
 

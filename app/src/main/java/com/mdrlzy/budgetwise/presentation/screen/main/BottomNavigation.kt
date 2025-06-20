@@ -23,7 +23,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import com.mdrlzy.budgetwise.R
 import com.ramcosta.composedestinations.generated.destinations.AccountScreenDestination
-import com.ramcosta.composedestinations.generated.destinations.ExpensesScreenDestination
+import com.ramcosta.composedestinations.generated.destinations.CategoriesScreenDestination
 import com.ramcosta.composedestinations.generated.destinations.ExpensesTodayScreenDestination
 import com.ramcosta.composedestinations.generated.destinations.IncomeScreenDestination
 import com.ramcosta.composedestinations.generated.destinations.SettingsScreenDestination
@@ -54,7 +54,7 @@ sealed class BottomNavItem(
     data object Expenses : BottomNavItem(
         R.string.bottom_nav_expenses,
         R.drawable.bottom_nav_expenses,
-        ExpensesScreenDestination.route,
+        CategoriesScreenDestination.route,
     )
 
     data object Settings : BottomNavItem(

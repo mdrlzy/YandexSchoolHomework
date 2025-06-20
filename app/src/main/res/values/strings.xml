@@ -18,4 +18,6 @@
     <string name="about_app">О программе</string>
     <string name="dark_theme">Темная тема</string>
     <string name="expenses_today">Расходы сегодня</string>
+    <string name="something_went_wrong">Что-то пошло не так</string>
+    <string name="retry">Попробовать еще раз</string>
 </resources>

@@ -1,11 +1,16 @@
 package com.mdrlzy.budgetwise.presentation.screen.expensestoday
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import com.mdrlzy.budgetwise.domain.repo.AccountRepo
 import com.mdrlzy.budgetwise.domain.usecase.GetExpenseTransactionsUseCase
 import com.mdrlzy.budgetwise.presentation.model.TransactionUiModel
 import com.mdrlzy.budgetwise.presentation.model.toUiModel
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.Container
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.viewmodel.container
@@ -13,13 +18,17 @@ import java.math.BigDecimal
 import java.time.OffsetDateTime
 import javax.inject.Inject
 
-data class ExpensesTodayState(
-    val sum: BigDecimal = BigDecimal.ZERO,
-    val currency: String = "",
-    val transactions: List<TransactionUiModel> = emptyList(),
-    val isError: Boolean = false,
-    val initialized: Boolean = false,
-)
+sealed class ExpensesTodayState {
+    data object Loading : ExpensesTodayState()
+
+    data class Success(
+        val sum: BigDecimal = BigDecimal.ZERO,
+        val currency: String = "",
+        val transactions: List<TransactionUiModel> = emptyList(),
+    ) : ExpensesTodayState()
+
+    data object Error : ExpensesTodayState()
+}
 
 sealed class ExpensesTodayEffect {
 
@@ -30,10 +39,26 @@ class ExpensesTodayViewModel(
     private val getExpenseTransactionsUseCase: GetExpenseTransactionsUseCase,
 ) : ViewModel(), ContainerHost<ExpensesTodayState, ExpensesTodayEffect> {
     override val container: Container<ExpensesTodayState, ExpensesTodayEffect> =
-        container(ExpensesTodayState())
+        container(ExpensesTodayState.Loading)
 
-    init {
-        intent {
+    private var initJob: Job? = null
+
+    fun onActive() = init()
+
+    fun onInactive() {
+        initJob?.cancel()
+    }
+
+    fun onRetry() = init()
+
+    private fun init() {
+        initJob = intent {
+            if (state is ExpensesTodayState.Success) return@intent
+
+            reduce {
+                ExpensesTodayState.Loading
+            }
+
             val today = OffsetDateTime.now()
             val transactionsResult = getExpenseTransactionsUseCase.invoke(
                 today.withHour(0).withMinute(0),
@@ -47,16 +72,16 @@ class ExpensesTodayViewModel(
                 val sum = transactions.sumOf { BigDecimal(it.amount) }
 
                 reduce {
-                    state.copy(
+                    ExpensesTodayState.Success(
                         sum = sum,
                         currency = account.currency,
                         transactions = transactions,
-                        initialized = true,
                     )
                 }
+
             } else {
                 reduce {
-                    state.copy(isError = true, initialized = true)
+                    ExpensesTodayState.Error
                 }
             }
         }

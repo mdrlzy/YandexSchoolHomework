@@ -1,5 +1,6 @@
 package com.mdrlzy.budgetwise.presentation.screen.expensestoday
 
+import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -10,6 +11,8 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -19,13 +22,19 @@ import com.mdrlzy.budgetwise.R
 import com.mdrlzy.budgetwise.presentation.ui.composable.AppListItemEmoji
 import com.mdrlzy.budgetwise.presentation.ui.composable.AppTopBar
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import com.mdrlzy.budgetwise.presentation.App
 import com.mdrlzy.budgetwise.presentation.screen.main.MainNavGraph
 import com.mdrlzy.budgetwise.presentation.ui.composable.AppFab
 import com.mdrlzy.budgetwise.presentation.ui.composable.AppHorDiv
 import com.mdrlzy.budgetwise.presentation.ui.composable.AppListItem
+import com.mdrlzy.budgetwise.presentation.ui.composable.BWErrorRetryScreen
 import com.mdrlzy.budgetwise.presentation.ui.composable.BWLoadingScreen
+import com.mdrlzy.budgetwise.presentation.ui.composable.ListenActiveScreenEffect
 import com.mdrlzy.budgetwise.presentation.ui.utils.CurrencyUtils
 import com.mdrlzy.budgetwise.presentation.ui.utils.appComponent
 import com.ramcosta.composedestinations.annotation.Destination
@@ -38,12 +47,18 @@ import org.orbitmvi.orbit.compose.collectAsState
 @Composable
 fun ExpensesTodayScreen(
     navigator: DestinationsNavigator,
+    navController: NavController,
 ) {
     val context = LocalContext.current
     val viewModel: ExpensesTodayViewModel =
         viewModel(factory = context.appComponent.expensesTodayViewModelFactory())
 
     val state by viewModel.collectAsState()
+
+   ListenActiveScreenEffect(
+       onActive = viewModel::onActive,
+       onInactive = viewModel::onInactive,
+   )
 
     Scaffold(
         topBar = {
@@ -53,21 +68,22 @@ fun ExpensesTodayScreen(
             )
         },
         floatingActionButton = {
-            if (state.initialized && state.isError.not())
-                AppFab {  }
+            if (state is ExpensesTodayState.Success)
+                AppFab { }
         }
     ) {
         Box(Modifier.padding(it)) {
-            when {
-                state.initialized.not() -> BWLoadingScreen()
-                else -> Content(state)
+            when(state) {
+                ExpensesTodayState.Error -> BWErrorRetryScreen { viewModel.onRetry() }
+                ExpensesTodayState.Loading -> BWLoadingScreen()
+                is ExpensesTodayState.Success -> Content(state as ExpensesTodayState.Success)
             }
         }
     }
 }
 
 @Composable
-private fun Content(state: ExpensesTodayState) {
+private fun Content(state: ExpensesTodayState.Success) {
     LazyColumn {
         item {
             AppListItem(

@@ -1,90 +1,73 @@
 package com.mdrlzy.budgetwise.presentation.screen.expensestoday
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import com.mdrlzy.budgetwise.domain.repo.AccountRepo
+import com.mdrlzy.budgetwise.domain.usecase.GetExpenseTransactionsUseCase
 import com.mdrlzy.budgetwise.presentation.model.TransactionUiModel
+import com.mdrlzy.budgetwise.presentation.model.toUiModel
 import org.orbitmvi.orbit.Container
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.viewmodel.container
+import java.math.BigDecimal
 import java.time.OffsetDateTime
+import javax.inject.Inject
 
 data class ExpensesTodayState(
-    val all: String,
-    val currency: String,
-    val transactions: List<TransactionUiModel>,
+    val sum: BigDecimal = BigDecimal.ZERO,
+    val currency: String = "",
+    val transactions: List<TransactionUiModel> = emptyList(),
+    val isError: Boolean = false,
+    val initialized: Boolean = false,
 )
 
 sealed class ExpensesTodayEffect {
 
 }
 
-class ExpensesTodayViewModel : ViewModel(), ContainerHost<ExpensesTodayState, ExpensesTodayEffect> {
+class ExpensesTodayViewModel(
+    private val accountRepo: AccountRepo,
+    private val getExpenseTransactionsUseCase: GetExpenseTransactionsUseCase,
+) : ViewModel(), ContainerHost<ExpensesTodayState, ExpensesTodayEffect> {
     override val container: Container<ExpensesTodayState, ExpensesTodayEffect> =
-        container(
-            ExpensesTodayState(
-                all = "436 558",
-                currency = "₽",
-                transactions = listOf(
-                    mockTransaction(
-                        name = "Аренда квартиры",
-                        amount = "100 000 ₽",
-                        emoji = "\uD83C\uDFE0"
-                    ),
-                    mockTransaction(
-                        name = "Одежда",
-                        amount = "50 000 ₽",
-                        emoji = "\uD83D\uDC57"
-                    ),
-                    mockTransaction(
-                        name = "На собачку",
-                        comment = "Джек",
-                        amount = "50 000 ₽",
-                        emoji = "\uD83D\uDC36"
-                    ),
-                    mockTransaction(
-                        name = "На собачку",
-                        comment = "Энни",
-                        amount = "50 000 ₽",
-                        emoji = "\uD83D\uDC36"
-                    ),
-                    mockTransaction(
-                        name = "Ремонт квартиры",
-                        amount = "50 000 ₽",
-                        emoji = "\uD83D\uDEE0\uFE0F"
-                    ),
-                    mockTransaction(
-                        name = "Продукты",
-                        amount = "100 000 ₽",
-                        emoji = "\uD83C\uDF6D"
-                    ),
-                    mockTransaction(
-                        name = "Спортзал",
-                        amount = "100 000 ₽",
-                        emoji = "\uD83C\uDFCB\uFE0F"
-                    ),
-                    mockTransaction(
-                        name = "Медицина",
-                        amount = "100 000 ₽",
-                        emoji = "\uD83D\uDC8A",
-                    )
-                )
+        container(ExpensesTodayState())
+
+    init {
+        intent {
+            val today = OffsetDateTime.now()
+            val transactionsResult = getExpenseTransactionsUseCase.invoke(
+                today.withHour(0).withMinute(0),
+                today.withHour(23).withMinute(59)
             )
-        )
+            val accountResult = accountRepo.getAccount()
+
+            if (transactionsResult.isRight() && accountResult.isRight()) {
+                val transactions = transactionsResult.getOrNull()!!.map { it.toUiModel() }
+                val account = accountResult.getOrNull()!!
+                val sum = transactions.sumOf { BigDecimal(it.amount) }
+
+                reduce {
+                    state.copy(
+                        sum = sum,
+                        currency = account.currency,
+                        transactions = transactions,
+                        initialized = true,
+                    )
+                }
+            } else {
+                reduce {
+                    state.copy(isError = true, initialized = true)
+                }
+            }
+        }
+    }
 }
 
-private fun mockTransaction(
-    name: String,
-    amount: String,
-    comment: String? = null,
-    emoji: String,
-) = TransactionUiModel(
-    id = 0L,
-    accountId = 0L,
-    categoryId = 0L,
-    categoryName = name,
-    amount = amount,
-    transactionDate = OffsetDateTime.now(),
-    comment = comment,
-    emoji = emoji,
-    createdAt = OffsetDateTime.now(),
-    updatedAt = OffsetDateTime.now(),
-)
+class ExpensesTodayViewModelFactory @Inject constructor(
+    private val accountRepo: AccountRepo,
+    private val getExpenseTransactionsUseCase: GetExpenseTransactionsUseCase,
+) : ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        return ExpensesTodayViewModel(accountRepo, getExpenseTransactionsUseCase) as T
+    }
+}

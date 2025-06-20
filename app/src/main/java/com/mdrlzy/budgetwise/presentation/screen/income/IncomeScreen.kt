@@ -32,11 +32,15 @@ import com.mdrlzy.budgetwise.presentation.ui.utils.CurrencyUtils
 import com.mdrlzy.budgetwise.presentation.ui.utils.appComponent
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootGraph
+import com.ramcosta.composedestinations.generated.destinations.TransactionHistoryScreenDestination
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import org.orbitmvi.orbit.compose.collectAsState
 
 @Destination<MainNavGraph>
 @Composable
-fun IncomeScreen() {
+fun IncomeScreen(
+    navigator: DestinationsNavigator,
+) {
     val context = LocalContext.current
     val viewModel: IncomeViewModel =
         viewModel(factory = context.appComponent.incomeViewModelFactory())
@@ -51,7 +55,14 @@ fun IncomeScreen() {
         topBar = {
             AppTopBar(
                 title = stringResource(R.string.income_today),
-                trailingIcon = painterResource(R.drawable.ic_history)
+                trailingIcon = painterResource(R.drawable.ic_history),
+                onTrailingIconClick = {
+                    navigator.navigate(
+                        TransactionHistoryScreenDestination(
+                            isIncomeMode = true
+                        )
+                    )
+                }
             )
         },
         floatingActionButton = {

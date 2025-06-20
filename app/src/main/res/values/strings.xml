@@ -21,4 +21,9 @@
     <string name="something_went_wrong">Что-то пошло не так</string>
     <string name="retry">Попробовать еще раз</string>
     <string name="my_account">Мой счет</string>
+    <string name="start">Начало</string>
+    <string name="end">Конец</string>
+    <string name="sum">Сумма</string>
+    <string name="cancel">Отмена</string>
+    <string name="ok">ОК</string>
 </resources>

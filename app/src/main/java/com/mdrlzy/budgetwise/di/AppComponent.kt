@@ -9,6 +9,8 @@ import com.mdrlzy.budgetwise.presentation.screen.categories.CategoriesViewModel
 import com.mdrlzy.budgetwise.presentation.screen.categories.CategoriesViewModelFactory
 import com.mdrlzy.budgetwise.presentation.screen.expensestoday.ExpensesTodayViewModelFactory
 import com.mdrlzy.budgetwise.presentation.screen.income.IncomeViewModelFactory
+import com.mdrlzy.budgetwise.presentation.screen.transactionhistory.TransactionHistoryViewModel
+import com.mdrlzy.budgetwise.presentation.screen.transactionhistory.TransactionHistoryViewModelFactory
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton
@@ -29,6 +31,8 @@ interface AppComponent {
     fun accountViewModelFactory(): AccountViewModelFactory
 
     fun categoriesViewModelFactory(): CategoriesViewModelFactory
+
+    fun transactionHistoryViewModelFactory(): TransactionHistoryViewModelFactory.Factory
 
 
     @Component.Factory

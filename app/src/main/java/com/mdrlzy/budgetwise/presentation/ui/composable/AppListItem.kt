@@ -29,7 +29,8 @@ import androidx.compose.ui.unit.sp
 fun AppListItem(
     leadingText: String,
     trailingText: String? = null,
-    descText: String? = null,
+    leadDescText: String? = null,
+    trailDescText: String? = null,
     background: Color = Color.Transparent,
     height: Dp,
     onClick: (() -> Unit)? = null,
@@ -56,19 +57,27 @@ fun AppListItem(
                 text = leadingText,
                 style = MaterialTheme.typography.bodyLarge,
             )
-            descText?.let {
+            leadDescText?.let {
                 Text(
-                    text = descText,
+                    text = leadDescText,
                     style = MaterialTheme.typography.bodyMedium,
                 )
             }
         }
         Spacer(Modifier.weight(1f))
-        trailingText?.let {
-            Text(
-                text = trailingText,
-                style = MaterialTheme.typography.bodyLarge,
-            )
+        Column(horizontalAlignment = Alignment.End) {
+            trailingText?.let {
+                Text(
+                    text = trailingText,
+                    style = MaterialTheme.typography.bodyLarge,
+                )
+            }
+            trailDescText?.let {
+                Text(
+                    text = trailDescText,
+                    style = MaterialTheme.typography.bodyLarge,
+                )
+            }
         }
         trailingContent?.let {
             trailingContent()
@@ -80,7 +89,8 @@ fun AppListItem(
 fun AppListItemEmoji(
     leadingText: String,
     trailingText: String? = null,
-    descText: String? = null,
+    leadDescText: String? = null,
+    trailDescText: String? = null,
     background: Color = Color.Transparent,
     height: Dp,
     onClick: (() -> Unit)? = null,
@@ -91,7 +101,8 @@ fun AppListItemEmoji(
     AppListItem(
         leadingText = leadingText,
         trailingText = trailingText,
-        descText = descText,
+        leadDescText = leadDescText,
+        trailDescText = trailDescText,
         leadingContent = {
             Box(
                 modifier = Modifier
@@ -136,7 +147,7 @@ fun AppListItemIcon(
     AppListItem(
         leadingText = leadingText,
         trailingText = trailingText,
-        descText = descText,
+        leadDescText = descText,
         trailingContent = {
             Icon(
                 modifier = Modifier

@@ -1,8 +1,6 @@
 package com.mdrlzy.budgetwise.presentation.screen.expensestoday
 
-import android.util.Log
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -11,8 +9,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -22,12 +18,8 @@ import com.mdrlzy.budgetwise.R
 import com.mdrlzy.budgetwise.presentation.ui.composable.AppListItemEmoji
 import com.mdrlzy.budgetwise.presentation.ui.composable.AppTopBar
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleEventObserver
-import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.mdrlzy.budgetwise.presentation.App
 import com.mdrlzy.budgetwise.presentation.screen.main.MainNavGraph
 import com.mdrlzy.budgetwise.presentation.ui.composable.AppFab
 import com.mdrlzy.budgetwise.presentation.ui.composable.AppHorDiv
@@ -38,8 +30,7 @@ import com.mdrlzy.budgetwise.presentation.ui.composable.ListenActiveScreenEffect
 import com.mdrlzy.budgetwise.presentation.ui.utils.CurrencyUtils
 import com.mdrlzy.budgetwise.presentation.ui.utils.appComponent
 import com.ramcosta.composedestinations.annotation.Destination
-import com.ramcosta.composedestinations.annotation.RootGraph
-import com.ramcosta.composedestinations.generated.destinations.TransactionEditScreenDestination
+import com.ramcosta.composedestinations.generated.destinations.TransactionHistoryScreenDestination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import org.orbitmvi.orbit.compose.collectAsState
 
@@ -64,7 +55,14 @@ fun ExpensesTodayScreen(
         topBar = {
             AppTopBar(
                 title = stringResource(R.string.expenses_today),
-                trailingIcon = painterResource(R.drawable.ic_history)
+                trailingIcon = painterResource(R.drawable.ic_history),
+                onTrailingIconClick = {
+                    navigator.navigate(
+                        TransactionHistoryScreenDestination(
+                            isIncomeMode = false
+                        )
+                    )
+                }
             )
         },
         floatingActionButton = {
@@ -98,7 +96,7 @@ private fun Content(state: ExpensesTodayState.Success) {
             AppListItemEmoji(
                 leadingText = it.categoryName,
                 trailingText = it.amount,
-                descText = it.comment,
+                leadDescText = it.comment,
                 emoji = it.emoji,
                 height = 70.dp,
                 trailingIcon = painterResource(R.drawable.ic_more),

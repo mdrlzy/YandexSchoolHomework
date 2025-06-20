@@ -41,6 +41,19 @@ object HttpClientBuilder {
             connectTimeoutMillis = NETWORK_TIME_OUT
             socketTimeoutMillis = NETWORK_TIME_OUT
         }
+
+        install(HttpRequestRetry) {
+            maxRetries = 3
+            retryIf { request, response ->
+                response.status.value in 500..599
+            }
+            retryOnExceptionIf { _, _ -> false }
+            delayMillis { retry ->
+                Log.d("Ktor", "Retry")
+                2000L
+            }
+        }
+
         install(Logging) {
             logger = object : Logger {
                 override fun log(message: String) {

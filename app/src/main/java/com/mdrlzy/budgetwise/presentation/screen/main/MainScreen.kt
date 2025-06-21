@@ -23,15 +23,12 @@ import com.ramcosta.composedestinations.generated.destinations.CategoriesScreenD
 import com.ramcosta.composedestinations.generated.destinations.ExpensesTodayScreenDestination
 import com.ramcosta.composedestinations.generated.destinations.IncomeScreenDestination
 import com.ramcosta.composedestinations.generated.destinations.SettingsScreenDestination
+import com.ramcosta.composedestinations.generated.destinations.SplashScreenDestination
 import com.ramcosta.composedestinations.rememberNavHostEngine
 import kotlinx.coroutines.flow.drop
 
-private val bottomBarVisibleRoutes = listOf(
-    ExpensesTodayScreenDestination.route,
-    IncomeScreenDestination.route,
-    AccountScreenDestination.route,
-    CategoriesScreenDestination.route,
-    SettingsScreenDestination.route,
+private val noBottomBarRoutes = listOf(
+    SplashScreenDestination.route,
 )
 
 @Composable
@@ -57,10 +54,11 @@ fun MainScreen() {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route ?: NavGraphs.main.startRoute.route
 
+
     val isKeyboardOpen by keyboardAsState()
     val bottomBarVisible = remember { mutableStateOf(false) }
 
-    bottomBarVisible.value = currentRoute in bottomBarVisibleRoutes
+    bottomBarVisible.value = currentRoute !in noBottomBarRoutes
 
     if (isKeyboardOpen)
         bottomBarVisible.value = false
@@ -82,7 +80,7 @@ fun MainScreen() {
             }
         },
         bottomBar = {
-            AnimatedBottomNavigation(currentRoute, bottomBarVisible) {
+            AnimatedBottomNavigation(navBackStackEntry, currentRoute, bottomBarVisible) {
                 navController.navigate(it) {
                     popUpTo(ExpensesTodayScreenDestination.route) {
                         saveState = true

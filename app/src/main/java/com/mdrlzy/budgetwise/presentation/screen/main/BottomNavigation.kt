@@ -21,12 +21,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.navigation.NavBackStackEntry
 import com.mdrlzy.budgetwise.R
 import com.ramcosta.composedestinations.generated.destinations.AccountScreenDestination
 import com.ramcosta.composedestinations.generated.destinations.CategoriesScreenDestination
 import com.ramcosta.composedestinations.generated.destinations.ExpensesTodayScreenDestination
 import com.ramcosta.composedestinations.generated.destinations.IncomeScreenDestination
 import com.ramcosta.composedestinations.generated.destinations.SettingsScreenDestination
+import com.ramcosta.composedestinations.generated.destinations.TransactionHistoryScreenDestination
 
 sealed class BottomNavItem(
     @StringRes val title: Int,
@@ -74,6 +76,7 @@ private val bottomBarItems = listOf(
 
 @Composable
 fun AnimatedBottomNavigation(
+    navBackStackEntry: NavBackStackEntry?,
     currentRoute: String,
     bottomBarVisible: State<Boolean>,
     onBottomBarItemClick: (String) -> Unit,
@@ -86,18 +89,31 @@ fun AnimatedBottomNavigation(
         },
     ) { expanded ->
         if (expanded)
-            BottomNavigation(currentRoute, onBottomBarItemClick)
+            BottomNavigation(navBackStackEntry, currentRoute, onBottomBarItemClick)
     }
 }
 
 @Composable
 fun BottomNavigation(
+    navBackStackEntry: NavBackStackEntry?,
     currentRoute: String,
     onBottomBarItemClick: (String) -> Unit,
 ) {
+
     BottomAppBar {
         bottomBarItems.forEach { item ->
-            val selected = currentRoute.contains(item.route)
+            // bottom bar is visible in TransactionHistoryScreen
+            // and can be opened from two different screens: Income and Expenses
+            val selected = if (currentRoute == TransactionHistoryScreenDestination.route) {
+                val isIncome = navBackStackEntry?.arguments?.getBoolean("isIncomeMode")
+                when (item) {
+                    BottomNavItem.ExpensesToday -> isIncome?.not() ?: false
+                    BottomNavItem.Income -> isIncome ?: false
+                    else -> false
+                }
+            } else {
+                currentRoute.contains(item.route)
+            }
             NavigationBarItem(
                 selected = selected,
                 onClick = { onBottomBarItemClick(item.route) },

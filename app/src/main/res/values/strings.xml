@@ -26,4 +26,8 @@
     <string name="sum">Сумма</string>
     <string name="cancel">Отмена</string>
     <string name="ok">ОК</string>
+    <string name="online">В сети</string>
+    <string name="offline">Не в сети</string>
+    <string name="your_connection_is_back">Соединение восстановлено</string>
+    <string name="your_network_is_offline">Соединение потеряно</string>
 </resources>

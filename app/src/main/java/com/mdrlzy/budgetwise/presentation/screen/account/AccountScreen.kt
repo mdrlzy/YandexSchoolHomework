@@ -55,8 +55,12 @@ fun AccountScreen() {
     ) {
         Box(Modifier.padding(it)) {
             when (state) {
-                AccountScreenState.Error -> BWErrorRetryScreen { viewModel.onRetry() }
+                is AccountScreenState.Error -> BWErrorRetryScreen(
+                    error = (state as AccountScreenState.Error).error
+                ) { viewModel.onRetry() }
+
                 AccountScreenState.Loading -> BWLoadingScreen()
+
                 is AccountScreenState.Success -> Content(state as AccountScreenState.Success)
             }
         }

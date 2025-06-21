@@ -67,8 +67,12 @@ fun IncomeScreen(
     ) {
         Box(Modifier.padding(it)) {
             when (state) {
-                IncomeScreenState.Error -> BWErrorRetryScreen { viewModel.onRetry() }
+                is IncomeScreenState.Error -> BWErrorRetryScreen(
+                    error = (state as IncomeScreenState.Error).error
+                ) { viewModel.onRetry() }
+
                 IncomeScreenState.Loading -> BWLoadingScreen()
+
                 is IncomeScreenState.Success -> Content(state as IncomeScreenState.Success)
             }
         }

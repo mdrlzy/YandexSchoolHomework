@@ -23,7 +23,7 @@ sealed class CategoriesScreenState {
         val searchQuery: String = "",
     ) : CategoriesScreenState()
 
-    data object Error : CategoriesScreenState()
+    data class Error(val error: Throwable?) : CategoriesScreenState()
 }
 
 sealed class CategoriesScreenEffect
@@ -52,7 +52,7 @@ class CategoriesViewModel(
             categoryRepo.getAll().fold(
                 ifLeft = {
                     reduce {
-                        CategoriesScreenState.Error
+                        CategoriesScreenState.Error(it)
                     }
                 },
                 ifRight = {

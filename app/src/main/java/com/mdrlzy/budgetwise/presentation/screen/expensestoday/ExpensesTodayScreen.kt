@@ -46,10 +46,10 @@ fun ExpensesTodayScreen(
 
     val state by viewModel.collectAsState()
 
-   ListenActiveScreenEffect(
-       onActive = viewModel::onActive,
-       onInactive = viewModel::onInactive,
-   )
+    ListenActiveScreenEffect(
+        onActive = viewModel::onActive,
+        onInactive = viewModel::onInactive,
+    )
 
     Scaffold(
         topBar = {
@@ -71,9 +71,13 @@ fun ExpensesTodayScreen(
         }
     ) {
         Box(Modifier.padding(it)) {
-            when(state) {
-                ExpensesTodayState.Error -> BWErrorRetryScreen { viewModel.onRetry() }
+            when (state) {
+                is ExpensesTodayState.Error -> BWErrorRetryScreen(
+                    error = (state as ExpensesTodayState.Error).error
+                ) { viewModel.onRetry() }
+
                 ExpensesTodayState.Loading -> BWLoadingScreen()
+
                 is ExpensesTodayState.Success -> Content(state as ExpensesTodayState.Success)
             }
         }

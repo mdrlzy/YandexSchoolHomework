@@ -48,7 +48,7 @@ fun TransactionHistoryScreen(
     Scaffold(
         topBar = {
             BWTopBar(
-                title = "Моя история",
+                title = stringResource(R.string.my_history),
                 leadingIcon = painterResource(R.drawable.ic_back),
                 trailingIcon = painterResource(R.drawable.ic_analyse),
                 onLeadingIconClick = { navigator.popBackStack() },
@@ -58,8 +58,12 @@ fun TransactionHistoryScreen(
     ) {
         Box(Modifier.padding(it)) {
             when (state) {
-                TransactionHistoryScreenState.Error -> BWErrorRetryScreen { }
+                is TransactionHistoryScreenState.Error -> BWErrorRetryScreen(
+                    error = (state as TransactionHistoryScreenState.Error).error
+                ) { viewModel.onRetry() }
+
                 TransactionHistoryScreenState.Loading -> BWLoadingScreen()
+
                 is TransactionHistoryScreenState.Success -> Content(
                     state = state as TransactionHistoryScreenState.Success,
                     onStartDateSelected = viewModel::onStartDateSelected,

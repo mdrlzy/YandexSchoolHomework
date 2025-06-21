@@ -6,6 +6,7 @@ import com.mdrlzy.budgetwise.domain.repo.AccountRepo
 import com.mdrlzy.budgetwise.domain.usecase.GetIncomeTransactionsUseCase
 import com.mdrlzy.budgetwise.presentation.model.TransactionUiModel
 import com.mdrlzy.budgetwise.presentation.model.toUiModel
+import com.mdrlzy.budgetwise.presentation.screen.expensestoday.ExpensesTodayState
 import kotlinx.coroutines.Job
 import org.orbitmvi.orbit.Container
 import org.orbitmvi.orbit.ContainerHost
@@ -23,7 +24,7 @@ sealed class IncomeScreenState {
         val transactions: List<TransactionUiModel> = emptyList(),
     ) : IncomeScreenState()
 
-    data object Error : IncomeScreenState()
+    data class Error(val error: Throwable?) : IncomeScreenState()
 }
 
 sealed class IncomeScreenEffect
@@ -74,8 +75,9 @@ class IncomeViewModel(
                 }
 
             } else {
+                val left = transactionsResult.leftOrNull() ?: accountResult.leftOrNull()
                 reduce {
-                    IncomeScreenState.Error
+                    IncomeScreenState.Error(left)
                 }
             }
         }

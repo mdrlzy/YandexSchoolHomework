@@ -31,7 +31,7 @@ sealed class TransactionHistoryScreenState {
         val endDate: OffsetDateTime,
     ) : TransactionHistoryScreenState()
 
-    data object Error : TransactionHistoryScreenState()
+    data class Error(val error: Throwable?) : TransactionHistoryScreenState()
 }
 
 sealed class TransactionHistoryScreenEffect
@@ -122,8 +122,9 @@ class TransactionHistoryViewModel(
                 )
             }
         } else {
+            val left = transactionsResult.leftOrNull() ?: accountResult.leftOrNull()
             reduce {
-                TransactionHistoryScreenState.Error
+                TransactionHistoryScreenState.Error(left)
             }
         }
     }

@@ -23,7 +23,7 @@ sealed class AccountScreenState {
         val account: Account
     ) : AccountScreenState()
 
-    data object Error : AccountScreenState()
+    data class Error(val error: Throwable?) : AccountScreenState()
 }
 
 sealed class AccountScreenEffect
@@ -51,7 +51,7 @@ class AccountViewModel(
             accountRepo.getAccount().fold(
                 ifLeft = {
                     reduce {
-                        AccountScreenState.Error
+                        AccountScreenState.Error(it)
                     }
                 },
                 ifRight = {

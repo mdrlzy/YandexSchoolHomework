@@ -8,6 +8,8 @@ import com.mdrlzy.budgetwise.data.network.response.AccountResponse
 import com.mdrlzy.budgetwise.data.network.response.CategoryResponse
 import com.mdrlzy.budgetwise.data.network.response.TransactionDto
 import com.mdrlzy.budgetwise.domain.EitherT
+import com.mdrlzy.budgetwise.domain.exception.NoInternetException
+import com.mdrlzy.budgetwise.domain.repo.NetworkStatus
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
@@ -21,6 +23,7 @@ import java.time.format.DateTimeFormatter
 
 class BWApi(
     private val client: HttpClient,
+    private val networkStatus: NetworkStatus,
 ) {
     suspend fun getAccounts(): EitherT<List<AccountDto>> = safeRequest {
         client.get {
@@ -60,8 +63,13 @@ class BWApi(
         }.body()
     }
 
-    private inline fun <T> safeRequest(block: () -> T): EitherT<T> = Either.catch {
-        block()
+    private inline fun <T> safeRequest(block: () -> T): EitherT<T> {
+        if (networkStatus.isOnline().not()) {
+            return NoInternetException().left()
+        }
+        return Either.catch {
+            block()
+        }
     }
 
     companion object {

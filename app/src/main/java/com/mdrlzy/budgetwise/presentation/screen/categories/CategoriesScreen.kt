@@ -67,8 +67,12 @@ fun CategoriesScreen() {
     ) {
         Box(Modifier.padding(it)) {
             when (state) {
-                CategoriesScreenState.Error -> BWErrorRetryScreen { viewModel.onRetry() }
+                is CategoriesScreenState.Error -> BWErrorRetryScreen(
+                    error = (state as CategoriesScreenState.Error).error
+                ) { viewModel.onRetry() }
+
                 CategoriesScreenState.Loading -> BWLoadingScreen()
+
                 is CategoriesScreenState.Success ->
                     Content(
                         state = state as CategoriesScreenState.Success,

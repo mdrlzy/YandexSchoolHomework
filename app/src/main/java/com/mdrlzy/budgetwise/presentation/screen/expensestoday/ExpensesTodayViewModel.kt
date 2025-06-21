@@ -27,7 +27,7 @@ sealed class ExpensesTodayState {
         val transactions: List<TransactionUiModel> = emptyList(),
     ) : ExpensesTodayState()
 
-    data object Error : ExpensesTodayState()
+    data class Error(val error: Throwable?) : ExpensesTodayState()
 }
 
 sealed class ExpensesTodayEffect {
@@ -80,8 +80,9 @@ class ExpensesTodayViewModel(
                 }
 
             } else {
+                val left = transactionsResult.leftOrNull() ?: accountResult.leftOrNull()
                 reduce {
-                    ExpensesTodayState.Error
+                    ExpensesTodayState.Error(left)
                 }
             }
         }

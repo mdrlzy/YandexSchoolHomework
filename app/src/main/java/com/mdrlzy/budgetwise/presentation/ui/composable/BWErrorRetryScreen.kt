@@ -14,13 +14,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.mdrlzy.budgetwise.R
+import com.mdrlzy.budgetwise.domain.exception.NoInternetException
 
 @Composable
-fun BWErrorRetryScreen(onRetry: () -> Unit) {
+fun BWErrorRetryScreen(error: Throwable? = null, onRetry: () -> Unit) {
     Box(Modifier.fillMaxSize(), Alignment.Center) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            val info = if (error is NoInternetException) {
+                stringResource(R.string.no_internet)
+            } else {
+                stringResource(R.string.something_went_wrong)
+            }
             Text(
-                text = stringResource(R.string.something_went_wrong),
+                text = info,
                 style = MaterialTheme.typography.titleLarge
             )
             Spacer(Modifier.height(6.dp))

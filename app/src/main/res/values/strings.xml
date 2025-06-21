@@ -30,4 +30,6 @@
     <string name="offline">Не в сети</string>
     <string name="your_connection_is_back">Соединение восстановлено</string>
     <string name="your_network_is_offline">Соединение потеряно</string>
+    <string name="no_internet">Нет интернета</string>
+    <string name="my_history">Моя история</string>
 </resources>

@@ -19,7 +19,7 @@ class NetworkModule {
 
     @Singleton
     @Provides
-    fun bwApi(client: HttpClient) = BWApi(client)
+    fun bwApi(client: HttpClient, networkStatus: NetworkStatus) = BWApi(client, networkStatus)
 
     @Singleton
     @Provides

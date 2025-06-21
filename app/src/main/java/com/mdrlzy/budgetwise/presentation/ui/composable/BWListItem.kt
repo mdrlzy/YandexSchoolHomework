@@ -8,9 +8,11 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -21,6 +23,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -46,36 +49,43 @@ fun BWListItem(
             }
             .height(height)
             .background(background)
-            .padding(horizontal = 16.dp, vertical = 8.dp),
+            .padding(horizontal = 16.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         leadingContent?.let {
             leadingContent()
         }
-        Column {
+        Column(modifier = Modifier.weight(1f)) {
             Text(
                 text = leadingText,
                 style = MaterialTheme.typography.bodyLarge,
+                maxLines = if (leadDescText == null) 2 else 1,
+                overflow = TextOverflow.Ellipsis,
             )
-            leadDescText?.let {
+            if (!leadDescText.isNullOrEmpty()) {
                 Text(
                     text = leadDescText,
                     style = MaterialTheme.typography.bodyMedium,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
                 )
             }
         }
-        Spacer(Modifier.weight(1f))
         Column(horizontalAlignment = Alignment.End) {
             trailingText?.let {
                 Text(
                     text = trailingText,
                     style = MaterialTheme.typography.bodyLarge,
+                    maxLines = if (trailDescText == null) 2 else 1,
+                    overflow = TextOverflow.Ellipsis,
                 )
             }
             trailDescText?.let {
                 Text(
                     text = trailDescText,
                     style = MaterialTheme.typography.bodyLarge,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
                 )
             }
         }

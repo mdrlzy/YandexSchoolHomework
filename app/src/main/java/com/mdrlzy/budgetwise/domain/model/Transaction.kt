@@ -4,8 +4,8 @@ import java.time.OffsetDateTime
 
 data class Transaction(
     val id: Long,
-    val accountId: Long,
-    val categoryId: Long,
+    val account: AccountBrief,
+    val category: Category,
     val amount: String,
     val transactionDate: OffsetDateTime,
     val comment: String?,

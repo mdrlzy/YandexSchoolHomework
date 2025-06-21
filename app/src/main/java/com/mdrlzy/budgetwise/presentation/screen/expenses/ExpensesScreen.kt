@@ -1,134 +1,115 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
-
 package com.mdrlzy.budgetwise.presentation.screen.expenses
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mdrlzy.budgetwise.R
+import com.mdrlzy.budgetwise.presentation.ui.composable.BWListItemEmoji
+import com.mdrlzy.budgetwise.presentation.ui.composable.BWTopBar
+import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import com.mdrlzy.budgetwise.presentation.screen.main.MainNavGraph
-import com.mdrlzy.budgetwise.presentation.ui.composable.AppHorDiv
-import com.mdrlzy.budgetwise.presentation.ui.composable.AppListItem
-import com.mdrlzy.budgetwise.presentation.ui.composable.AppListItemEmoji
-import com.mdrlzy.budgetwise.presentation.ui.composable.AppTopBar
+import com.mdrlzy.budgetwise.presentation.ui.composable.BWAddFab
+import com.mdrlzy.budgetwise.presentation.ui.composable.BWHorDiv
+import com.mdrlzy.budgetwise.presentation.ui.composable.BWListItem
+import com.mdrlzy.budgetwise.presentation.ui.composable.BWErrorRetryScreen
+import com.mdrlzy.budgetwise.presentation.ui.composable.BWLoadingScreen
+import com.mdrlzy.budgetwise.presentation.ui.composable.ListenActiveScreenEffect
+import com.mdrlzy.budgetwise.presentation.ui.utils.CurrencyUtils
+import com.mdrlzy.budgetwise.presentation.ui.utils.appComponent
 import com.ramcosta.composedestinations.annotation.Destination
-import com.ramcosta.composedestinations.annotation.RootGraph
+import com.ramcosta.composedestinations.generated.destinations.TransactionHistoryScreenDestination
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import org.orbitmvi.orbit.compose.collectAsState
 
-@Destination<MainNavGraph>
+@Destination<MainNavGraph>()
 @Composable
-fun ExpensesScreen() {
-    val viewModel: ExpensesViewModel = viewModel()
+fun ExpensesScreen(
+    navigator: DestinationsNavigator,
+    navController: NavController,
+) {
+    val context = LocalContext.current
+    val viewModel: ExpensesViewModel =
+        viewModel(factory = context.appComponent.expensesTodayViewModelFactory())
+
     val state by viewModel.collectAsState()
+
+    ListenActiveScreenEffect(
+        onActive = viewModel::onActive,
+        onInactive = viewModel::onInactive,
+    )
 
     Scaffold(
         topBar = {
-            AppTopBar(
-                title = stringResource(R.string.my_expenses)
-            )
-        }
-    ) {
-        LazyColumn(Modifier.padding(it)) {
-            item {
-                Row(
-                    modifier = Modifier
-                        .height(56.dp)
-                        .fillMaxWidth()
-                        .background(MaterialTheme.colorScheme.surfaceContainerHigh),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    BasicTextField(
-                        modifier = Modifier
-                            .weight(1f)
-                            .padding(start = 16.dp),
-                        value = state.searchQuery,
-                        onValueChange = {
-                            viewModel.onSearchQueryChange(it)
-                        },
-                        keyboardOptions = KeyboardOptions.Default.copy(
-                            imeAction = ImeAction.Search,
-                        ),
-                    ) { innerTextField ->
-                        val interactionSource = remember { MutableInteractionSource() }
-                        TextFieldDefaults.DecorationBox(
-                            value = state.searchQuery,
-                            visualTransformation = VisualTransformation.None,
-                            innerTextField = innerTextField,
-                            singleLine = true,
-                            enabled = true,
-                            interactionSource = interactionSource,
-                            contentPadding = PaddingValues(0.dp),
-                            colors = TextFieldDefaults.colors(
-                                focusedContainerColor = Color.Transparent,
-                                unfocusedContainerColor = Color.Transparent,
-                                focusedIndicatorColor = Color.Transparent,
-                                unfocusedIndicatorColor = Color.Transparent,
-                            ),
-                            placeholder = {
-                                Text(
-                                    text = stringResource(R.string.find_expense),
-                                    style = MaterialTheme.typography.bodyLarge.copy(
-                                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                                    ),
-                                )
-                            },
+            BWTopBar(
+                title = stringResource(R.string.expenses_today),
+                trailingIcon = painterResource(R.drawable.ic_history),
+                onTrailingIconClick = {
+                    navigator.navigate(
+                        TransactionHistoryScreenDestination(
+                            isIncomeMode = false
                         )
-                    }
-                    Icon(
-                        modifier = Modifier.padding(end = 16.dp),
-                        painter = painterResource(R.drawable.ic_search),
-                        contentDescription = null,
-                        tint = Color.Unspecified,
                     )
                 }
-                AppHorDiv()
+            )
+        },
+        floatingActionButton = {
+            if (state is ExpensesScreenState.Success)
+                BWAddFab { }
+        }
+    ) {
+        Box(Modifier.padding(it)) {
+            when (state) {
+                is ExpensesScreenState.Error -> BWErrorRetryScreen(
+                    error = (state as ExpensesScreenState.Error).error
+                ) { viewModel.onRetry() }
+
+                ExpensesScreenState.Loading -> BWLoadingScreen()
+
+                is ExpensesScreenState.Success -> Content(state as ExpensesScreenState.Success)
             }
-            items(state.categories) {
-                AppListItemEmoji(
-                    leadingText = it.name,
-                    emoji = it.emoji,
-                    height = 70.dp,
-                    onClick = {}
-                )
-                AppHorDiv()
-            }
+        }
+    }
+}
+
+@Composable
+private fun Content(state: ExpensesScreenState.Success) {
+    LazyColumn {
+        item {
+            BWListItem(
+                leadingText = stringResource(R.string.all),
+                trailingText = "${state.sum} ${CurrencyUtils.getSymbolOrCode(state.currency)}",
+                background = MaterialTheme.colorScheme.secondary,
+                height = 56.dp,
+            )
+            BWHorDiv()
+        }
+        items(state.transactions) {
+            BWListItemEmoji(
+                leadingText = it.categoryName,
+                trailingText = it.amount,
+                leadDescText = it.comment,
+                emoji = it.emoji,
+                height = 70.dp,
+                trailingIcon = painterResource(R.drawable.ic_more),
+                onClick = {}
+            )
+            BWHorDiv()
+        }
+        item {
+            Spacer(Modifier.height(70.dp))
         }
     }
 }

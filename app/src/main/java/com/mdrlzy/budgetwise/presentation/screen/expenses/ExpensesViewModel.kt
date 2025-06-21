@@ -1,40 +1,95 @@
 package com.mdrlzy.budgetwise.presentation.screen.expenses
 
 import androidx.lifecycle.ViewModel
-import com.mdrlzy.budgetwise.domain.model.Category
+import androidx.lifecycle.ViewModelProvider
+import com.mdrlzy.budgetwise.domain.repo.AccountRepo
+import com.mdrlzy.budgetwise.domain.usecase.GetExpenseTransactionsUseCase
+import com.mdrlzy.budgetwise.presentation.model.TransactionUiModel
+import com.mdrlzy.budgetwise.presentation.model.toUiModel
+import kotlinx.coroutines.Job
 import org.orbitmvi.orbit.Container
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.viewmodel.container
+import java.math.BigDecimal
+import java.time.OffsetDateTime
+import javax.inject.Inject
 
-data class ExpensesScreenState(
-    val categories: List<Category>,
-    val searchQuery: String = "",
-)
+sealed class ExpensesScreenState {
+    data object Loading : ExpensesScreenState()
 
-sealed class ExpensesScreenEffect
+    data class Success(
+        val sum: BigDecimal = BigDecimal.ZERO,
+        val currency: String = "",
+        val transactions: List<TransactionUiModel> = emptyList(),
+    ) : ExpensesScreenState()
 
-class ExpensesViewModel: ViewModel(), ContainerHost<ExpensesScreenState, ExpensesScreenEffect> {
+    data class Error(val error: Throwable?) : ExpensesScreenState()
+}
+
+sealed class ExpensesScreenEffect {
+
+}
+
+class ExpensesViewModel(
+    private val accountRepo: AccountRepo,
+    private val getExpenseTransactionsUseCase: GetExpenseTransactionsUseCase,
+) : ViewModel(), ContainerHost<ExpensesScreenState, ExpensesScreenEffect> {
     override val container: Container<ExpensesScreenState, ExpensesScreenEffect> =
-        container(
-            ExpensesScreenState(
-            listOf(
-                mockCategory("Аренда квартиры", "\uD83C\uDFE0"),
-                mockCategory("Одежда", "\uD83D\uDC57"),
-                mockCategory("На собачку", "\uD83D\uDC36"),
-                mockCategory("На собачку", "\uD83D\uDC36"),
-                mockCategory("Ремонт квартиры", "\uD83D\uDEE0\uFE0F"),
-                mockCategory("Продукты", "\uD83C\uDF6D"),
-                mockCategory("Спортзал", "\uD83C\uDFCB\uFE0F"),
-                mockCategory("Медицина", "\uD83D\uDC8A")
-            )
-        )
-        )
+        container(ExpensesScreenState.Loading)
 
-    fun onSearchQueryChange(query: String) = blockingIntent {
-        reduce {
-            state.copy(searchQuery = query)
+    private var initJob: Job? = null
+
+    fun onActive() = init()
+
+    fun onInactive() {
+        initJob?.cancel()
+    }
+
+    fun onRetry() = init()
+
+    private fun init() {
+        initJob = intent {
+            if (state is ExpensesScreenState.Success) return@intent
+
+            reduce {
+                ExpensesScreenState.Loading
+            }
+
+            val today = OffsetDateTime.now()
+            val transactionsResult = getExpenseTransactionsUseCase.invoke(
+                today.withHour(0).withMinute(0),
+                today.withHour(23).withMinute(59)
+            )
+            val accountResult = accountRepo.getAccount()
+
+            if (transactionsResult.isRight() && accountResult.isRight()) {
+                val transactions = transactionsResult.getOrNull()!!.map { it.toUiModel() }
+                val account = accountResult.getOrNull()!!
+                val sum = transactions.sumOf { BigDecimal(it.amount) }
+
+                reduce {
+                    ExpensesScreenState.Success(
+                        sum = sum,
+                        currency = account.currency,
+                        transactions = transactions,
+                    )
+                }
+
+            } else {
+                val left = transactionsResult.leftOrNull() ?: accountResult.leftOrNull()
+                reduce {
+                    ExpensesScreenState.Error(left)
+                }
+            }
         }
     }
 }
 
-private fun mockCategory(name: String, emoji: String) = Category(0L, name, emoji, false)
+class ExpensesViewModelFactory @Inject constructor(
+    private val accountRepo: AccountRepo,
+    private val getExpenseTransactionsUseCase: GetExpenseTransactionsUseCase,
+) : ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        return ExpensesViewModel(accountRepo, getExpenseTransactionsUseCase) as T
+    }
+}

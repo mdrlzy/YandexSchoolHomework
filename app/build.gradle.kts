@@ -1,8 +1,11 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -17,6 +20,9 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        val token = getLocalProps().getProperty("bearer.token") ?: ""
+        buildConfigField("String", "BEARER_TOKEN", "\"$token\"")
     }
 
     buildTypes {
@@ -36,6 +42,7 @@ android {
         jvmTarget = "21"
     }
     buildFeatures {
+        buildConfig = true
         compose = true
     }
 }
@@ -58,6 +65,18 @@ dependencies {
 
     implementation(libs.lottie.compose)
 
+    implementation(libs.dagger)
+    ksp(libs.dagger.compiler)
+
+    implementation(libs.arrow.core)
+
+    implementation(libs.ktor.client.core)
+    implementation(libs.ktor.client.android)
+    implementation(libs.ktor.client.logging)
+    implementation(libs.ktor.client.auth)
+    implementation(libs.ktor.client.content.negotiation)
+    implementation(libs.ktor.serialization.json)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -65,4 +84,17 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+}
+
+fun getLocalProps(): Properties {
+    val props = Properties()
+    val localPropsFile = File(rootDir, "local.properties")
+
+    if (localPropsFile.exists()) {
+        localPropsFile.inputStream().use { stream ->
+            props.load(stream)
+        }
+    }
+
+    return props
 }

@@ -6,22 +6,18 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Switch
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import com.mdrlzy.budgetwise.R
-import com.mdrlzy.budgetwise.presentation.ui.composable.AppListItem
-import com.mdrlzy.budgetwise.presentation.ui.composable.AppListItemIcon
-import com.mdrlzy.budgetwise.presentation.ui.composable.AppTopBar
+import com.mdrlzy.budgetwise.presentation.ui.composable.BWListItem
+import com.mdrlzy.budgetwise.presentation.ui.composable.BWListItemIcon
+import com.mdrlzy.budgetwise.presentation.ui.composable.BWTopBar
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mdrlzy.budgetwise.presentation.screen.main.MainNavGraph
-import com.mdrlzy.budgetwise.presentation.ui.composable.AppHorDiv
+import com.mdrlzy.budgetwise.presentation.ui.composable.BWHorDiv
 import com.ramcosta.composedestinations.annotation.Destination
-import com.ramcosta.composedestinations.annotation.RootGraph
 import org.orbitmvi.orbit.compose.collectAsState
 
 @Destination<MainNavGraph>
@@ -32,13 +28,13 @@ fun SettingsScreen() {
 
     Scaffold(
         topBar = {
-            AppTopBar(
+            BWTopBar(
                 title = stringResource(R.string.settings)
             )
         }
     ) {
         Column(Modifier.padding(it)) {
-            AppListItem(
+            BWListItem(
                 leadingText = stringResource(R.string.dark_theme),
                 height = 56.dp,
                 trailingContent = {
@@ -48,15 +44,15 @@ fun SettingsScreen() {
                     )
                 }
             )
-            AppHorDiv()
+            BWHorDiv()
             SettingsListItem(stringResource(R.string.sounds)) { }
-            AppHorDiv()
+            BWHorDiv()
             SettingsListItem(stringResource(R.string.code_password)) { }
-            AppHorDiv()
+            BWHorDiv()
             SettingsListItem(stringResource(R.string.language)) { }
-            AppHorDiv()
+            BWHorDiv()
             SettingsListItem(stringResource(R.string.about_app)) { }
-            AppHorDiv()
+            BWHorDiv()
         }
     }
 }
@@ -66,7 +62,7 @@ private fun SettingsListItem(
     text: String,
     onClick: () -> Unit
 ) {
-    AppListItemIcon(
+    BWListItemIcon(
         leadingText = text,
         height = 56.dp,
         trailingIcon = painterResource(R.drawable.ic_arrow_right),

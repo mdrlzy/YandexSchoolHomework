@@ -1,6 +1,5 @@
 package com.mdrlzy.budgetwise.presentation.screen.splash
 
-import android.util.Log
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -16,10 +15,8 @@ import com.airbnb.lottie.compose.rememberLottieComposition
 import com.mdrlzy.budgetwise.R
 import com.mdrlzy.budgetwise.presentation.screen.main.MainNavGraph
 import com.ramcosta.composedestinations.annotation.Destination
-import com.ramcosta.composedestinations.annotation.RootGraph
-import com.ramcosta.composedestinations.generated.destinations.ExpensesTodayScreenDestination
+import com.ramcosta.composedestinations.generated.destinations.ExpensesScreenDestination
 import com.ramcosta.composedestinations.generated.destinations.SplashScreenDestination
-import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import org.orbitmvi.orbit.compose.collectSideEffect
 
 @Destination<MainNavGraph>(start = true)
@@ -36,7 +33,7 @@ fun SplashScreen(
             SplashScreenEffect.NavigateNext -> {
                 val route = navController.currentBackStackEntry?.destination?.route ?: ""
                 if (route == SplashScreenDestination.route) {
-                    navController.navigate(ExpensesTodayScreenDestination.route) {
+                    navController.navigate(ExpensesScreenDestination.route) {
                         popUpTo(navController.graph.findStartDestination().id) {
                             inclusive = true
                         }

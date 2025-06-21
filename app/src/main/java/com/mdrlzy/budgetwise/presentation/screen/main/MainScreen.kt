@@ -18,11 +18,7 @@ import com.mdrlzy.budgetwise.presentation.ui.utils.appComponent
 import com.mdrlzy.budgetwise.presentation.ui.utils.keyboardAsState
 import com.ramcosta.composedestinations.DestinationsNavHost
 import com.ramcosta.composedestinations.generated.NavGraphs
-import com.ramcosta.composedestinations.generated.destinations.AccountScreenDestination
-import com.ramcosta.composedestinations.generated.destinations.CategoriesScreenDestination
-import com.ramcosta.composedestinations.generated.destinations.ExpensesTodayScreenDestination
-import com.ramcosta.composedestinations.generated.destinations.IncomeScreenDestination
-import com.ramcosta.composedestinations.generated.destinations.SettingsScreenDestination
+import com.ramcosta.composedestinations.generated.destinations.ExpensesScreenDestination
 import com.ramcosta.composedestinations.generated.destinations.SplashScreenDestination
 import com.ramcosta.composedestinations.rememberNavHostEngine
 import kotlinx.coroutines.flow.drop
@@ -82,7 +78,7 @@ fun MainScreen() {
         bottomBar = {
             AnimatedBottomNavigation(navBackStackEntry, currentRoute, bottomBarVisible) {
                 navController.navigate(it) {
-                    popUpTo(ExpensesTodayScreenDestination.route) {
+                    popUpTo(ExpensesScreenDestination.route) {
                         saveState = true
                     }
                     launchSingleTop = true

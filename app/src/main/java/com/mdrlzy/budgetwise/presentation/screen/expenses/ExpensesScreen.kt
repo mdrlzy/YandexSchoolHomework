@@ -1,4 +1,4 @@
-package com.mdrlzy.budgetwise.presentation.screen.expensestoday
+package com.mdrlzy.budgetwise.presentation.screen.expenses
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
@@ -36,12 +36,12 @@ import org.orbitmvi.orbit.compose.collectAsState
 
 @Destination<MainNavGraph>()
 @Composable
-fun ExpensesTodayScreen(
+fun ExpensesScreen(
     navigator: DestinationsNavigator,
     navController: NavController,
 ) {
     val context = LocalContext.current
-    val viewModel: ExpensesTodayViewModel =
+    val viewModel: ExpensesViewModel =
         viewModel(factory = context.appComponent.expensesTodayViewModelFactory())
 
     val state by viewModel.collectAsState()
@@ -66,26 +66,26 @@ fun ExpensesTodayScreen(
             )
         },
         floatingActionButton = {
-            if (state is ExpensesTodayState.Success)
+            if (state is ExpensesScreenState.Success)
                 BWAddFab { }
         }
     ) {
         Box(Modifier.padding(it)) {
             when (state) {
-                is ExpensesTodayState.Error -> BWErrorRetryScreen(
-                    error = (state as ExpensesTodayState.Error).error
+                is ExpensesScreenState.Error -> BWErrorRetryScreen(
+                    error = (state as ExpensesScreenState.Error).error
                 ) { viewModel.onRetry() }
 
-                ExpensesTodayState.Loading -> BWLoadingScreen()
+                ExpensesScreenState.Loading -> BWLoadingScreen()
 
-                is ExpensesTodayState.Success -> Content(state as ExpensesTodayState.Success)
+                is ExpensesScreenState.Success -> Content(state as ExpensesScreenState.Success)
             }
         }
     }
 }
 
 @Composable
-private fun Content(state: ExpensesTodayState.Success) {
+private fun Content(state: ExpensesScreenState.Success) {
     LazyColumn {
         item {
             BWListItem(

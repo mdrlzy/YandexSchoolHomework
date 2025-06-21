@@ -25,7 +25,7 @@ import androidx.navigation.NavBackStackEntry
 import com.mdrlzy.budgetwise.R
 import com.ramcosta.composedestinations.generated.destinations.AccountScreenDestination
 import com.ramcosta.composedestinations.generated.destinations.CategoriesScreenDestination
-import com.ramcosta.composedestinations.generated.destinations.ExpensesTodayScreenDestination
+import com.ramcosta.composedestinations.generated.destinations.ExpensesScreenDestination
 import com.ramcosta.composedestinations.generated.destinations.IncomeScreenDestination
 import com.ramcosta.composedestinations.generated.destinations.SettingsScreenDestination
 import com.ramcosta.composedestinations.generated.destinations.TransactionHistoryScreenDestination
@@ -35,10 +35,10 @@ sealed class BottomNavItem(
     @DrawableRes val icon: Int,
     val route: String,
 ) {
-    data object ExpensesToday : BottomNavItem(
+    data object Expenses : BottomNavItem(
         R.string.bottom_nav_expenses_today,
         R.drawable.bottom_nav_expenses_today,
-        ExpensesTodayScreenDestination.route,
+        ExpensesScreenDestination.route,
     )
 
     data object Income : BottomNavItem(
@@ -53,7 +53,7 @@ sealed class BottomNavItem(
         AccountScreenDestination.route,
     )
 
-    data object Expenses : BottomNavItem(
+    data object Categories : BottomNavItem(
         R.string.bottom_nav_expenses,
         R.drawable.bottom_nav_expenses,
         CategoriesScreenDestination.route,
@@ -67,10 +67,10 @@ sealed class BottomNavItem(
 }
 
 private val bottomBarItems = listOf(
-    BottomNavItem.ExpensesToday,
+    BottomNavItem.Expenses,
     BottomNavItem.Income,
     BottomNavItem.Account,
-    BottomNavItem.Expenses,
+    BottomNavItem.Categories,
     BottomNavItem.Settings,
 )
 
@@ -107,7 +107,7 @@ fun BottomNavigation(
             val selected = if (currentRoute == TransactionHistoryScreenDestination.route) {
                 val isIncome = navBackStackEntry?.arguments?.getBoolean("isIncomeMode")
                 when (item) {
-                    BottomNavItem.ExpensesToday -> isIncome?.not() ?: false
+                    BottomNavItem.Expenses -> isIncome?.not() ?: false
                     BottomNavItem.Income -> isIncome ?: false
                     else -> false
                 }

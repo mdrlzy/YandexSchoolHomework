@@ -6,11 +6,9 @@ import com.mdrlzy.budgetwise.di.module.NetworkModule
 import com.mdrlzy.budgetwise.di.module.RepoModule
 import com.mdrlzy.budgetwise.domain.repo.NetworkStatus
 import com.mdrlzy.budgetwise.presentation.screen.account.AccountViewModelFactory
-import com.mdrlzy.budgetwise.presentation.screen.categories.CategoriesViewModel
 import com.mdrlzy.budgetwise.presentation.screen.categories.CategoriesViewModelFactory
-import com.mdrlzy.budgetwise.presentation.screen.expensestoday.ExpensesTodayViewModelFactory
+import com.mdrlzy.budgetwise.presentation.screen.expenses.ExpensesViewModelFactory
 import com.mdrlzy.budgetwise.presentation.screen.income.IncomeViewModelFactory
-import com.mdrlzy.budgetwise.presentation.screen.transactionhistory.TransactionHistoryViewModel
 import com.mdrlzy.budgetwise.presentation.screen.transactionhistory.TransactionHistoryViewModelFactory
 import dagger.BindsInstance
 import dagger.Component
@@ -27,7 +25,7 @@ interface AppComponent {
 
     fun networkStatus(): NetworkStatus
 
-    fun expensesTodayViewModelFactory(): ExpensesTodayViewModelFactory
+    fun expensesTodayViewModelFactory(): ExpensesViewModelFactory
 
     fun incomeViewModelFactory(): IncomeViewModelFactory
 

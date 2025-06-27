@@ -1,7 +1,5 @@
-package com.mdrlzy.budgetwise.data.network.response
+package com.mdrlzy.budgetwise.core.network.response
 
-import com.mdrlzy.budgetwise.domain.model.AccountBrief
-import com.mdrlzy.budgetwise.domain.model.Category
 import kotlinx.serialization.Serializable
 
 @Serializable

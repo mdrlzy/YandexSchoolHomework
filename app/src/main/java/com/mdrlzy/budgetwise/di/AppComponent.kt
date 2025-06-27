@@ -5,7 +5,7 @@ import android.content.Context
 import com.mdrlzy.budgetwise.di.module.NetworkModule
 import com.mdrlzy.budgetwise.di.module.RepoModule
 import com.mdrlzy.budgetwise.core.domain.repo.NetworkStatus
-import com.mdrlzy.budgetwise.presentation.screen.account.AccountViewModelFactory
+import com.mdrlzy.budgetwise.feature.account.presentation.AccountViewModelFactory
 import com.mdrlzy.budgetwise.presentation.screen.categories.CategoriesViewModelFactory
 import com.mdrlzy.budgetwise.presentation.screen.expenses.ExpensesViewModelFactory
 import com.mdrlzy.budgetwise.presentation.screen.income.IncomeViewModelFactory
@@ -29,7 +29,7 @@ interface AppComponent {
 
     fun incomeViewModelFactory(): IncomeViewModelFactory
 
-    fun accountViewModelFactory(): AccountViewModelFactory
+    fun accountViewModelFactory(): com.mdrlzy.budgetwise.feature.account.presentation.AccountViewModelFactory
 
     fun categoriesViewModelFactory(): CategoriesViewModelFactory
 

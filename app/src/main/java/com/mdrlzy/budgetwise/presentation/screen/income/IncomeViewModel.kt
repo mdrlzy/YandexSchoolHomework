@@ -2,7 +2,7 @@ package com.mdrlzy.budgetwise.presentation.screen.income
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.mdrlzy.budgetwise.domain.repo.AccountRepo
+import com.mdrlzy.budgetwise.core.domain.repo.AccountRepo
 import com.mdrlzy.budgetwise.domain.usecase.GetIncomeTransactionsUseCase
 import com.mdrlzy.budgetwise.presentation.model.TransactionUiModel
 import com.mdrlzy.budgetwise.presentation.model.toUiModel

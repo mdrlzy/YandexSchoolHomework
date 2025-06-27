@@ -1,5 +1,6 @@
 package com.mdrlzy.budgetwise.domain.model
 
+import com.mdrlzy.budgetwise.core.domain.model.AccountBrief
 import java.time.OffsetDateTime
 
 data class Transaction(

@@ -1,7 +1,7 @@
 package com.mdrlzy.budgetwise.data.repo
 
-import com.mdrlzy.budgetwise.data.network.BWApi
-import com.mdrlzy.budgetwise.data.network.response.CategoryResponse
+import com.mdrlzy.budgetwise.core.network.BWApi
+import com.mdrlzy.budgetwise.core.network.response.CategoryResponse
 import com.mdrlzy.budgetwise.core.domain.EitherT
 import com.mdrlzy.budgetwise.domain.model.Category
 import com.mdrlzy.budgetwise.domain.repo.CategoryRepo

@@ -1,15 +1,15 @@
-package com.mdrlzy.budgetwise.data.repo
+package com.mdrlzy.budgetwise.feature.account.data
 
 import arrow.core.right
-import com.mdrlzy.budgetwise.data.network.BWApi
-import com.mdrlzy.budgetwise.data.network.response.AccountDto
+import com.mdrlzy.budgetwise.core.network.BWApi
+import com.mdrlzy.budgetwise.core.network.response.AccountDto
 import com.mdrlzy.budgetwise.core.domain.EitherT
-import com.mdrlzy.budgetwise.domain.model.Account
-import com.mdrlzy.budgetwise.domain.repo.AccountRepo
+import com.mdrlzy.budgetwise.core.domain.model.Account
+import com.mdrlzy.budgetwise.core.domain.repo.AccountRepo
 import java.time.OffsetDateTime
 import javax.inject.Inject
 
-class AccountRepoImpl @Inject constructor(
+class AccountRepoImpl(
     private val api: BWApi
 ): AccountRepo {
     private var cacheAccount: Account? = null

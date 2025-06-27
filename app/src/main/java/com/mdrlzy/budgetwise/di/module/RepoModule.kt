@@ -1,9 +1,9 @@
 package com.mdrlzy.budgetwise.di.module
 
-import com.mdrlzy.budgetwise.data.repo.AccountRepoImpl
+import com.mdrlzy.budgetwise.feature.account.data.AccountRepoImpl
 import com.mdrlzy.budgetwise.data.repo.CategoryRepoImpl
 import com.mdrlzy.budgetwise.data.repo.TransactionRepoImpl
-import com.mdrlzy.budgetwise.domain.repo.AccountRepo
+import com.mdrlzy.budgetwise.core.domain.repo.AccountRepo
 import com.mdrlzy.budgetwise.domain.repo.CategoryRepo
 import com.mdrlzy.budgetwise.domain.repo.TransactionRepo
 import dagger.Binds
@@ -18,7 +18,7 @@ abstract class RepoModule {
 
     @Singleton
     @Binds
-    abstract fun accountRepo(impl: AccountRepoImpl): AccountRepo
+    abstract fun accountRepo(impl: com.mdrlzy.budgetwise.feature.account.data.AccountRepoImpl): AccountRepo
 
     @Singleton
     @Binds

@@ -1,4 +1,4 @@
-package com.mdrlzy.budgetwise.presentation.screen.account
+package com.mdrlzy.budgetwise.feature.account.presentation
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column

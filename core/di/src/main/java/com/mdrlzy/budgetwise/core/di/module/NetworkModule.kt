@@ -3,7 +3,6 @@ package com.mdrlzy.budgetwise.core.di.module
 import android.content.Context
 import com.mdrlzy.budgetwise.core.domain.BuildConfigFields
 import com.mdrlzy.budgetwise.core.domain.repo.NetworkStatus
-import com.mdrlzy.budgetwise.core.network.BWClient
 import com.mdrlzy.budgetwise.core.network.HttpClientBuilder
 import com.mdrlzy.budgetwise.core.network.NetworkStatusImpl
 import dagger.Module

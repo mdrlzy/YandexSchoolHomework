@@ -33,6 +33,8 @@ dependencies {
     implementation(libs.orbit.compose)
     implementation(libs.orbit.viewmodel)
 
+    implementation(libs.arrow.core)
+
     implementation(libs.compose.destinations.core)
     ksp(libs.compose.destinations.compiler)
 

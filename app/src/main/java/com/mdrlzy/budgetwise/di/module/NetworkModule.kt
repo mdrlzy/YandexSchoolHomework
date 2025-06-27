@@ -1,9 +1,7 @@
 package com.mdrlzy.budgetwise.di.module
 
 import android.content.Context
-import com.mdrlzy.budgetwise.data.network.BWApi
-import com.mdrlzy.budgetwise.core.network.HttpClientBuilder
-import com.mdrlzy.budgetwise.core.network.NetworkStatusImpl
+import com.mdrlzy.budgetwise.core.network.BWApi
 import com.mdrlzy.budgetwise.core.domain.repo.NetworkStatus
 import dagger.Module
 import dagger.Provides

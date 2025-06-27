@@ -1,4 +1,4 @@
-package com.mdrlzy.budgetwise.domain.model
+package com.mdrlzy.budgetwise.core.domain.model
 
 import java.time.OffsetDateTime
 

@@ -1,11 +1,11 @@
-package com.mdrlzy.budgetwise.data.network
+package com.mdrlzy.budgetwise.core.network
 
 import arrow.core.Either
 import arrow.core.left
-import com.mdrlzy.budgetwise.data.network.response.AccountDto
-import com.mdrlzy.budgetwise.data.network.response.AccountResponse
-import com.mdrlzy.budgetwise.data.network.response.CategoryResponse
-import com.mdrlzy.budgetwise.data.network.response.TransactionDto
+import com.mdrlzy.budgetwise.core.network.response.AccountDto
+import com.mdrlzy.budgetwise.core.network.response.AccountResponse
+import com.mdrlzy.budgetwise.core.network.response.CategoryResponse
+import com.mdrlzy.budgetwise.core.network.response.TransactionDto
 import com.mdrlzy.budgetwise.core.domain.EitherT
 import com.mdrlzy.budgetwise.core.domain.expection.NoInternetException
 import com.mdrlzy.budgetwise.core.domain.repo.NetworkStatus

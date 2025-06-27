@@ -6,6 +6,7 @@ plugins {
     id("android-base")
     id("com.android.library")
     id("org.jetbrains.kotlin.plugin.compose")
+    id("com.google.devtools.ksp")
 }
 
 configure<LibraryExtension> {
@@ -16,6 +17,10 @@ configure<LibraryExtension> {
 }
 
 dependencies {
+    implementation(project(":core:domain"))
+    implementation(project(":core:ui"))
+    implementation(project(":core:network"))
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -24,4 +29,13 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+
+    implementation(libs.orbit.compose)
+    implementation(libs.orbit.viewmodel)
+
+    implementation(libs.compose.destinations.core)
+    ksp(libs.compose.destinations.compiler)
+
+    implementation(libs.dagger)
+    ksp(libs.dagger.compiler)
 }

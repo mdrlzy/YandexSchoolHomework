@@ -12,5 +12,6 @@ dependencies {
     implementation(libs.agp)
     implementation(libs.kotlin.gradle.plugin)
     implementation(libs.compose.plugin)
+    implementation(libs.ksp.plugin)
     implementation(files(libs.javaClass.superclass.protectionDomain.codeSource.location))
 }

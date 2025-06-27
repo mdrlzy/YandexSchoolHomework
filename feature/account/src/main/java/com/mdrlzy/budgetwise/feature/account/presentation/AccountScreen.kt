@@ -14,8 +14,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.mdrlzy.budgetwise.R
-import com.mdrlzy.budgetwise.presentation.screen.main.MainNavGraph
+import com.mdrlzy.budgetwise.core.ui.CoreRDrawable
+import com.mdrlzy.budgetwise.core.ui.CoreRString
 import com.mdrlzy.budgetwise.core.ui.composable.BWAddFab
 import com.mdrlzy.budgetwise.core.ui.composable.BWHorDiv
 import com.mdrlzy.budgetwise.core.ui.composable.BWListItemEmoji
@@ -27,9 +27,10 @@ import com.mdrlzy.budgetwise.core.ui.composable.ListenActiveScreenEffect
 import com.mdrlzy.budgetwise.core.ui.utils.CurrencyUtils
 import com.mdrlzy.budgetwise.core.ui.utils.appComponent
 import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.annotation.ExternalModuleGraph
 import org.orbitmvi.orbit.compose.collectAsState
 
-@Destination<MainNavGraph>
+@Destination<ExternalModuleGraph>
 @Composable
 fun AccountScreen() {
     val context = LocalContext.current
@@ -45,8 +46,8 @@ fun AccountScreen() {
     Scaffold(
         topBar = {
             BWTopBar(
-                title = stringResource(R.string.my_account),
-                trailingIcon = painterResource(R.drawable.ic_edit)
+                title = stringResource(CoreRString.my_account),
+                trailingIcon = painterResource(CoreRDrawable.ic_edit)
             )
         },
         floatingActionButton = {
@@ -71,22 +72,22 @@ fun AccountScreen() {
 private fun Content(state: AccountScreenState.Success) {
     Column() {
         BWListItemEmoji(
-            leadingText = stringResource(R.string.balance),
+            leadingText = stringResource(CoreRString.balance),
             trailingText = state.account.balance,
             background = MaterialTheme.colorScheme.secondary,
             height = 56.dp,
             emoji = "\uD83D\uDCB0",
             emojiBackground = Color.White,
-            trailingIcon = painterResource(R.drawable.ic_more),
+            trailingIcon = painterResource(CoreRDrawable.ic_more),
             onClick = {}
         )
         BWHorDiv()
         BWListItemIcon(
-            leadingText = stringResource(R.string.currency),
+            leadingText = stringResource(CoreRString.currency),
             trailingText = CurrencyUtils.getSymbolOrCode(state.account.currency),
             background = MaterialTheme.colorScheme.secondary,
             height = 56.dp,
-            trailingIcon = painterResource(R.drawable.ic_more),
+            trailingIcon = painterResource(CoreRDrawable.ic_more),
             onClick = {}
         )
     }

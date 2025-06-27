@@ -1,5 +1,6 @@
 plugins {
     id("android-core-module")
+    id("org.jetbrains.kotlin.plugin.compose")
 }
 
 android {

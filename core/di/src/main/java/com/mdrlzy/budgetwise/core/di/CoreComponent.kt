@@ -4,7 +4,9 @@ import android.app.Application
 import android.content.Context
 import com.mdrlzy.budgetwise.core.di.module.NetworkModule
 import com.mdrlzy.budgetwise.core.domain.BuildConfigFields
+import com.mdrlzy.budgetwise.core.domain.repo.AccountRepo
 import com.mdrlzy.budgetwise.core.domain.repo.NetworkStatus
+import com.mdrlzy.budgetwise.core.network.BWApi
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton
@@ -17,8 +19,10 @@ import javax.inject.Singleton
 )
 
 interface CoreComponent {
+    fun bwApi(): BWApi
     fun networkStatus(): NetworkStatus
     fun buildConfigFields(): BuildConfigFields
+    fun accountRepo(): AccountRepo
 
     @Component.Factory
     interface Factory {
@@ -26,6 +30,7 @@ interface CoreComponent {
             @BindsInstance application: Application,
             @BindsInstance context: Context,
             @BindsInstance buildConfigFields: BuildConfigFields,
+            @BindsInstance accountRepo: AccountRepo,
         ): CoreComponent
     }
 }

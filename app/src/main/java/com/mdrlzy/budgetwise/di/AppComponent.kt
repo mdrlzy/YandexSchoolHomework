@@ -7,9 +7,9 @@ import com.mdrlzy.budgetwise.di.module.RepoModule
 import com.mdrlzy.budgetwise.core.domain.repo.NetworkStatus
 import com.mdrlzy.budgetwise.feature.account.presentation.AccountViewModelFactory
 import com.mdrlzy.budgetwise.presentation.screen.categories.CategoriesViewModelFactory
-import com.mdrlzy.budgetwise.presentation.screen.expenses.ExpensesViewModelFactory
-import com.mdrlzy.budgetwise.presentation.screen.income.IncomeViewModelFactory
-import com.mdrlzy.budgetwise.presentation.screen.transactionhistory.TransactionHistoryViewModelFactory
+import com.mdrlzy.budgetwise.feature.transactions.presentation.screen.expenses.ExpensesViewModelFactory
+import com.mdrlzy.budgetwise.feature.transactions.presentation.screen.income.IncomeViewModelFactory
+import com.mdrlzy.budgetwise.feature.transactions.presentation.screen.transactionhistory.TransactionHistoryViewModelFactory
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton
@@ -25,15 +25,15 @@ interface AppComponent {
 
     fun networkStatus(): NetworkStatus
 
-    fun expensesTodayViewModelFactory(): ExpensesViewModelFactory
+    fun expensesTodayViewModelFactory(): com.mdrlzy.budgetwise.feature.transactions.presentation.screen.expenses.ExpensesViewModelFactory
 
-    fun incomeViewModelFactory(): IncomeViewModelFactory
+    fun incomeViewModelFactory(): com.mdrlzy.budgetwise.feature.transactions.presentation.screen.income.IncomeViewModelFactory
 
     fun accountViewModelFactory(): com.mdrlzy.budgetwise.feature.account.presentation.AccountViewModelFactory
 
     fun categoriesViewModelFactory(): CategoriesViewModelFactory
 
-    fun transactionHistoryViewModelFactory(): TransactionHistoryViewModelFactory.Factory
+    fun transactionHistoryViewModelFactory(): com.mdrlzy.budgetwise.feature.transactions.presentation.screen.transactionhistory.TransactionHistoryViewModelFactory.Factory
 
 
     @Component.Factory

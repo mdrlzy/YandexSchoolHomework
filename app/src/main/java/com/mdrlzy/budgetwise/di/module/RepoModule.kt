@@ -2,10 +2,10 @@ package com.mdrlzy.budgetwise.di.module
 
 import com.mdrlzy.budgetwise.feature.account.data.AccountRepoImpl
 import com.mdrlzy.budgetwise.data.repo.CategoryRepoImpl
-import com.mdrlzy.budgetwise.data.repo.TransactionRepoImpl
+import com.mdrlzy.budgetwise.feature.transactions.data.TransactionRepoImpl
 import com.mdrlzy.budgetwise.core.domain.repo.AccountRepo
 import com.mdrlzy.budgetwise.domain.repo.CategoryRepo
-import com.mdrlzy.budgetwise.domain.repo.TransactionRepo
+import com.mdrlzy.budgetwise.feature.transactions.domain.repo.TransactionRepo
 import dagger.Binds
 import dagger.Module
 import javax.inject.Singleton
@@ -14,7 +14,7 @@ import javax.inject.Singleton
 abstract class RepoModule {
     @Singleton
     @Binds
-    abstract fun transactionRepo(impl: TransactionRepoImpl): TransactionRepo
+    abstract fun transactionRepo(impl: com.mdrlzy.budgetwise.feature.transactions.data.TransactionRepoImpl): com.mdrlzy.budgetwise.feature.transactions.domain.repo.TransactionRepo
 
     @Singleton
     @Binds

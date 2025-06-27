@@ -2,16 +2,12 @@ package com.mdrlzy.budgetwise.presentation.screen.categories
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.mdrlzy.budgetwise.domain.model.Category
+import com.mdrlzy.budgetwise.core.domain.model.Category
 import com.mdrlzy.budgetwise.domain.repo.CategoryRepo
-import com.mdrlzy.budgetwise.presentation.model.toUiModel
-import com.mdrlzy.budgetwise.presentation.screen.income.IncomeScreenState
 import kotlinx.coroutines.Job
 import org.orbitmvi.orbit.Container
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.viewmodel.container
-import java.math.BigDecimal
-import java.time.OffsetDateTime
 import javax.inject.Inject
 
 sealed class CategoriesScreenState {

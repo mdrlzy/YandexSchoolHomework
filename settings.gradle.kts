@@ -23,3 +23,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "Budgetwise"
 include(":app")
+include(":core:domain")

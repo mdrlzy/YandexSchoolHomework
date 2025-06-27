@@ -1,4 +1,4 @@
-package com.mdrlzy.budgetwise.domain.repo
+package com.mdrlzy.budgetwise.core.domain.repo
 
 import kotlinx.coroutines.flow.StateFlow
 

@@ -1,6 +1,6 @@
 package com.mdrlzy.budgetwise.domain.repo
 
-import com.mdrlzy.budgetwise.domain.EitherT
+import com.mdrlzy.budgetwise.core.domain.EitherT
 import com.mdrlzy.budgetwise.domain.model.Transaction
 import java.time.OffsetDateTime
 

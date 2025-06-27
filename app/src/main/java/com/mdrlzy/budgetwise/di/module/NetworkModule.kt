@@ -4,7 +4,7 @@ import android.content.Context
 import com.mdrlzy.budgetwise.data.network.BWApi
 import com.mdrlzy.budgetwise.data.network.HttpClientBuilder
 import com.mdrlzy.budgetwise.data.network.NetworkStatusImpl
-import com.mdrlzy.budgetwise.domain.repo.NetworkStatus
+import com.mdrlzy.budgetwise.core.domain.repo.NetworkStatus
 import dagger.Module
 import dagger.Provides
 import io.ktor.client.HttpClient

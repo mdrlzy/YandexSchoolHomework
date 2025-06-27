@@ -2,7 +2,7 @@ package com.mdrlzy.budgetwise.data.repo
 
 import com.mdrlzy.budgetwise.data.network.BWApi
 import com.mdrlzy.budgetwise.data.network.response.TransactionDto
-import com.mdrlzy.budgetwise.domain.EitherT
+import com.mdrlzy.budgetwise.core.domain.EitherT
 import com.mdrlzy.budgetwise.domain.model.AccountBrief
 import com.mdrlzy.budgetwise.domain.model.Category
 import com.mdrlzy.budgetwise.domain.model.Transaction

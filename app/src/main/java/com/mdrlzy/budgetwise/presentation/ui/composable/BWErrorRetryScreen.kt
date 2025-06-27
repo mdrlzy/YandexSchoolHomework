@@ -14,7 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.mdrlzy.budgetwise.R
-import com.mdrlzy.budgetwise.domain.exception.NoInternetException
+import com.mdrlzy.budgetwise.core.domain.expection.NoInternetException
 
 @Composable
 fun BWErrorRetryScreen(error: Throwable? = null, onRetry: () -> Unit) {

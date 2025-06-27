@@ -1,7 +1,7 @@
 package com.mdrlzy.budgetwise.domain.usecase
 
 import arrow.core.flatMap
-import com.mdrlzy.budgetwise.domain.EitherT
+import com.mdrlzy.budgetwise.core.domain.EitherT
 import com.mdrlzy.budgetwise.domain.model.Transaction
 import com.mdrlzy.budgetwise.domain.repo.AccountRepo
 import com.mdrlzy.budgetwise.domain.repo.TransactionRepo

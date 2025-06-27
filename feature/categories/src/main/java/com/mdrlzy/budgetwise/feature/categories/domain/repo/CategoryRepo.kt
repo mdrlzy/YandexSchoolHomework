@@ -1,4 +1,4 @@
-package com.mdrlzy.budgetwise.domain.repo
+package com.mdrlzy.budgetwise.feature.categories.domain.repo
 
 import com.mdrlzy.budgetwise.core.domain.EitherT
 import com.mdrlzy.budgetwise.core.domain.model.Category

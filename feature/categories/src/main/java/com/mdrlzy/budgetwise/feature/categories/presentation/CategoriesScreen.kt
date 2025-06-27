@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 
-package com.mdrlzy.budgetwise.presentation.screen.categories
+package com.mdrlzy.budgetwise.feature.categories.presentation
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -33,24 +33,31 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.mdrlzy.budgetwise.R
-import com.mdrlzy.budgetwise.presentation.screen.main.MainNavGraph
+import com.mdrlzy.budgetwise.core.di.CoreComponentProvider
+import com.mdrlzy.budgetwise.core.ui.CoreRDrawable
+import com.mdrlzy.budgetwise.core.ui.CoreRString
 import com.mdrlzy.budgetwise.core.ui.composable.BWHorDiv
 import com.mdrlzy.budgetwise.core.ui.composable.BWListItemEmoji
 import com.mdrlzy.budgetwise.core.ui.composable.BWTopBar
 import com.mdrlzy.budgetwise.core.ui.composable.BWErrorRetryScreen
 import com.mdrlzy.budgetwise.core.ui.composable.BWLoadingScreen
 import com.mdrlzy.budgetwise.core.ui.composable.ListenActiveScreenEffect
-import com.mdrlzy.budgetwise.core.ui.utils.appComponent
+import com.mdrlzy.budgetwise.feature.categories.di.DaggerCategoriesComponent
 import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.annotation.ExternalModuleGraph
 import org.orbitmvi.orbit.compose.collectAsState
 
-@Destination<MainNavGraph>
+@Destination<ExternalModuleGraph>
 @Composable
 fun CategoriesScreen() {
     val context = LocalContext.current
+    val component = remember {
+        val coreComponent =
+            (context.applicationContext as CoreComponentProvider).provideCoreComponent()
+        DaggerCategoriesComponent.builder().coreComponent(coreComponent).build()
+    }
     val viewModel: CategoriesViewModel =
-        viewModel(factory = context.appComponent.categoriesViewModelFactory())
+        viewModel(factory = component.categoriesViewModelFactory())
     val state by viewModel.collectAsState()
 
     ListenActiveScreenEffect(
@@ -61,7 +68,7 @@ fun CategoriesScreen() {
     Scaffold(
         topBar = {
             BWTopBar(
-                title = stringResource(R.string.my_expenses)
+                title = stringResource(CoreRString.my_expenses)
             )
         }
     ) {
@@ -126,7 +133,7 @@ private fun Content(
                         ),
                         placeholder = {
                             Text(
-                                text = stringResource(R.string.find_expense),
+                                text = stringResource(CoreRString.find_expense),
                                 style = MaterialTheme.typography.bodyLarge.copy(
                                     color = MaterialTheme.colorScheme.onSurfaceVariant
                                 ),
@@ -136,7 +143,7 @@ private fun Content(
                 }
                 Icon(
                     modifier = Modifier.padding(end = 16.dp),
-                    painter = painterResource(R.drawable.ic_search),
+                    painter = painterResource(CoreRDrawable.ic_search),
                     contentDescription = null,
                     tint = Color.Unspecified,
                 )

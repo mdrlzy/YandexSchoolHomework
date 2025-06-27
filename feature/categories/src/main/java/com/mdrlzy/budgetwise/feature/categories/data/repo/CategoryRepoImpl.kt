@@ -1,10 +1,10 @@
-package com.mdrlzy.budgetwise.data.repo
+package com.mdrlzy.budgetwise.feature.categories.data.repo
 
 import com.mdrlzy.budgetwise.core.network.BWApi
 import com.mdrlzy.budgetwise.core.network.response.CategoryResponse
 import com.mdrlzy.budgetwise.core.domain.EitherT
 import com.mdrlzy.budgetwise.core.domain.model.Category
-import com.mdrlzy.budgetwise.domain.repo.CategoryRepo
+import com.mdrlzy.budgetwise.feature.categories.domain.repo.CategoryRepo
 import javax.inject.Inject
 
 class CategoryRepoImpl @Inject constructor(private val api: BWApi) : CategoryRepo {

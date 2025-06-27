@@ -1,9 +1,8 @@
-package com.mdrlzy.budgetwise.presentation.screen.categories
+package com.mdrlzy.budgetwise.feature.categories.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.mdrlzy.budgetwise.core.domain.model.Category
-import com.mdrlzy.budgetwise.domain.repo.CategoryRepo
 import kotlinx.coroutines.Job
 import org.orbitmvi.orbit.Container
 import org.orbitmvi.orbit.ContainerHost
@@ -25,7 +24,7 @@ sealed class CategoriesScreenState {
 sealed class CategoriesScreenEffect
 
 class CategoriesViewModel(
-    private val categoryRepo: CategoryRepo
+    private val categoryRepo: com.mdrlzy.budgetwise.feature.categories.domain.repo.CategoryRepo
 ) : ViewModel(),
     ContainerHost<CategoriesScreenState, CategoriesScreenEffect> {
     override val container: Container<CategoriesScreenState, CategoriesScreenEffect> =
@@ -72,7 +71,7 @@ class CategoriesViewModel(
 }
 
 class CategoriesViewModelFactory @Inject constructor(
-    private val categoryRepo: CategoryRepo
+    private val categoryRepo: com.mdrlzy.budgetwise.feature.categories.domain.repo.CategoryRepo
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return CategoriesViewModel(categoryRepo) as T

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="cancel">Отмена</string>
+    <string name="ok">ОК</string>
+    <string name="something_went_wrong">Что-то пошло не так</string>
+    <string name="no_internet">Нет интернета</string>
+    <string name="retry">Попробовать еще раз</string>
+</resources>

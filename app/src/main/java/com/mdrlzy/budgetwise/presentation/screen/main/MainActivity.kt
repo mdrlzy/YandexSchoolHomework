@@ -18,9 +18,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.tooling.preview.Preview
-import com.mdrlzy.budgetwise.presentation.ui.theme.BudgetwiseTheme
-import com.mdrlzy.budgetwise.presentation.ui.theme.Primary
-import com.mdrlzy.budgetwise.presentation.ui.theme.Surface
+import com.mdrlzy.budgetwise.core.ui.theme.BudgetwiseTheme
+import com.mdrlzy.budgetwise.core.ui.theme.Primary
+import com.mdrlzy.budgetwise.core.ui.theme.Surface
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

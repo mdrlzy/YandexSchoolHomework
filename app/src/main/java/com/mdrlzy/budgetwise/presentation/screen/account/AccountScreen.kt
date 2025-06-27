@@ -16,16 +16,16 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mdrlzy.budgetwise.R
 import com.mdrlzy.budgetwise.presentation.screen.main.MainNavGraph
-import com.mdrlzy.budgetwise.presentation.ui.composable.BWAddFab
-import com.mdrlzy.budgetwise.presentation.ui.composable.BWHorDiv
-import com.mdrlzy.budgetwise.presentation.ui.composable.BWListItemEmoji
-import com.mdrlzy.budgetwise.presentation.ui.composable.BWListItemIcon
-import com.mdrlzy.budgetwise.presentation.ui.composable.BWTopBar
-import com.mdrlzy.budgetwise.presentation.ui.composable.BWErrorRetryScreen
-import com.mdrlzy.budgetwise.presentation.ui.composable.BWLoadingScreen
-import com.mdrlzy.budgetwise.presentation.ui.composable.ListenActiveScreenEffect
-import com.mdrlzy.budgetwise.presentation.ui.utils.CurrencyUtils
-import com.mdrlzy.budgetwise.presentation.ui.utils.appComponent
+import com.mdrlzy.budgetwise.core.ui.composable.BWAddFab
+import com.mdrlzy.budgetwise.core.ui.composable.BWHorDiv
+import com.mdrlzy.budgetwise.core.ui.composable.BWListItemEmoji
+import com.mdrlzy.budgetwise.core.ui.composable.BWListItemIcon
+import com.mdrlzy.budgetwise.core.ui.composable.BWTopBar
+import com.mdrlzy.budgetwise.core.ui.composable.BWErrorRetryScreen
+import com.mdrlzy.budgetwise.core.ui.composable.BWLoadingScreen
+import com.mdrlzy.budgetwise.core.ui.composable.ListenActiveScreenEffect
+import com.mdrlzy.budgetwise.core.ui.utils.CurrencyUtils
+import com.mdrlzy.budgetwise.core.ui.utils.appComponent
 import com.ramcosta.composedestinations.annotation.Destination
 import org.orbitmvi.orbit.compose.collectAsState
 

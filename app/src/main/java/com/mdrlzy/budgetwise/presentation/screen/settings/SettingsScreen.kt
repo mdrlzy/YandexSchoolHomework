@@ -10,13 +10,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import com.mdrlzy.budgetwise.R
-import com.mdrlzy.budgetwise.presentation.ui.composable.BWListItem
-import com.mdrlzy.budgetwise.presentation.ui.composable.BWListItemIcon
-import com.mdrlzy.budgetwise.presentation.ui.composable.BWTopBar
+import com.mdrlzy.budgetwise.core.ui.composable.BWListItem
+import com.mdrlzy.budgetwise.core.ui.composable.BWListItemIcon
+import com.mdrlzy.budgetwise.core.ui.composable.BWTopBar
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mdrlzy.budgetwise.presentation.screen.main.MainNavGraph
-import com.mdrlzy.budgetwise.presentation.ui.composable.BWHorDiv
+import com.mdrlzy.budgetwise.core.ui.composable.BWHorDiv
 import com.ramcosta.composedestinations.annotation.Destination
 import org.orbitmvi.orbit.compose.collectAsState
 

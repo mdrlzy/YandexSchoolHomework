@@ -1,7 +1,7 @@
-package com.mdrlzy.budgetwise.data.network
+package com.mdrlzy.budgetwise.core.network
 
 import android.util.Log
-import com.mdrlzy.budgetwise.BuildConfig
+import com.mdrlzy.budgetwise.core.domain.BuildConfigFields
 import io.ktor.client.*
 import io.ktor.client.engine.android.*
 import io.ktor.client.plugins.*
@@ -19,7 +19,7 @@ import kotlinx.serialization.json.Json
 private const val NETWORK_TIME_OUT = 6_000L
 
 object HttpClientBuilder {
-    fun build(): HttpClient = HttpClient(Android) {
+    fun build(config: BuildConfigFields): HttpClient = HttpClient(Android) {
         install(ContentNegotiation) {
             json(
                 Json {
@@ -31,7 +31,7 @@ object HttpClientBuilder {
         install(Auth) {
             bearer {
                 loadTokens {
-                    BearerTokens(accessToken = BuildConfig.BEARER_TOKEN, refreshToken = "")
+                    BearerTokens(accessToken = config.bearerToken, refreshToken = "")
                 }
             }
         }

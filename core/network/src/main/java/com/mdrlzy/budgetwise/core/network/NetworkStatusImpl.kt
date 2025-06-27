@@ -1,4 +1,4 @@
-package com.mdrlzy.budgetwise.data.network
+package com.mdrlzy.budgetwise.core.network
 
 import android.content.Context
 import android.net.ConnectivityManager
@@ -6,11 +6,9 @@ import android.net.Network
 import android.net.NetworkCapabilities
 import android.net.NetworkRequest
 import android.os.Build
-import com.mdrlzy.budgetwise.domain.repo.NetworkStatus
+import com.mdrlzy.budgetwise.core.domain.repo.NetworkStatus
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import javax.inject.Inject
-import javax.inject.Singleton
 
 class NetworkStatusImpl(
     private val context: Context,

@@ -32,7 +32,7 @@ import com.mdrlzy.budgetwise.core.ui.utils.CurrencyUtils
 import com.mdrlzy.budgetwise.feature.transactions.di.TransactionsComponentHolder
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.ExternalModuleGraph
-import com.ramcosta.composedestinations.generated.destinations.TransactionHistoryScreenDestination
+import com.ramcosta.composedestinations.generated.transactions.destinations.TransactionHistoryScreenDestination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import org.orbitmvi.orbit.compose.collectAsState
 

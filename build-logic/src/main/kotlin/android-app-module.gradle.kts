@@ -1,15 +1,17 @@
-import com.android.build.gradle.LibraryExtension
+import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
+import gradle.kotlin.dsl.accessors._cb39ac5eaea6d191dab9d51453520482.implementation
+import gradle.kotlin.dsl.accessors._cb39ac5eaea6d191dab9d51453520482.ksp
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
 
 plugins {
     id("android-base")
-    id("com.android.library")
+    id("com.android.application")
     id("org.jetbrains.kotlin.plugin.compose")
     id("com.google.devtools.ksp")
 }
 
-configure<LibraryExtension> {
+configure<BaseAppModuleExtension> {
     baseAndroidConfig(project)
     buildFeatures {
         compose = true
@@ -17,11 +19,6 @@ configure<LibraryExtension> {
 }
 
 dependencies {
-    api(project(":core:domain"))
-    api(project(":core:ui"))
-    api(project(":core:network"))
-    api(project(":core:di"))
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)

@@ -17,9 +17,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import com.mdrlzy.budgetwise.R
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.mdrlzy.budgetwise.core.ui.CoreRString
 
 
 object ConnectivityOnlineSnackbarVisuals : SnackbarVisuals {
@@ -39,8 +39,8 @@ object ConnectivityOfflineSnackbarVisuals : SnackbarVisuals {
 @Composable
 fun ConnectivityOnlineSnackbar() {
     ConnectivityContent(
-        onlineOrOffline = stringResource(R.string.online),
-        desc = stringResource(R.string.your_connection_is_back),
+        onlineOrOffline = stringResource(CoreRString.online),
+        desc = stringResource(CoreRString.your_connection_is_back),
         backgroundColor = Color(0xFFECFDF3),
         dotColor = Color(0xFF17B26A),
         textColor = Color(0xFF067647),
@@ -51,8 +51,8 @@ fun ConnectivityOnlineSnackbar() {
 @Composable
 fun ConnectivityOfflineSnackbar() {
     ConnectivityContent(
-        onlineOrOffline = stringResource(R.string.offline),
-        desc = stringResource(R.string.your_network_is_offline),
+        onlineOrOffline = stringResource(CoreRString.offline),
+        desc = stringResource(CoreRString.your_network_is_offline),
         backgroundColor = Color(0xFFFEF3F2),
         dotColor = Color(0xFFFECDCA),
         textColor = Color(0xFFB42318),

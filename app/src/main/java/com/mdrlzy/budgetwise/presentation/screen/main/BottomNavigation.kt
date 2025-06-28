@@ -22,13 +22,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.navigation.NavBackStackEntry
-import com.mdrlzy.budgetwise.R
-import com.ramcosta.composedestinations.generated.destinations.AccountScreenDestination
-import com.ramcosta.composedestinations.generated.destinations.CategoriesScreenDestination
-import com.ramcosta.composedestinations.generated.destinations.ExpensesScreenDestination
-import com.ramcosta.composedestinations.generated.destinations.IncomeScreenDestination
-import com.ramcosta.composedestinations.generated.destinations.SettingsScreenDestination
-import com.ramcosta.composedestinations.generated.destinations.TransactionHistoryScreenDestination
+import com.mdrlzy.budgetwise.core.ui.CoreRDrawable
+import com.mdrlzy.budgetwise.core.ui.CoreRString
+import com.ramcosta.composedestinations.generated.account.destinations.AccountScreenDestination
+import com.ramcosta.composedestinations.generated.categories.destinations.CategoriesScreenDestination
+import com.ramcosta.composedestinations.generated.settings.destinations.SettingsScreenDestination
+import com.ramcosta.composedestinations.generated.transactions.destinations.ExpensesScreenDestination
+import com.ramcosta.composedestinations.generated.transactions.destinations.IncomeScreenDestination
+import com.ramcosta.composedestinations.generated.transactions.destinations.TransactionHistoryScreenDestination
 
 sealed class BottomNavItem(
     @StringRes val title: Int,
@@ -36,32 +37,32 @@ sealed class BottomNavItem(
     val route: String,
 ) {
     data object Expenses : BottomNavItem(
-        R.string.bottom_nav_expenses_today,
-        R.drawable.bottom_nav_expenses_today,
+        CoreRString.bottom_nav_expenses_today,
+        CoreRDrawable.bottom_nav_expenses_today,
         ExpensesScreenDestination.route,
     )
 
     data object Income : BottomNavItem(
-        R.string.bottom_nav_income,
-        R.drawable.bottom_nav_income,
+        CoreRString.bottom_nav_income,
+        CoreRDrawable.bottom_nav_income,
         IncomeScreenDestination.route,
     )
 
     data object Account : BottomNavItem(
-        R.string.bottom_nav_account,
-        R.drawable.bottom_nav_account,
+        CoreRString.bottom_nav_account,
+        CoreRDrawable.bottom_nav_account,
         AccountScreenDestination.route,
     )
 
     data object Categories : BottomNavItem(
-        R.string.bottom_nav_expenses,
-        R.drawable.bottom_nav_expenses,
+        CoreRString.bottom_nav_expenses,
+        CoreRDrawable.bottom_nav_expenses,
         CategoriesScreenDestination.route,
     )
 
     data object Settings : BottomNavItem(
-        R.string.bottom_nav_settings,
-        R.drawable.bottom_nav_settings,
+        CoreRString.bottom_nav_settings,
+        CoreRDrawable.bottom_nav_settings,
         SettingsScreenDestination.route,
     )
 }

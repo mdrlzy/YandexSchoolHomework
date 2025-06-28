@@ -1,6 +1,5 @@
 package com.mdrlzy.budgetwise.presentation.screen.main
 
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.material3.Scaffold
@@ -14,12 +13,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.mdrlzy.budgetwise.core.ui.utils.appComponent
+import com.mdrlzy.budgetwise.core.di.CoreComponent
+import com.mdrlzy.budgetwise.core.di.CoreComponentProvider
 import com.mdrlzy.budgetwise.core.ui.utils.keyboardAsState
 import com.ramcosta.composedestinations.DestinationsNavHost
 import com.ramcosta.composedestinations.generated.NavGraphs
-import com.ramcosta.composedestinations.generated.destinations.ExpensesScreenDestination
 import com.ramcosta.composedestinations.generated.destinations.SplashScreenDestination
+import com.ramcosta.composedestinations.generated.transactions.destinations.ExpensesScreenDestination
 import com.ramcosta.composedestinations.rememberNavHostEngine
 import kotlinx.coroutines.flow.drop
 
@@ -35,7 +35,10 @@ fun MainScreen() {
     val ctx = LocalContext.current
 
     LaunchedEffect(key1 = Unit) {
-        ctx.appComponent.networkStatus().onlineStatus
+        (ctx.applicationContext as CoreComponentProvider)
+            .provideCoreComponent()
+            .networkStatus()
+            .onlineStatus
             .drop(1)
             .collect { online ->
                 val visuals =

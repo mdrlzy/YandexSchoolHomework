@@ -2,25 +2,12 @@ package com.mdrlzy.budgetwise.feature.account.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.mdrlzy.budgetwise.core.domain.model.Account
 import com.mdrlzy.budgetwise.core.domain.repo.AccountRepo
 import kotlinx.coroutines.Job
 import org.orbitmvi.orbit.Container
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.viewmodel.container
 import javax.inject.Inject
-
-sealed class AccountScreenState {
-    data object Loading : AccountScreenState()
-
-    data class Success(
-        val account: Account,
-    ) : AccountScreenState()
-
-    data class Error(val error: Throwable?) : AccountScreenState()
-}
-
-sealed class AccountScreenEffect
 
 class AccountViewModel(
     private val accountRepo: AccountRepo,

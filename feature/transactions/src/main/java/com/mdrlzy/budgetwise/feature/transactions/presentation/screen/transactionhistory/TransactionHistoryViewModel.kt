@@ -6,7 +6,6 @@ import com.mdrlzy.budgetwise.core.domain.repo.AccountRepo
 import com.mdrlzy.budgetwise.core.ui.utils.DateTimeHelper
 import com.mdrlzy.budgetwise.feature.transactions.domain.usecase.GetExpenseTransactionsUseCase
 import com.mdrlzy.budgetwise.feature.transactions.domain.usecase.GetIncomeTransactionsUseCase
-import com.mdrlzy.budgetwise.feature.transactions.presentation.model.TransactionUiModel
 import com.mdrlzy.budgetwise.feature.transactions.presentation.model.toUiModel
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -18,22 +17,6 @@ import java.math.BigDecimal
 import java.time.Instant
 import java.time.OffsetDateTime
 import java.time.ZoneId
-
-sealed class TransactionHistoryScreenState {
-    data object Loading : TransactionHistoryScreenState()
-
-    data class Success(
-        val sum: BigDecimal = BigDecimal.ZERO,
-        val currency: String = "",
-        val transactions: List<TransactionUiModel> = emptyList(),
-        val startDate: OffsetDateTime,
-        val endDate: OffsetDateTime,
-    ) : TransactionHistoryScreenState()
-
-    data class Error(val error: Throwable?) : TransactionHistoryScreenState()
-}
-
-sealed class TransactionHistoryScreenEffect
 
 class TransactionHistoryViewModel(
     private val isIncomeMode: Boolean,

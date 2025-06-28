@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.mdrlzy.budgetwise.core.domain.repo.AccountRepo
 import com.mdrlzy.budgetwise.feature.transactions.domain.usecase.GetExpenseTransactionsUseCase
-import com.mdrlzy.budgetwise.feature.transactions.presentation.model.TransactionUiModel
 import com.mdrlzy.budgetwise.feature.transactions.presentation.model.toUiModel
 import kotlinx.coroutines.Job
 import org.orbitmvi.orbit.Container
@@ -13,20 +12,6 @@ import org.orbitmvi.orbit.viewmodel.container
 import java.math.BigDecimal
 import java.time.OffsetDateTime
 import javax.inject.Inject
-
-sealed class ExpensesScreenState {
-    data object Loading : ExpensesScreenState()
-
-    data class Success(
-        val sum: BigDecimal = BigDecimal.ZERO,
-        val currency: String = "",
-        val transactions: List<TransactionUiModel> = emptyList(),
-    ) : ExpensesScreenState()
-
-    data class Error(val error: Throwable?) : ExpensesScreenState()
-}
-
-sealed class ExpensesScreenEffect
 
 class ExpensesViewModel(
     private val accountRepo: AccountRepo,

@@ -2,25 +2,11 @@ package com.mdrlzy.budgetwise.feature.categories.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.mdrlzy.budgetwise.core.domain.model.Category
 import kotlinx.coroutines.Job
 import org.orbitmvi.orbit.Container
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.viewmodel.container
 import javax.inject.Inject
-
-sealed class CategoriesScreenState {
-    data object Loading : CategoriesScreenState()
-
-    data class Success(
-        val categories: List<Category>,
-        val searchQuery: String = "",
-    ) : CategoriesScreenState()
-
-    data class Error(val error: Throwable?) : CategoriesScreenState()
-}
-
-sealed class CategoriesScreenEffect
 
 class CategoriesViewModel(
     private val categoryRepo: com.mdrlzy.budgetwise.feature.categories.domain.repo.CategoryRepo,

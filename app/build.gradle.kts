@@ -1,25 +1,15 @@
 import java.util.Properties
 
 plugins {
-    alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.kotlin.compose)
-    alias(libs.plugins.ksp)
-    alias(libs.plugins.kotlin.serialization)
+    id("android-app-module")
 }
 
 android {
-    namespace = "com.mdrlzy.budgetwise"
-    compileSdk = 35
-
     defaultConfig {
         applicationId = "com.mdrlzy.budgetwise"
         minSdk = 26
-        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         val token = getLocalProps().getProperty("bearer.token") ?: ""
         buildConfigField("String", "BEARER_TOKEN", "\"$token\"")
@@ -30,16 +20,9 @@ android {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                "proguard-rules.pro",
             )
         }
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_21
-        targetCompatibility = JavaVersion.VERSION_21
-    }
-    kotlinOptions {
-        jvmTarget = "21"
     }
     buildFeatures {
         buildConfig = true
@@ -48,34 +31,14 @@ android {
 }
 
 dependencies {
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.lifecycle.runtime.ktx)
-    implementation(libs.androidx.activity.compose)
-    implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.androidx.ui)
-    implementation(libs.androidx.ui.graphics)
-    implementation(libs.androidx.ui.tooling.preview)
-    implementation(libs.androidx.material3)
-
-    implementation(libs.orbit.compose)
-    implementation(libs.orbit.viewmodel)
-
-    implementation(libs.compose.destinations.core)
-    ksp(libs.compose.destinations.compiler)
+    implementation(project(":feature:transactions"))
+    implementation(project(":feature:account"))
+    implementation(project(":feature:categories"))
+    implementation(project(":feature:settings"))
 
     implementation(libs.lottie.compose)
 
-    implementation(libs.dagger)
-    ksp(libs.dagger.compiler)
-
-    implementation(libs.arrow.core)
-
     implementation(libs.ktor.client.core)
-    implementation(libs.ktor.client.android)
-    implementation(libs.ktor.client.logging)
-    implementation(libs.ktor.client.auth)
-    implementation(libs.ktor.client.content.negotiation)
-    implementation(libs.ktor.serialization.json)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

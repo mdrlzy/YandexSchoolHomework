@@ -1,3 +1,5 @@
+includeBuild("build-logic")
+
 pluginManagement {
     repositories {
         google {
@@ -21,3 +23,11 @@ dependencyResolutionManagement {
 
 rootProject.name = "Budgetwise"
 include(":app")
+include(":core:domain")
+include(":core:network")
+include(":core:ui")
+include(":core:di")
+include(":feature:account")
+include(":feature:transactions")
+include(":feature:categories")
+include(":feature:settings")

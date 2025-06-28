@@ -12,18 +12,16 @@ import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
-import com.mdrlzy.budgetwise.R
-import com.mdrlzy.budgetwise.presentation.screen.main.MainNavGraph
+import com.mdrlzy.budgetwise.app.R
+import com.mdrlzy.budgetwise.presentation.navigation.MainNavGraph
 import com.ramcosta.composedestinations.annotation.Destination
-import com.ramcosta.composedestinations.generated.destinations.ExpensesScreenDestination
 import com.ramcosta.composedestinations.generated.destinations.SplashScreenDestination
+import com.ramcosta.composedestinations.generated.transactions.destinations.ExpensesScreenDestination
 import org.orbitmvi.orbit.compose.collectSideEffect
 
 @Destination<MainNavGraph>(start = true)
 @Composable
-fun SplashScreen(
-    navController: NavController,
-) {
+fun SplashScreen(navController: NavController) {
     val viewModel: SplashViewModel = viewModel()
     val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.splash))
     val progress by animateLottieCompositionAsState(composition, speed = 2f)
@@ -42,7 +40,6 @@ fun SplashScreen(
             }
         }
     }
-
 
     LottieAnimation(
         modifier = Modifier.fillMaxSize(),

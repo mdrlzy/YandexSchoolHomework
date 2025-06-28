@@ -18,18 +18,13 @@
     <string name="about_app">О программе</string>
     <string name="dark_theme">Темная тема</string>
     <string name="expenses_today">Расходы сегодня</string>
-    <string name="something_went_wrong">Что-то пошло не так</string>
-    <string name="retry">Попробовать еще раз</string>
     <string name="my_account">Мой счет</string>
     <string name="start">Начало</string>
     <string name="end">Конец</string>
     <string name="sum">Сумма</string>
-    <string name="cancel">Отмена</string>
-    <string name="ok">ОК</string>
     <string name="online">В сети</string>
     <string name="offline">Не в сети</string>
     <string name="your_connection_is_back">Соединение восстановлено</string>
     <string name="your_network_is_offline">Соединение потеряно</string>
-    <string name="no_internet">Нет интернета</string>
     <string name="my_history">Моя история</string>
 </resources>

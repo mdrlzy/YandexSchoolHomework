@@ -24,11 +24,8 @@ class TransactionHistoryViewModel(
     private val getIncomeTransactionsUseCase: GetIncomeTransactionsUseCase,
     private val getExpenseTransactionsUseCase: GetExpenseTransactionsUseCase,
 ) : ViewModel(), ContainerHost<TransactionHistoryScreenState, TransactionHistoryScreenEffect> {
-    private val initialStartDate =
-        DateTimeHelper.startOfDay(
-            OffsetDateTime.now().minusDays(30),
-        )
-    private val initialEndDate = DateTimeHelper.endOfDay(OffsetDateTime.now())
+    private val initialStartDate = OffsetDateTime.now().withDayOfMonth(1)
+    private val initialEndDate = OffsetDateTime.now()
 
     override val container: Container<TransactionHistoryScreenState, TransactionHistoryScreenEffect> =
         container(TransactionHistoryScreenState.Loading)

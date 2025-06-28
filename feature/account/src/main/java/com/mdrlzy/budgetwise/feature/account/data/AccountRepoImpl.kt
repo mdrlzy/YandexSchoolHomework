@@ -9,15 +9,14 @@ import com.mdrlzy.budgetwise.core.network.response.AccountDto
 import java.time.OffsetDateTime
 
 class AccountRepoImpl(
-    private val api: BWApi,
+    private val remote: AccountRemoteDataSource
 ) : AccountRepo {
     private var cacheAccount: Account? = null
 
     override suspend fun getAccount(): EitherT<Account> {
-        return api.getAccounts().map {
-            it.first().toDomain().also {
-                cacheAccount = it
-            }
+        return remote.getAccount().map {
+            cacheAccount = it
+            it
         }
     }
 
@@ -29,14 +28,3 @@ class AccountRepoImpl(
         }
     }
 }
-
-private fun AccountDto.toDomain() =
-    Account(
-        id,
-        userId,
-        name,
-        balance,
-        currency,
-        OffsetDateTime.parse(createdAt),
-        OffsetDateTime.parse(updatedAt),
-    )

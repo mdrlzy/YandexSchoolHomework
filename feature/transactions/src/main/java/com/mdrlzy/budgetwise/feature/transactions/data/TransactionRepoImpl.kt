@@ -1,34 +1,36 @@
 package com.mdrlzy.budgetwise.feature.transactions.data
 
-import com.mdrlzy.budgetwise.core.network.BWApi
-import com.mdrlzy.budgetwise.core.network.response.TransactionDto
 import com.mdrlzy.budgetwise.core.domain.EitherT
 import com.mdrlzy.budgetwise.core.domain.model.AccountBrief
 import com.mdrlzy.budgetwise.core.domain.model.Category
+import com.mdrlzy.budgetwise.core.network.BWApi
+import com.mdrlzy.budgetwise.core.network.response.TransactionDto
 import com.mdrlzy.budgetwise.feature.transactions.domain.model.Transaction
 import java.time.OffsetDateTime
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 
-class TransactionRepoImpl @Inject constructor(
-    private val api: BWApi,
-) : com.mdrlzy.budgetwise.feature.transactions.domain.repo.TransactionRepo {
-    override suspend fun getByPeriod(
-        accountId: Long,
-        start: OffsetDateTime,
-        end: OffsetDateTime
-    ): EitherT<List<Transaction>> {
-        return api.getTransactionsByPeriod(
-            accountId,
-            start.format(DateTimeFormatter.ISO_LOCAL_DATE),
-            end.format(DateTimeFormatter.ISO_LOCAL_DATE),
-        ).map { transactions -> transactions.map { it.toDomain() } }
-    }
+class TransactionRepoImpl
+    @Inject
+    constructor(
+        private val api: BWApi,
+    ) : com.mdrlzy.budgetwise.feature.transactions.domain.repo.TransactionRepo {
+        override suspend fun getByPeriod(
+            accountId: Long,
+            start: OffsetDateTime,
+            end: OffsetDateTime,
+        ): EitherT<List<Transaction>> {
+            return api.getTransactionsByPeriod(
+                accountId,
+                start.format(DateTimeFormatter.ISO_LOCAL_DATE),
+                end.format(DateTimeFormatter.ISO_LOCAL_DATE),
+            ).map { transactions -> transactions.map { it.toDomain() } }
+        }
 
-    override suspend fun getById(id: Long): EitherT<Transaction> {
-        return api.getTransactionById(id).map { it.toDomain() }
+        override suspend fun getById(id: Long): EitherT<Transaction> {
+            return api.getTransactionById(id).map { it.toDomain() }
+        }
     }
-}
 
 private fun TransactionDto.toDomain() =
     Transaction(

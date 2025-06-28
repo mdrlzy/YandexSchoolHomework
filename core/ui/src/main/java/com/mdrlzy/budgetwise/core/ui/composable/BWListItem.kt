@@ -7,12 +7,9 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -41,16 +38,17 @@ fun BWListItem(
     trailingContent: (@Composable () -> Unit)? = null,
 ) {
     Row(
-        modifier = Modifier
-            .let { mod ->
-                onClick?.let {
-                    mod.clickable { onClick() }
-                } ?: mod
-            }
-            .height(height)
-            .background(background)
-            .padding(horizontal = 16.dp),
-        verticalAlignment = Alignment.CenterVertically
+        modifier =
+            Modifier
+                .let { mod ->
+                    onClick?.let {
+                        mod.clickable { onClick() }
+                    } ?: mod
+                }
+                .height(height)
+                .background(background)
+                .padding(horizontal = 16.dp),
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         leadingContent?.let {
             leadingContent()
@@ -115,10 +113,11 @@ fun BWListItemEmoji(
         trailDescText = trailDescText,
         leadingContent = {
             Box(
-                modifier = Modifier
-                    .padding(end = 16.dp)
-                    .size(24.dp)
-                    .background(emojiBackground, shape = CircleShape)
+                modifier =
+                    Modifier
+                        .padding(end = 16.dp)
+                        .size(24.dp)
+                        .background(emojiBackground, shape = CircleShape),
             ) {
                 Text(
                     modifier = Modifier.align(Alignment.Center),
@@ -130,9 +129,10 @@ fun BWListItemEmoji(
         trailingContent = {
             trailingIcon?.let {
                 Icon(
-                    modifier = Modifier
-                        .padding(start = 16.dp)
-                        .size(24.dp),
+                    modifier =
+                        Modifier
+                            .padding(start = 16.dp)
+                            .size(24.dp),
                     painter = trailingIcon,
                     contentDescription = null,
                 )
@@ -160,9 +160,10 @@ fun BWListItemIcon(
         leadDescText = descText,
         trailingContent = {
             Icon(
-                modifier = Modifier
-                    .padding(start = 16.dp)
-                    .size(24.dp),
+                modifier =
+                    Modifier
+                        .padding(start = 16.dp)
+                        .size(24.dp),
                 painter = trailingIcon,
                 contentDescription = null,
             )

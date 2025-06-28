@@ -32,7 +32,7 @@ fun BWTopBar(
                 IconButton(
                     onClick = {
                         onLeadingIconClick?.invoke()
-                    }
+                    },
                 ) {
                     Icon(
                         painter = leadingIcon,
@@ -46,7 +46,7 @@ fun BWTopBar(
                 IconButton(
                     onClick = {
                         onTrailingIconClick?.invoke()
-                    }
+                    },
                 ) {
                     Icon(
                         painter = trailingIcon,
@@ -57,5 +57,4 @@ fun BWTopBar(
         },
         colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.primary),
     )
-
 }

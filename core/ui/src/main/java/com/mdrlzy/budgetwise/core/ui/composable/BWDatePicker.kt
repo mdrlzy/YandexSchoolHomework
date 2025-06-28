@@ -2,7 +2,6 @@
 
 package com.mdrlzy.budgetwise.core.ui.composable
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -27,7 +26,7 @@ import com.mdrlzy.budgetwise.ui.R
 fun BWDatePicker(
     selectedDate: Long,
     onDateSelected: (Long?) -> Unit,
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
 ) {
     val datePickerState = rememberDatePickerState(initialSelectedDateMillis = selectedDate)
 
@@ -37,17 +36,17 @@ fun BWDatePicker(
             DatePickerButtons(
                 onDateSelected = onDateSelected,
                 onDismiss = onDismiss,
-                datePickerState = datePickerState
+                datePickerState = datePickerState,
             )
         },
-        colors = DatePickerDefaults.colors(containerColor = MaterialTheme.colorScheme.secondary)
+        colors = DatePickerDefaults.colors(containerColor = MaterialTheme.colorScheme.secondary),
     ) {
         DatePicker(
             state = datePickerState,
             title = null,
             headline = null,
             showModeToggle = false,
-            colors = DatePickerDefaults.colors(containerColor = MaterialTheme.colorScheme.secondary)
+            colors = DatePickerDefaults.colors(containerColor = MaterialTheme.colorScheme.secondary),
         )
     }
 }
@@ -56,30 +55,32 @@ fun BWDatePicker(
 private fun DatePickerButtons(
     onDateSelected: (Long?) -> Unit,
     onDismiss: () -> Unit,
-    datePickerState: DatePickerState
+    datePickerState: DatePickerState,
 ) {
     Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(start = 12.dp),
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(start = 12.dp),
     ) {
         Spacer(Modifier.weight(1f))
         TextButton(
-            onClick = { onDismiss() }
+            onClick = { onDismiss() },
         ) {
             Text(
                 text = stringResource(R.string.cancel),
-                style = MaterialTheme.typography.labelLarge
+                style = MaterialTheme.typography.labelLarge,
             )
         }
         TextButton(
-            onClick = { onDateSelected(datePickerState.selectedDateMillis) }
+            onClick = { onDateSelected(datePickerState.selectedDateMillis) },
         ) {
             Text(
                 text = stringResource(R.string.ok),
-                style = MaterialTheme.typography.labelLarge.copy(
-                    fontWeight = FontWeight.W700,
-                )
+                style =
+                    MaterialTheme.typography.labelLarge.copy(
+                        fontWeight = FontWeight.W700,
+                    ),
             )
         }
     }

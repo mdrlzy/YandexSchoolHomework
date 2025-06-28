@@ -7,7 +7,6 @@ import dagger.Module
 
 @Module
 abstract class TransactionsModule {
-
     @TransactionsScope
     @Binds
     abstract fun transactionsRepo(impl: TransactionRepoImpl): TransactionRepo

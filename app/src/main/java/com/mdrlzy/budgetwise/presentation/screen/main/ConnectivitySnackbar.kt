@@ -21,7 +21,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mdrlzy.budgetwise.core.ui.CoreRString
 
-
 object ConnectivityOnlineSnackbarVisuals : SnackbarVisuals {
     override val actionLabel = ""
     override val duration = SnackbarDuration.Short

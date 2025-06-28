@@ -35,9 +35,10 @@ import org.orbitmvi.orbit.compose.collectAsState
 @Composable
 fun AccountScreen() {
     val context = LocalContext.current
-    val coreComponent = remember {
-        (context.applicationContext as CoreComponentProvider).provideCoreComponent()
-    }
+    val coreComponent =
+        remember {
+            (context.applicationContext as CoreComponentProvider).provideCoreComponent()
+        }
     val viewModel: AccountViewModel =
         viewModel(factory = AccountViewModelFactory(coreComponent.accountRepo()))
     val state by viewModel.collectAsState()
@@ -51,18 +52,19 @@ fun AccountScreen() {
         topBar = {
             BWTopBar(
                 title = stringResource(CoreRString.my_account),
-                trailingIcon = painterResource(CoreRDrawable.ic_edit)
+                trailingIcon = painterResource(CoreRDrawable.ic_edit),
             )
         },
         floatingActionButton = {
             BWAddFab { }
-        }
+        },
     ) {
         Box(Modifier.padding(it)) {
             when (state) {
-                is AccountScreenState.Error -> BWErrorRetryScreen(
-                    error = (state as AccountScreenState.Error).error
-                ) { viewModel.onRetry() }
+                is AccountScreenState.Error ->
+                    BWErrorRetryScreen(
+                        error = (state as AccountScreenState.Error).error,
+                    ) { viewModel.onRetry() }
 
                 AccountScreenState.Loading -> BWLoadingScreen()
 
@@ -74,7 +76,7 @@ fun AccountScreen() {
 
 @Composable
 private fun Content(state: AccountScreenState.Success) {
-    Column() {
+    Column {
         BWListItemEmoji(
             leadingText = stringResource(CoreRString.balance),
             trailingText = state.account.balance,
@@ -83,7 +85,7 @@ private fun Content(state: AccountScreenState.Success) {
             emoji = "\uD83D\uDCB0",
             emojiBackground = Color.White,
             trailingIcon = painterResource(CoreRDrawable.ic_more),
-            onClick = {}
+            onClick = {},
         )
         BWHorDiv()
         BWListItemIcon(
@@ -92,7 +94,7 @@ private fun Content(state: AccountScreenState.Success) {
             background = MaterialTheme.colorScheme.secondary,
             height = 56.dp,
             trailingIcon = painterResource(CoreRDrawable.ic_more),
-            onClick = {}
+            onClick = {},
         )
     }
 }

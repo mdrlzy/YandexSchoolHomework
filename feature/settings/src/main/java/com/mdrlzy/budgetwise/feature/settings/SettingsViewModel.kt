@@ -11,13 +11,14 @@ data class SettingsScreenState(
 
 sealed class SettingsScreenEffect
 
-class SettingsViewModel: ViewModel(), ContainerHost<SettingsScreenState, SettingsScreenEffect> {
+class SettingsViewModel : ViewModel(), ContainerHost<SettingsScreenState, SettingsScreenEffect> {
     override val container: Container<SettingsScreenState, SettingsScreenEffect> =
         container(SettingsScreenState(false))
 
-    fun onToggleDarkTheme(new: Boolean) = intent {
-        reduce {
-            state.copy(isDarkTheme = new)
+    fun onToggleDarkTheme(new: Boolean) =
+        intent {
+            reduce {
+                state.copy(isDarkTheme = new)
+            }
         }
-    }
 }

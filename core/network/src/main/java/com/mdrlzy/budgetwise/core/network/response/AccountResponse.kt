@@ -8,5 +8,5 @@ data class AccountResponse(
     val incomeStats: List<StatItem>,
     val expenseStats: List<StatItem>,
     val createdAt: String,
-    val updatedAt: String
+    val updatedAt: String,
 )

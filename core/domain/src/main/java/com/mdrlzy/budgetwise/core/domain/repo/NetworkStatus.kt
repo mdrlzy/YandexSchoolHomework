@@ -6,7 +6,6 @@ import kotlinx.coroutines.flow.StateFlow
  * Provides information about the current network connectivity status.
  */
 interface NetworkStatus {
-
     /**
      * Returns the current online status.
      *

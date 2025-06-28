@@ -7,7 +7,10 @@ import com.mdrlzy.budgetwise.core.network.BWApi
 
 interface CoreComponent {
     fun bwApi(): BWApi
+
     fun networkStatus(): NetworkStatus
+
     fun buildConfigFields(): BuildConfigFields
+
     fun accountRepo(): AccountRepo
 }

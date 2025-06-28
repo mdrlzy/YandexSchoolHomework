@@ -10,7 +10,6 @@ import org.orbitmvi.orbit.viewmodel.container
 import javax.inject.Inject
 
 sealed class CategoriesScreenState {
-
     data object Loading : CategoriesScreenState()
 
     data class Success(
@@ -24,7 +23,7 @@ sealed class CategoriesScreenState {
 sealed class CategoriesScreenEffect
 
 class CategoriesViewModel(
-    private val categoryRepo: com.mdrlzy.budgetwise.feature.categories.domain.repo.CategoryRepo
+    private val categoryRepo: com.mdrlzy.budgetwise.feature.categories.domain.repo.CategoryRepo,
 ) : ViewModel(),
     ContainerHost<CategoriesScreenState, CategoriesScreenEffect> {
     override val container: Container<CategoriesScreenState, CategoriesScreenEffect> =
@@ -41,39 +40,44 @@ class CategoriesViewModel(
     fun onRetry() = init()
 
     private fun init() {
-        initJob = intent {
-            if (state is CategoriesScreenState.Success) return@intent
+        initJob =
+            intent {
+                if (state is CategoriesScreenState.Success) return@intent
 
-            categoryRepo.getAll().fold(
-                ifLeft = {
-                    reduce {
-                        CategoriesScreenState.Error(it)
-                    }
-                },
-                ifRight = {
-                    reduce {
-                        CategoriesScreenState.Success(it)
-                    }
-                }
-            )
-        }
+                categoryRepo.getAll().fold(
+                    ifLeft = {
+                        reduce {
+                            CategoriesScreenState.Error(it)
+                        }
+                    },
+                    ifRight = {
+                        reduce {
+                            CategoriesScreenState.Success(it)
+                        }
+                    },
+                )
+            }
     }
 
-    fun onSearchQueryChange(query: String) = blockingIntent {
-        if (state is CategoriesScreenState.Success) {
-            val newState = (state as CategoriesScreenState.Success)
-                .copy(searchQuery = query)
-            reduce {
-                newState
+    fun onSearchQueryChange(query: String) =
+        blockingIntent {
+            if (state is CategoriesScreenState.Success) {
+                val newState =
+                    (state as CategoriesScreenState.Success)
+                        .copy(searchQuery = query)
+                reduce {
+                    newState
+                }
             }
         }
-    }
 }
 
-class CategoriesViewModelFactory @Inject constructor(
-    private val categoryRepo: com.mdrlzy.budgetwise.feature.categories.domain.repo.CategoryRepo
-) : ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return CategoriesViewModel(categoryRepo) as T
+class CategoriesViewModelFactory
+    @Inject
+    constructor(
+        private val categoryRepo: com.mdrlzy.budgetwise.feature.categories.domain.repo.CategoryRepo,
+    ) : ViewModelProvider.Factory {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
+            return CategoriesViewModel(categoryRepo) as T
+        }
     }
-}

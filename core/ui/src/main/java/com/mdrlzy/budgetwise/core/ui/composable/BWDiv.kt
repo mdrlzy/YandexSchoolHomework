@@ -15,6 +15,6 @@ fun BWHorDiv() {
         Modifier
             .fillMaxWidth()
             .height(1.dp)
-            .background(MaterialTheme.colorScheme.outlineVariant)
+            .background(MaterialTheme.colorScheme.outlineVariant),
     )
 }

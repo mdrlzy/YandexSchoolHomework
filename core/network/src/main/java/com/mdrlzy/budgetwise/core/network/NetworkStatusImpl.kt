@@ -25,8 +25,9 @@ class NetworkStatusImpl(
                 .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
                 .addCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)
                 .apply {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                         addCapability(NetworkCapabilities.NET_CAPABILITY_NOT_SUSPENDED)
+                    }
                 }
                 .build()
 
@@ -51,11 +52,11 @@ class NetworkStatusImpl(
 
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) &&
-                    networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED) &&
-                    networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_NOT_SUSPENDED)
+                networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED) &&
+                networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_NOT_SUSPENDED)
         } else {
             networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) &&
-                    networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)
+                networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)
         }
     }
 }

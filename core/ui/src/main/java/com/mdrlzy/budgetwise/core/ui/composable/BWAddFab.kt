@@ -17,15 +17,14 @@ import androidx.compose.ui.unit.dp
 import com.mdrlzy.budgetwise.ui.R
 
 @Composable
-fun BWAddFab(
-    onClick: () -> Unit,
-) {
+fun BWAddFab(onClick: () -> Unit) {
     Box(
-        modifier = Modifier
-            .size(56.dp)
-            .clip(CircleShape)
-            .background(MaterialTheme.colorScheme.primary)
-            .clickable { onClick() }
+        modifier =
+            Modifier
+                .size(56.dp)
+                .clip(CircleShape)
+                .background(MaterialTheme.colorScheme.primary)
+                .clickable { onClick() },
     ) {
         Icon(
             modifier = Modifier.align(Alignment.Center),

@@ -14,9 +14,10 @@ class App : Application(), CoreComponentProvider {
     override fun onCreate() {
         super.onCreate()
         val buildConfigFields = BuildConfigFields(BuildConfig.BEARER_TOKEN)
-        component = DaggerAppComponent
-            .factory()
-            .create(this, this.applicationContext, buildConfigFields)
+        component =
+            DaggerAppComponent
+                .factory()
+                .create(this, this.applicationContext, buildConfigFields)
     }
 
     override fun provideCoreComponent() = component

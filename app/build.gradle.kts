@@ -11,7 +11,6 @@ android {
         versionCode = 1
         versionName = "1.0"
 
-
         val token = getLocalProps().getProperty("bearer.token") ?: ""
         buildConfigField("String", "BEARER_TOKEN", "\"$token\"")
     }
@@ -21,7 +20,7 @@ android {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                "proguard-rules.pro",
             )
         }
     }

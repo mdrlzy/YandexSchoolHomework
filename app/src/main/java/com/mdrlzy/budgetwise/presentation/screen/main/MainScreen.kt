@@ -23,9 +23,10 @@ import com.ramcosta.composedestinations.generated.transactions.destinations.Expe
 import com.ramcosta.composedestinations.rememberNavHostEngine
 import kotlinx.coroutines.flow.drop
 
-private val noBottomBarRoutes = listOf(
-    SplashScreenDestination.route,
-)
+private val noBottomBarRoutes =
+    listOf(
+        SplashScreenDestination.route,
+    )
 
 @Composable
 fun MainScreen() {
@@ -42,10 +43,11 @@ fun MainScreen() {
             .drop(1)
             .collect { online ->
                 val visuals =
-                    if (online)
+                    if (online) {
                         ConnectivityOnlineSnackbarVisuals
-                    else
+                    } else {
                         ConnectivityOfflineSnackbarVisuals
+                    }
                 snackState.showSnackbar(visuals)
             }
     }
@@ -53,14 +55,14 @@ fun MainScreen() {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route ?: NavGraphs.main.startRoute.route
 
-
     val isKeyboardOpen by keyboardAsState()
     val bottomBarVisible = remember { mutableStateOf(false) }
 
     bottomBarVisible.value = currentRoute !in noBottomBarRoutes
 
-    if (isKeyboardOpen)
+    if (isKeyboardOpen) {
         bottomBarVisible.value = false
+    }
 
     Scaffold(
         modifier = Modifier.safeDrawingPadding(),
@@ -88,7 +90,7 @@ fun MainScreen() {
                     restoreState = true
                 }
             }
-        }
+        },
     ) {
         DestinationsNavHost(
             modifier = Modifier.padding(it),

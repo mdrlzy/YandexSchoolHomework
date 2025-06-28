@@ -1,6 +1,5 @@
 package com.mdrlzy.budgetwise.presentation.screen.splash
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.delay
 import org.orbitmvi.orbit.Container
@@ -11,7 +10,7 @@ sealed class SplashScreenEffect {
     data object NavigateNext : SplashScreenEffect()
 }
 
-class SplashViewModel: ViewModel(), ContainerHost<Unit, SplashScreenEffect> {
+class SplashViewModel : ViewModel(), ContainerHost<Unit, SplashScreenEffect> {
     override val container: Container<Unit, SplashScreenEffect> =
         container(Unit)
 
@@ -19,12 +18,14 @@ class SplashViewModel: ViewModel(), ContainerHost<Unit, SplashScreenEffect> {
         fallbackTimer()
     }
 
-    fun onAnimationFinish() = intent {
-        postSideEffect(SplashScreenEffect.NavigateNext)
-    }
+    fun onAnimationFinish() =
+        intent {
+            postSideEffect(SplashScreenEffect.NavigateNext)
+        }
 
-    private fun fallbackTimer() = intent {
-        delay(4000)
-        postSideEffect(SplashScreenEffect.NavigateNext)
-    }
+    private fun fallbackTimer() =
+        intent {
+            delay(4000)
+            postSideEffect(SplashScreenEffect.NavigateNext)
+        }
 }

@@ -35,13 +35,12 @@ import org.orbitmvi.orbit.compose.collectAsState
 
 @Destination<ExternalModuleGraph>
 @Composable
-fun IncomeScreen(
-    navigator: DestinationsNavigator,
-) {
+fun IncomeScreen(navigator: DestinationsNavigator) {
     val context = LocalContext.current
-    val component = remember {
-        TransactionsComponentHolder.provide(context)
-    }
+    val component =
+        remember {
+            TransactionsComponentHolder.provide(context)
+        }
     val viewModel: IncomeViewModel =
         viewModel(factory = component.incomeViewModelFactory())
     val state by viewModel.collectAsState()
@@ -59,22 +58,24 @@ fun IncomeScreen(
                 onTrailingIconClick = {
                     navigator.navigate(
                         TransactionHistoryScreenDestination(
-                            isIncomeMode = true
-                        )
+                            isIncomeMode = true,
+                        ),
                     )
-                }
+                },
             )
         },
         floatingActionButton = {
-            if (state is IncomeScreenState.Success)
+            if (state is IncomeScreenState.Success) {
                 BWAddFab { }
-        }
+            }
+        },
     ) {
         Box(Modifier.padding(it)) {
             when (state) {
-                is IncomeScreenState.Error -> BWErrorRetryScreen(
-                    error = (state as IncomeScreenState.Error).error
-                ) { viewModel.onRetry() }
+                is IncomeScreenState.Error ->
+                    BWErrorRetryScreen(
+                        error = (state as IncomeScreenState.Error).error,
+                    ) { viewModel.onRetry() }
 
                 IncomeScreenState.Loading -> BWLoadingScreen()
 

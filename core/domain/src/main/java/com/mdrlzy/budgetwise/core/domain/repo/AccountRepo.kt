@@ -7,7 +7,6 @@ import com.mdrlzy.budgetwise.core.domain.model.Account
  * Repository for accessing account-related data.
  */
 interface AccountRepo {
-
     /**
      * Returns the account ID.
      *

@@ -17,23 +17,27 @@ import com.mdrlzy.budgetwise.core.domain.expection.NoInternetException
 import com.mdrlzy.budgetwise.ui.R
 
 @Composable
-fun BWErrorRetryScreen(error: Throwable? = null, onRetry: () -> Unit) {
+fun BWErrorRetryScreen(
+    error: Throwable? = null,
+    onRetry: () -> Unit,
+) {
     Box(Modifier.fillMaxSize(), Alignment.Center) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            val info = if (error is NoInternetException) {
-                stringResource(R.string.no_internet)
-            } else {
-                stringResource(R.string.something_went_wrong)
-            }
+            val info =
+                if (error is NoInternetException) {
+                    stringResource(R.string.no_internet)
+                } else {
+                    stringResource(R.string.something_went_wrong)
+                }
             Text(
                 text = info,
-                style = MaterialTheme.typography.titleLarge
+                style = MaterialTheme.typography.titleLarge,
             )
             Spacer(Modifier.height(6.dp))
             Button(onClick = onRetry) {
                 Text(
                     text = stringResource(R.string.retry),
-                    style = MaterialTheme.typography.bodyMedium
+                    style = MaterialTheme.typography.bodyMedium,
                 )
             }
         }

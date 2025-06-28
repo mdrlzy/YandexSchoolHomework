@@ -30,9 +30,9 @@ fun SettingsScreen() {
     Scaffold(
         topBar = {
             BWTopBar(
-                title = stringResource(CoreRString.settings)
+                title = stringResource(CoreRString.settings),
             )
-        }
+        },
     ) {
         Column(Modifier.padding(it)) {
             BWListItem(
@@ -43,7 +43,7 @@ fun SettingsScreen() {
                         checked = state.isDarkTheme,
                         onCheckedChange = viewModel::onToggleDarkTheme,
                     )
-                }
+                },
             )
             BWHorDiv()
             SettingsListItem(stringResource(CoreRString.sounds)) { }
@@ -61,7 +61,7 @@ fun SettingsScreen() {
 @Composable
 private fun SettingsListItem(
     text: String,
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) {
     BWListItemIcon(
         leadingText = text,

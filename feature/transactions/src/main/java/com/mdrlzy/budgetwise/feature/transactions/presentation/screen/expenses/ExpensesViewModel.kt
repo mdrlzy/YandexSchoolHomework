@@ -26,9 +26,7 @@ sealed class ExpensesScreenState {
     data class Error(val error: Throwable?) : ExpensesScreenState()
 }
 
-sealed class ExpensesScreenEffect {
-
-}
+sealed class ExpensesScreenEffect
 
 class ExpensesViewModel(
     private val accountRepo: AccountRepo,
@@ -48,48 +46,51 @@ class ExpensesViewModel(
     fun onRetry() = init()
 
     private fun init() {
-        initJob = intent {
-            if (state is ExpensesScreenState.Success) return@intent
-
-            reduce {
-                ExpensesScreenState.Loading
-            }
-
-            val today = OffsetDateTime.now()
-            val transactionsResult = getExpenseTransactionsUseCase.invoke(
-                today.withHour(0).withMinute(0),
-                today.withHour(23).withMinute(59)
-            )
-            val accountResult = accountRepo.getAccount()
-
-            if (transactionsResult.isRight() && accountResult.isRight()) {
-                val transactions = transactionsResult.getOrNull()!!.map { it.toUiModel() }
-                val account = accountResult.getOrNull()!!
-                val sum = transactions.sumOf { BigDecimal(it.amount) }
+        initJob =
+            intent {
+                if (state is ExpensesScreenState.Success) return@intent
 
                 reduce {
-                    ExpensesScreenState.Success(
-                        sum = sum,
-                        currency = account.currency,
-                        transactions = transactions,
+                    ExpensesScreenState.Loading
+                }
+
+                val today = OffsetDateTime.now()
+                val transactionsResult =
+                    getExpenseTransactionsUseCase.invoke(
+                        today.withHour(0).withMinute(0),
+                        today.withHour(23).withMinute(59),
                     )
-                }
+                val accountResult = accountRepo.getAccount()
 
-            } else {
-                val left = transactionsResult.leftOrNull() ?: accountResult.leftOrNull()
-                reduce {
-                    ExpensesScreenState.Error(left)
+                if (transactionsResult.isRight() && accountResult.isRight()) {
+                    val transactions = transactionsResult.getOrNull()!!.map { it.toUiModel() }
+                    val account = accountResult.getOrNull()!!
+                    val sum = transactions.sumOf { BigDecimal(it.amount) }
+
+                    reduce {
+                        ExpensesScreenState.Success(
+                            sum = sum,
+                            currency = account.currency,
+                            transactions = transactions,
+                        )
+                    }
+                } else {
+                    val left = transactionsResult.leftOrNull() ?: accountResult.leftOrNull()
+                    reduce {
+                        ExpensesScreenState.Error(left)
+                    }
                 }
             }
+    }
+}
+
+class ExpensesViewModelFactory
+    @Inject
+    constructor(
+        private val accountRepo: AccountRepo,
+        private val getExpenseTransactionsUseCase: GetExpenseTransactionsUseCase,
+    ) : ViewModelProvider.Factory {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
+            return ExpensesViewModel(accountRepo, getExpenseTransactionsUseCase) as T
         }
     }
-}
-
-class ExpensesViewModelFactory @Inject constructor(
-    private val accountRepo: AccountRepo,
-    private val getExpenseTransactionsUseCase: GetExpenseTransactionsUseCase,
-) : ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return ExpensesViewModel(accountRepo, getExpenseTransactionsUseCase) as T
-    }
-}

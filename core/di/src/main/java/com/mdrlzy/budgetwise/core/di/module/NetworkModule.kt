@@ -15,12 +15,14 @@ import javax.inject.Singleton
 class NetworkModule {
     @Singleton
     @Provides
-    fun httpClient(buildConfigFields: BuildConfigFields) =
-        HttpClientBuilder.build(buildConfigFields)
+    fun httpClient(buildConfigFields: BuildConfigFields) = HttpClientBuilder.build(buildConfigFields)
 
     @Singleton
     @Provides
-    fun bwApi(client: HttpClient, networkStatus: NetworkStatus) = BWApi(client, networkStatus)
+    fun bwApi(
+        client: HttpClient,
+        networkStatus: NetworkStatus,
+    ) = BWApi(client, networkStatus)
 
     @Singleton
     @Provides

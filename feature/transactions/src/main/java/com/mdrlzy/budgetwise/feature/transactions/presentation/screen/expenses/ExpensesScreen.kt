@@ -43,9 +43,10 @@ fun ExpensesScreen(
     navController: NavController,
 ) {
     val context = LocalContext.current
-    val component = remember {
-        TransactionsComponentHolder.provide(context)
-    }
+    val component =
+        remember {
+            TransactionsComponentHolder.provide(context)
+        }
     val viewModel: ExpensesViewModel =
         viewModel(factory = component.expensesTodayViewModelFactory())
 
@@ -64,22 +65,24 @@ fun ExpensesScreen(
                 onTrailingIconClick = {
                     navigator.navigate(
                         TransactionHistoryScreenDestination(
-                            isIncomeMode = false
-                        )
+                            isIncomeMode = false,
+                        ),
                     )
-                }
+                },
             )
         },
         floatingActionButton = {
-            if (state is ExpensesScreenState.Success)
+            if (state is ExpensesScreenState.Success) {
                 BWAddFab { }
-        }
+            }
+        },
     ) {
         Box(Modifier.padding(it)) {
             when (state) {
-                is ExpensesScreenState.Error -> BWErrorRetryScreen(
-                    error = (state as ExpensesScreenState.Error).error
-                ) { viewModel.onRetry() }
+                is ExpensesScreenState.Error ->
+                    BWErrorRetryScreen(
+                        error = (state as ExpensesScreenState.Error).error,
+                    ) { viewModel.onRetry() }
 
                 ExpensesScreenState.Loading -> BWLoadingScreen()
 
@@ -109,7 +112,7 @@ private fun Content(state: ExpensesScreenState.Success) {
                 emoji = it.emoji,
                 height = 70.dp,
                 trailingIcon = painterResource(CoreRDrawable.ic_more),
-                onClick = {}
+                onClick = {},
             )
             BWHorDiv()
         }

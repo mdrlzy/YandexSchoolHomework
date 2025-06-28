@@ -36,11 +36,11 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mdrlzy.budgetwise.core.di.CoreComponentProvider
 import com.mdrlzy.budgetwise.core.ui.CoreRDrawable
 import com.mdrlzy.budgetwise.core.ui.CoreRString
+import com.mdrlzy.budgetwise.core.ui.composable.BWErrorRetryScreen
 import com.mdrlzy.budgetwise.core.ui.composable.BWHorDiv
 import com.mdrlzy.budgetwise.core.ui.composable.BWListItemEmoji
-import com.mdrlzy.budgetwise.core.ui.composable.BWTopBar
-import com.mdrlzy.budgetwise.core.ui.composable.BWErrorRetryScreen
 import com.mdrlzy.budgetwise.core.ui.composable.BWLoadingScreen
+import com.mdrlzy.budgetwise.core.ui.composable.BWTopBar
 import com.mdrlzy.budgetwise.core.ui.composable.ListenActiveScreenEffect
 import com.mdrlzy.budgetwise.feature.categories.di.DaggerCategoriesComponent
 import com.ramcosta.composedestinations.annotation.Destination
@@ -51,11 +51,12 @@ import org.orbitmvi.orbit.compose.collectAsState
 @Composable
 fun CategoriesScreen() {
     val context = LocalContext.current
-    val component = remember {
-        val coreComponent =
-            (context.applicationContext as CoreComponentProvider).provideCoreComponent()
-        DaggerCategoriesComponent.builder().coreComponent(coreComponent).build()
-    }
+    val component =
+        remember {
+            val coreComponent =
+                (context.applicationContext as CoreComponentProvider).provideCoreComponent()
+            DaggerCategoriesComponent.builder().coreComponent(coreComponent).build()
+        }
     val viewModel: CategoriesViewModel =
         viewModel(factory = component.categoriesViewModelFactory())
     val state by viewModel.collectAsState()
@@ -68,22 +69,23 @@ fun CategoriesScreen() {
     Scaffold(
         topBar = {
             BWTopBar(
-                title = stringResource(CoreRString.my_expenses)
+                title = stringResource(CoreRString.my_expenses),
             )
-        }
+        },
     ) {
         Box(Modifier.padding(it)) {
             when (state) {
-                is CategoriesScreenState.Error -> BWErrorRetryScreen(
-                    error = (state as CategoriesScreenState.Error).error
-                ) { viewModel.onRetry() }
+                is CategoriesScreenState.Error ->
+                    BWErrorRetryScreen(
+                        error = (state as CategoriesScreenState.Error).error,
+                    ) { viewModel.onRetry() }
 
                 CategoriesScreenState.Loading -> BWLoadingScreen()
 
                 is CategoriesScreenState.Success ->
                     Content(
                         state = state as CategoriesScreenState.Success,
-                        onSearchQueryChange = viewModel::onSearchQueryChange
+                        onSearchQueryChange = viewModel::onSearchQueryChange,
                     )
             }
         }
@@ -98,23 +100,26 @@ private fun Content(
     LazyColumn {
         item {
             Row(
-                modifier = Modifier
-                    .height(56.dp)
-                    .fillMaxWidth()
-                    .background(MaterialTheme.colorScheme.surfaceContainerHigh),
+                modifier =
+                    Modifier
+                        .height(56.dp)
+                        .fillMaxWidth()
+                        .background(MaterialTheme.colorScheme.surfaceContainerHigh),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 BasicTextField(
-                    modifier = Modifier
-                        .weight(1f)
-                        .padding(start = 16.dp),
+                    modifier =
+                        Modifier
+                            .weight(1f)
+                            .padding(start = 16.dp),
                     value = state.searchQuery,
                     onValueChange = {
                         onSearchQueryChange(it)
                     },
-                    keyboardOptions = KeyboardOptions.Default.copy(
-                        imeAction = ImeAction.Search,
-                    ),
+                    keyboardOptions =
+                        KeyboardOptions.Default.copy(
+                            imeAction = ImeAction.Search,
+                        ),
                 ) { innerTextField ->
                     val interactionSource = remember { MutableInteractionSource() }
                     TextFieldDefaults.DecorationBox(
@@ -125,18 +130,20 @@ private fun Content(
                         enabled = true,
                         interactionSource = interactionSource,
                         contentPadding = PaddingValues(0.dp),
-                        colors = TextFieldDefaults.colors(
-                            focusedContainerColor = Color.Transparent,
-                            unfocusedContainerColor = Color.Transparent,
-                            focusedIndicatorColor = Color.Transparent,
-                            unfocusedIndicatorColor = Color.Transparent,
-                        ),
+                        colors =
+                            TextFieldDefaults.colors(
+                                focusedContainerColor = Color.Transparent,
+                                unfocusedContainerColor = Color.Transparent,
+                                focusedIndicatorColor = Color.Transparent,
+                                unfocusedIndicatorColor = Color.Transparent,
+                            ),
                         placeholder = {
                             Text(
                                 text = stringResource(CoreRString.find_expense),
-                                style = MaterialTheme.typography.bodyLarge.copy(
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                                ),
+                                style =
+                                    MaterialTheme.typography.bodyLarge.copy(
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                    ),
                             )
                         },
                     )
@@ -155,7 +162,7 @@ private fun Content(
                 leadingText = it.name,
                 emoji = it.emoji,
                 height = 70.dp,
-                onClick = {}
+                onClick = {},
             )
             BWHorDiv()
         }

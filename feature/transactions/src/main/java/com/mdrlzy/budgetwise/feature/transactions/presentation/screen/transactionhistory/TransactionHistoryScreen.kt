@@ -41,12 +41,14 @@ fun TransactionHistoryScreen(
     navigator: DestinationsNavigator,
 ) {
     val context = LocalContext.current
-    val component = remember {
-        TransactionsComponentHolder.provide(context)
-    }
-    val viewModel: TransactionHistoryViewModel = viewModel(
-        factory = component.transactionHistoryViewModelFactory().create(isIncomeMode)
-    )
+    val component =
+        remember {
+            TransactionsComponentHolder.provide(context)
+        }
+    val viewModel: TransactionHistoryViewModel =
+        viewModel(
+            factory = component.transactionHistoryViewModelFactory().create(isIncomeMode),
+        )
     val state by viewModel.collectAsState()
 
     Scaffold(
@@ -58,21 +60,23 @@ fun TransactionHistoryScreen(
                 onLeadingIconClick = { navigator.popBackStack() },
                 onTrailingIconClick = {},
             )
-        }
+        },
     ) {
         Box(Modifier.padding(it)) {
             when (state) {
-                is TransactionHistoryScreenState.Error -> BWErrorRetryScreen(
-                    error = (state as TransactionHistoryScreenState.Error).error
-                ) { viewModel.onRetry() }
+                is TransactionHistoryScreenState.Error ->
+                    BWErrorRetryScreen(
+                        error = (state as TransactionHistoryScreenState.Error).error,
+                    ) { viewModel.onRetry() }
 
                 TransactionHistoryScreenState.Loading -> BWLoadingScreen()
 
-                is TransactionHistoryScreenState.Success -> Content(
-                    state = state as TransactionHistoryScreenState.Success,
-                    onStartDateSelected = viewModel::onStartDateSelected,
-                    onEndDateSelected = viewModel::onEndDateSelected,
-                )
+                is TransactionHistoryScreenState.Success ->
+                    Content(
+                        state = state as TransactionHistoryScreenState.Success,
+                        onStartDateSelected = viewModel::onStartDateSelected,
+                        onEndDateSelected = viewModel::onEndDateSelected,
+                    )
             }
         }
     }
@@ -94,7 +98,7 @@ private fun Content(
                 onStartDateSelected(it)
                 showStartDatePicker = false
             },
-            onDismiss = { showStartDatePicker = false }
+            onDismiss = { showStartDatePicker = false },
         )
     }
 
@@ -105,7 +109,7 @@ private fun Content(
                 onEndDateSelected(it)
                 showEndDatePicker = false
             },
-            onDismiss = { showEndDatePicker = false }
+            onDismiss = { showEndDatePicker = false },
         )
     }
 
@@ -144,7 +148,7 @@ private fun Content(
                 emoji = it.emoji,
                 height = 70.dp,
                 trailingIcon = painterResource(CoreRDrawable.ic_more),
-                onClick = {}
+                onClick = {},
             )
             BWHorDiv()
         }

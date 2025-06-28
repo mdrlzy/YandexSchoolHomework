@@ -14,19 +14,20 @@ fun ListenActiveScreenEffect(
     val lifecycleOwner = LocalLifecycleOwner.current
 
     DisposableEffect(lifecycleOwner) {
-        val observer = LifecycleEventObserver { _, event ->
-            when (event) {
-                Lifecycle.Event.ON_RESUME -> {
-                    onActive()
-                }
+        val observer =
+            LifecycleEventObserver { _, event ->
+                when (event) {
+                    Lifecycle.Event.ON_RESUME -> {
+                        onActive()
+                    }
 
-                Lifecycle.Event.ON_PAUSE -> {
-                    onInactive()
-                }
+                    Lifecycle.Event.ON_PAUSE -> {
+                        onInactive()
+                    }
 
-                else -> {}
+                    else -> {}
+                }
             }
-        }
 
         lifecycleOwner.lifecycle.addObserver(observer)
 

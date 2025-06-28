@@ -14,7 +14,7 @@ sealed class AccountScreenState {
     data object Loading : AccountScreenState()
 
     data class Success(
-        val account: Account
+        val account: Account,
     ) : AccountScreenState()
 
     data class Error(val error: Throwable?) : AccountScreenState()
@@ -39,29 +39,32 @@ class AccountViewModel(
     fun onRetry() = init()
 
     private fun init() {
-        initJob = intent {
-            if (state is AccountScreenState.Success) return@intent
+        initJob =
+            intent {
+                if (state is AccountScreenState.Success) return@intent
 
-            accountRepo.getAccount().fold(
-                ifLeft = {
-                    reduce {
-                        AccountScreenState.Error(it)
-                    }
-                },
-                ifRight = {
-                    reduce {
-                        AccountScreenState.Success(it)
-                    }
-                },
-            )
+                accountRepo.getAccount().fold(
+                    ifLeft = {
+                        reduce {
+                            AccountScreenState.Error(it)
+                        }
+                    },
+                    ifRight = {
+                        reduce {
+                            AccountScreenState.Success(it)
+                        }
+                    },
+                )
+            }
+    }
+}
+
+class AccountViewModelFactory
+    @Inject
+    constructor(
+        private val accountRepo: AccountRepo,
+    ) : ViewModelProvider.Factory {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
+            return AccountViewModel(accountRepo) as T
         }
     }
-}
-
-class AccountViewModelFactory @Inject constructor(
-    private val accountRepo: AccountRepo
-): ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return AccountViewModel(accountRepo) as T
-    }
-}

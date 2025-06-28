@@ -21,9 +21,7 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 
 @Destination<MainNavGraph>(start = true)
 @Composable
-fun SplashScreen(
-    navController: NavController,
-) {
+fun SplashScreen(navController: NavController) {
     val viewModel: SplashViewModel = viewModel()
     val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.splash))
     val progress by animateLottieCompositionAsState(composition, speed = 2f)
@@ -42,7 +40,6 @@ fun SplashScreen(
             }
         }
     }
-
 
     LottieAnimation(
         modifier = Modifier.fillMaxSize(),

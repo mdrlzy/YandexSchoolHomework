@@ -67,13 +67,14 @@ sealed class BottomNavItem(
     )
 }
 
-private val bottomBarItems = listOf(
-    BottomNavItem.Expenses,
-    BottomNavItem.Income,
-    BottomNavItem.Account,
-    BottomNavItem.Categories,
-    BottomNavItem.Settings,
-)
+private val bottomBarItems =
+    listOf(
+        BottomNavItem.Expenses,
+        BottomNavItem.Income,
+        BottomNavItem.Account,
+        BottomNavItem.Categories,
+        BottomNavItem.Settings,
+    )
 
 @Composable
 fun AnimatedBottomNavigation(
@@ -86,11 +87,12 @@ fun AnimatedBottomNavigation(
         targetState = bottomBarVisible.value,
         transitionSpec = {
             slideInVertically { height -> height } with
-                    slideOutVertically { height -> height }
+                slideOutVertically { height -> height }
         },
     ) { expanded ->
-        if (expanded)
+        if (expanded) {
             BottomNavigation(navBackStackEntry, currentRoute, onBottomBarItemClick)
+        }
     }
 }
 
@@ -100,21 +102,21 @@ fun BottomNavigation(
     currentRoute: String,
     onBottomBarItemClick: (String) -> Unit,
 ) {
-
     BottomAppBar {
         bottomBarItems.forEach { item ->
             // bottom bar is visible in TransactionHistoryScreen
             // and can be opened from two different screens: Income and Expenses
-            val selected = if (currentRoute == TransactionHistoryScreenDestination.route) {
-                val isIncome = navBackStackEntry?.arguments?.getBoolean("isIncomeMode")
-                when (item) {
-                    BottomNavItem.Expenses -> isIncome?.not() ?: false
-                    BottomNavItem.Income -> isIncome ?: false
-                    else -> false
+            val selected =
+                if (currentRoute == TransactionHistoryScreenDestination.route) {
+                    val isIncome = navBackStackEntry?.arguments?.getBoolean("isIncomeMode")
+                    when (item) {
+                        BottomNavItem.Expenses -> isIncome?.not() ?: false
+                        BottomNavItem.Income -> isIncome ?: false
+                        else -> false
+                    }
+                } else {
+                    currentRoute.contains(item.route)
                 }
-            } else {
-                currentRoute.contains(item.route)
-            }
             NavigationBarItem(
                 selected = selected,
                 onClick = { onBottomBarItemClick(item.route) },
@@ -127,15 +129,18 @@ fun BottomNavigation(
                 label = {
                     Text(
                         text = stringResource(item.title),
-                        style = MaterialTheme.typography.labelMedium.copy(
-                            fontWeight = if (selected) FontWeight.W600 else FontWeight.W500,
-                            color = if (selected)
-                                MaterialTheme.colorScheme.onSurface
-                            else
-                                MaterialTheme.colorScheme.onSurfaceVariant
-                        ),
+                        style =
+                            MaterialTheme.typography.labelMedium.copy(
+                                fontWeight = if (selected) FontWeight.W600 else FontWeight.W500,
+                                color =
+                                    if (selected) {
+                                        MaterialTheme.colorScheme.onSurface
+                                    } else {
+                                        MaterialTheme.colorScheme.onSurfaceVariant
+                                    },
+                            ),
                         maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
+                        overflow = TextOverflow.Ellipsis,
                     )
                 },
                 colors =

@@ -7,7 +7,7 @@ dependencies {
     implementation(project(":core:domain"))
 
     implementation(libs.androidx.core.ktx)
-    
+
     implementation(libs.arrow.core)
 
     implementation(libs.ktor.client.core)

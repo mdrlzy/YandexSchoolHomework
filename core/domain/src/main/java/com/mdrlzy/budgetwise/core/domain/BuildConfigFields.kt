@@ -6,5 +6,5 @@ package com.mdrlzy.budgetwise.core.domain
  * @property bearerToken The authentication token used for authorized API requests.
  */
 data class BuildConfigFields(
-    val bearerToken: String
+    val bearerToken: String,
 )

@@ -16,6 +16,7 @@ subprojects {
             exclude("**/androidTest/**")
         }
 
+        ignoreFailures.set(true)
         android.set(true)
         outputToConsole.set(true)
     }

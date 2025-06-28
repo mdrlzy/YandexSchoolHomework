@@ -4,4 +4,19 @@ plugins {
     alias(libs.plugins.kotlin.android) apply false
     alias(libs.plugins.kotlin.compose) apply false
     alias(libs.plugins.android.library) apply false
+    alias(libs.plugins.ktlint)
+}
+
+subprojects {
+    apply(plugin = "org.jlleitschuh.gradle.ktlint")
+
+    ktlint {
+        filter {
+            exclude("**/test/**")
+            exclude("**/androidTest/**")
+        }
+
+        android.set(true)
+        outputToConsole.set(true)
+    }
 }

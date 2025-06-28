@@ -1,6 +1,4 @@
 import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
-import gradle.kotlin.dsl.accessors._cb39ac5eaea6d191dab9d51453520482.implementation
-import gradle.kotlin.dsl.accessors._cb39ac5eaea6d191dab9d51453520482.ksp
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
 

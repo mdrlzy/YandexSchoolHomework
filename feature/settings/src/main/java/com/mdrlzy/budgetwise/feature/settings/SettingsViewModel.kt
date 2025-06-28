@@ -1,4 +1,4 @@
-package com.mdrlzy.budgetwise.presentation.screen.settings
+package com.mdrlzy.budgetwise.feature.settings
 
 import androidx.lifecycle.ViewModel
 import org.orbitmvi.orbit.Container

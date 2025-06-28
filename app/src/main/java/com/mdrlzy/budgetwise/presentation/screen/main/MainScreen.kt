@@ -13,9 +13,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.mdrlzy.budgetwise.core.di.CoreComponent
 import com.mdrlzy.budgetwise.core.di.CoreComponentProvider
 import com.mdrlzy.budgetwise.core.ui.utils.keyboardAsState
+import com.mdrlzy.budgetwise.presentation.navigation.AnimatedBottomNavigation
 import com.ramcosta.composedestinations.DestinationsNavHost
 import com.ramcosta.composedestinations.generated.NavGraphs
 import com.ramcosta.composedestinations.generated.destinations.SplashScreenDestination

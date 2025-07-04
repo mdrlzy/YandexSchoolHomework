@@ -30,5 +30,7 @@ interface AccountRepo {
 
     fun accountFlow(): Flow<Account>
 
-    suspend fun updateCurrency(currency: Currency): EitherT<Account>
+    suspend fun updateCurrency(newCurrency: Currency): EitherT<Account>
+
+    suspend fun updateName(newName: String): EitherT<Account>
 }

@@ -2,7 +2,6 @@ package com.mdrlzy.budgetwise.feature.account.data
 
 import com.mdrlzy.budgetwise.core.domain.EitherT
 import com.mdrlzy.budgetwise.core.domain.model.Account
-import com.mdrlzy.budgetwise.core.domain.model.Currency
 import com.mdrlzy.budgetwise.core.network.BWApi
 import com.mdrlzy.budgetwise.core.network.response.AccountDto
 import com.mdrlzy.budgetwise.core.network.response.AccountUpdateRequest
@@ -17,14 +16,13 @@ class AccountRemoteDataSource(
         }
     }
 
-    suspend fun updateAccountCurrency(
+    suspend fun updateAccount(
         id: Long,
-        account: Account,
-        currency: Currency,
+        newAccount: Account,
     ): EitherT<Account> {
-        return api.updateAccountCurrency(
+        return api.updateAccount(
             id = id,
-            body = account.toUpdateRequest().copy(currency = currency.code)
+            body = newAccount.toUpdateRequest(),
         ).map {
             it.toDomain()
         }

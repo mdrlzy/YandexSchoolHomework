@@ -59,10 +59,20 @@ fun AccountScreen() {
         topBar = {
             val success = state
             if (success is AccountScreenState.Success) {
-                BWTopBar(
-                    title = success.account.name,
-                    trailingIcon = painterResource(CoreRDrawable.ic_edit),
-                )
+                if (success.isEditMode) {
+                    EditTopBar(
+                        name = success.accountName,
+                        onNameChanged = viewModel::onNameChanged,
+                        onCancel = viewModel::onCancelEdit,
+                        onDone = viewModel::onDoneEdit,
+                    )
+                } else {
+                    BWTopBar(
+                        title = success.account.name,
+                        trailingIcon = painterResource(CoreRDrawable.ic_edit),
+                        onTrailingIconClick = viewModel::onEdit
+                    )
+                }
             }
         },
         floatingActionButton = {

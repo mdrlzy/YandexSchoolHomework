@@ -4,7 +4,6 @@ import arrow.core.Either
 import arrow.core.left
 import com.mdrlzy.budgetwise.core.domain.EitherT
 import com.mdrlzy.budgetwise.core.domain.expection.NoInternetException
-import com.mdrlzy.budgetwise.core.domain.model.Currency
 import com.mdrlzy.budgetwise.core.domain.repo.NetworkStatus
 import com.mdrlzy.budgetwise.core.network.response.AccountDto
 import com.mdrlzy.budgetwise.core.network.response.AccountResponse
@@ -38,7 +37,7 @@ class BWApi(
             }.body()
         }
 
-    suspend fun updateAccountCurrency(id: Long, body: AccountUpdateRequest): EitherT<AccountDto> =
+    suspend fun updateAccount(id: Long, body: AccountUpdateRequest): EitherT<AccountDto> =
         safeRequest {
             client.put {
                 url("$baseUrl/accounts/$id")

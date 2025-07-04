@@ -26,6 +26,49 @@ class AccountViewModel(
 
     fun onRetry() = init()
 
+    fun onEdit() = intent {
+        val success = state
+        if (success is AccountScreenState.Success) {
+            reduce {
+                success.copy(isEditMode = true)
+            }
+        }
+    }
+
+    fun onCancelEdit() = intent {
+        val success = state
+        if (success is AccountScreenState.Success) {
+            reduce {
+                success.copy(isEditMode = false)
+            }
+        }
+    }
+
+    fun onDoneEdit() = intent {
+        val success = state as AccountScreenState.Success
+        accountRepo.updateName(success.accountName).fold(
+            ifLeft = {
+                reduce {
+                    AccountScreenState.Error(it)
+                }
+            },
+            ifRight = {
+                reduce {
+                    AccountScreenState.Success(account = it)
+                }
+            },
+        )
+    }
+
+    fun onNameChanged(name: String) = blockingIntent {
+        val success = state
+        if (success is AccountScreenState.Success) {
+            reduce {
+                success.copy(accountName = name)
+            }
+        }
+    }
+
     private fun init() {
         initJob =
             intent {
@@ -39,7 +82,7 @@ class AccountViewModel(
                     },
                     ifRight = {
                         reduce {
-                            AccountScreenState.Success(it)
+                            AccountScreenState.Success(account = it)
                         }
                     },
                 )
@@ -55,7 +98,7 @@ class AccountViewModel(
             },
             ifRight = {
                 reduce {
-                    AccountScreenState.Success(it)
+                    AccountScreenState.Success(account = it)
                 }
             },
         )

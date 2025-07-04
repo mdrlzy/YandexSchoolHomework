@@ -7,12 +7,15 @@ import com.mdrlzy.budgetwise.core.domain.expection.NoInternetException
 import com.mdrlzy.budgetwise.core.domain.repo.NetworkStatus
 import com.mdrlzy.budgetwise.core.network.response.AccountDto
 import com.mdrlzy.budgetwise.core.network.response.AccountResponse
+import com.mdrlzy.budgetwise.core.network.response.AccountUpdateRequest
 import com.mdrlzy.budgetwise.core.network.response.CategoryResponse
 import com.mdrlzy.budgetwise.core.network.response.TransactionDto
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
 import io.ktor.client.request.parameter
+import io.ktor.client.request.put
+import io.ktor.client.request.setBody
 import io.ktor.client.request.url
 import java.time.format.DateTimeFormatter
 
@@ -31,6 +34,14 @@ class BWApi(
         safeRequest {
             client.get {
                 url("$baseUrl/accounts/$id")
+            }.body()
+        }
+
+    suspend fun updateAccount(id: Long, body: AccountUpdateRequest): EitherT<AccountDto> =
+        safeRequest {
+            client.put {
+                url("$baseUrl/accounts/$id")
+                setBody(body)
             }.body()
         }
 

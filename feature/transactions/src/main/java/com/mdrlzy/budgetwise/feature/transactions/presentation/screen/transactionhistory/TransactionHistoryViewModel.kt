@@ -2,14 +2,18 @@ package com.mdrlzy.budgetwise.feature.transactions.presentation.screen.transacti
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import com.mdrlzy.budgetwise.core.domain.repo.AccountRepo
 import com.mdrlzy.budgetwise.core.ui.utils.DateTimeHelper
 import com.mdrlzy.budgetwise.feature.transactions.domain.usecase.GetExpenseTransactionsUseCase
 import com.mdrlzy.budgetwise.feature.transactions.domain.usecase.GetIncomeTransactionsUseCase
 import com.mdrlzy.budgetwise.feature.transactions.presentation.model.toUiModel
+import com.mdrlzy.budgetwise.feature.transactions.presentation.screen.expenses.ExpensesScreenState
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import org.orbitmvi.orbit.Container
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.viewmodel.container
@@ -32,6 +36,16 @@ class TransactionHistoryViewModel(
 
     init {
         init()
+        accountRepo.accountFlow().onEach { account ->
+            intent {
+                val success = state
+                if (success is TransactionHistoryScreenState.Success) {
+                    reduce {
+                        success.copy(currency = account.currency)
+                    }
+                }
+            }
+        }.launchIn(viewModelScope)
     }
 
     fun onRetry() =
@@ -121,27 +135,25 @@ class TransactionHistoryViewModel(
         }
 }
 
-class TransactionHistoryViewModelFactory
-    @AssistedInject
-    constructor(
-        @Assisted private val isIncomeMode: Boolean,
-        private val accountRepo: AccountRepo,
-        private val getIncomeTransactionsUseCase: GetIncomeTransactionsUseCase,
-        private val getExpenseTransactionsUseCase: GetExpenseTransactionsUseCase,
-    ) : ViewModelProvider.Factory {
-        override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            return TransactionHistoryViewModel(
-                isIncomeMode,
-                accountRepo,
-                getIncomeTransactionsUseCase,
-                getExpenseTransactionsUseCase,
-            ) as T
-        }
-
-        @AssistedFactory
-        interface Factory {
-            fun create(
-                @Assisted isIncomeMode: Boolean,
-            ): TransactionHistoryViewModelFactory
-        }
+class TransactionHistoryViewModelFactory @AssistedInject constructor(
+    @Assisted private val isIncomeMode: Boolean,
+    private val accountRepo: AccountRepo,
+    private val getIncomeTransactionsUseCase: GetIncomeTransactionsUseCase,
+    private val getExpenseTransactionsUseCase: GetExpenseTransactionsUseCase,
+) : ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        return TransactionHistoryViewModel(
+            isIncomeMode,
+            accountRepo,
+            getIncomeTransactionsUseCase,
+            getExpenseTransactionsUseCase,
+        ) as T
     }
+
+    @AssistedFactory
+    interface Factory {
+        fun create(
+            @Assisted isIncomeMode: Boolean,
+        ): TransactionHistoryViewModelFactory
+    }
+}

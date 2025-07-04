@@ -2,10 +2,14 @@ package com.mdrlzy.budgetwise.feature.transactions.presentation.screen.income
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import com.mdrlzy.budgetwise.core.domain.repo.AccountRepo
 import com.mdrlzy.budgetwise.feature.transactions.domain.usecase.GetIncomeTransactionsUseCase
 import com.mdrlzy.budgetwise.feature.transactions.presentation.model.toUiModel
+import com.mdrlzy.budgetwise.feature.transactions.presentation.screen.expenses.ExpensesScreenState
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import org.orbitmvi.orbit.Container
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.viewmodel.container
@@ -21,6 +25,19 @@ class IncomeViewModel(
         container(IncomeScreenState.Loading)
 
     private var initJob: Job? = null
+
+    init {
+        accountRepo.accountFlow().onEach { account ->
+            intent {
+                val success = state
+                if (success is IncomeScreenState.Success) {
+                    reduce {
+                        success.copy(currency = account.currency)
+                    }
+                }
+            }
+        }.launchIn(viewModelScope)
+    }
 
     fun onActive() = init()
 
@@ -69,13 +86,11 @@ class IncomeViewModel(
     }
 }
 
-class IncomeViewModelFactory
-    @Inject
-    constructor(
-        private val accountRepo: AccountRepo,
-        private val getIncomeTransactionsUseCase: GetIncomeTransactionsUseCase,
-    ) : ViewModelProvider.Factory {
-        override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            return IncomeViewModel(accountRepo, getIncomeTransactionsUseCase) as T
-        }
+class IncomeViewModelFactory @Inject constructor(
+    private val accountRepo: AccountRepo,
+    private val getIncomeTransactionsUseCase: GetIncomeTransactionsUseCase,
+) : ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        return IncomeViewModel(accountRepo, getIncomeTransactionsUseCase) as T
     }
+}

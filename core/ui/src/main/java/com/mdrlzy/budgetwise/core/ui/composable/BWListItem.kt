@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun BWListItem(
     leadingText: String,
+    leadingTextColor: Color = Color.Unspecified,
     trailingText: String? = null,
     leadDescText: String? = null,
     trailDescText: String? = null,
@@ -57,6 +58,7 @@ fun BWListItem(
             Text(
                 text = leadingText,
                 style = MaterialTheme.typography.bodyLarge,
+                color = leadingTextColor,
                 maxLines = if (leadDescText == null) 2 else 1,
                 overflow = TextOverflow.Ellipsis,
             )

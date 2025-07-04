@@ -32,4 +32,8 @@
     <string name="something_went_wrong">Что-то пошло не так</string>
     <string name="no_internet">Нет интернета</string>
     <string name="retry">Попробовать еще раз</string>
+
+    <string name="account_symbol_title_rub">Российский рубль ₽</string>
+    <string name="account_symbol_title_usd">Американский доллар $</string>
+    <string name="account_symbol_title_eur">Евро</string>
 </resources>

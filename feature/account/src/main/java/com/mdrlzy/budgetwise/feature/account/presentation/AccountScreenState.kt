@@ -7,6 +7,8 @@ sealed class AccountScreenState {
 
     data class Success(
         val account: Account,
+        val isEditMode: Boolean = false,
+        val accountName: String = account.name,
     ) : AccountScreenState()
 
     data class Error(val error: Throwable?) : AccountScreenState()

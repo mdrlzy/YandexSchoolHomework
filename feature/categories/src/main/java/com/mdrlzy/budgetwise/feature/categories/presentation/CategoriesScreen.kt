@@ -98,64 +98,8 @@ private fun Content(
     onSearchQueryChange: (String) -> Unit,
 ) {
     LazyColumn {
-        item {
-            Row(
-                modifier =
-                    Modifier
-                        .height(56.dp)
-                        .fillMaxWidth()
-                        .background(MaterialTheme.colorScheme.surfaceContainerHigh),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                BasicTextField(
-                    modifier =
-                        Modifier
-                            .weight(1f)
-                            .padding(start = 16.dp),
-                    value = state.filter,
-                    onValueChange = {
-                        onSearchQueryChange(it)
-                    },
-                    keyboardOptions =
-                        KeyboardOptions.Default.copy(
-                            imeAction = ImeAction.Search,
-                        ),
-                ) { innerTextField ->
-                    val interactionSource = remember { MutableInteractionSource() }
-                    TextFieldDefaults.DecorationBox(
-                        value = state.filter,
-                        visualTransformation = VisualTransformation.None,
-                        innerTextField = innerTextField,
-                        singleLine = true,
-                        enabled = true,
-                        interactionSource = interactionSource,
-                        contentPadding = PaddingValues(0.dp),
-                        colors =
-                            TextFieldDefaults.colors(
-                                focusedContainerColor = Color.Transparent,
-                                unfocusedContainerColor = Color.Transparent,
-                                focusedIndicatorColor = Color.Transparent,
-                                unfocusedIndicatorColor = Color.Transparent,
-                            ),
-                        placeholder = {
-                            Text(
-                                text = stringResource(CoreRString.find_expense),
-                                style =
-                                    MaterialTheme.typography.bodyLarge.copy(
-                                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                    ),
-                            )
-                        },
-                    )
-                }
-                Icon(
-                    modifier = Modifier.padding(end = 16.dp),
-                    painter = painterResource(CoreRDrawable.ic_search),
-                    contentDescription = null,
-                    tint = Color.Unspecified,
-                )
-            }
-            BWHorDiv()
+        stickyHeader {
+            FilterInput(filter = state.filter, onSearchQueryChange = onSearchQueryChange)
         }
         items(state.filtered) {
             BWListItemEmoji(
@@ -167,4 +111,68 @@ private fun Content(
             BWHorDiv()
         }
     }
+}
+
+@Composable
+private fun FilterInput(
+    filter: String,
+    onSearchQueryChange: (String) -> Unit,
+) {
+    Row(
+        modifier =
+            Modifier
+                .height(56.dp)
+                .fillMaxWidth()
+                .background(MaterialTheme.colorScheme.surfaceContainerHigh),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        BasicTextField(
+            modifier =
+                Modifier
+                    .weight(1f)
+                    .padding(start = 16.dp),
+            value = filter,
+            onValueChange = {
+                onSearchQueryChange(it)
+            },
+            keyboardOptions =
+                KeyboardOptions.Default.copy(
+                    imeAction = ImeAction.Search,
+                ),
+        ) { innerTextField ->
+            val interactionSource = remember { MutableInteractionSource() }
+            TextFieldDefaults.DecorationBox(
+                value = filter,
+                visualTransformation = VisualTransformation.None,
+                innerTextField = innerTextField,
+                singleLine = true,
+                enabled = true,
+                interactionSource = interactionSource,
+                contentPadding = PaddingValues(0.dp),
+                colors =
+                    TextFieldDefaults.colors(
+                        focusedContainerColor = Color.Transparent,
+                        unfocusedContainerColor = Color.Transparent,
+                        focusedIndicatorColor = Color.Transparent,
+                        unfocusedIndicatorColor = Color.Transparent,
+                    ),
+                placeholder = {
+                    Text(
+                        text = stringResource(CoreRString.find_expense),
+                        style =
+                            MaterialTheme.typography.bodyLarge.copy(
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            ),
+                    )
+                },
+            )
+        }
+        Icon(
+            modifier = Modifier.padding(end = 16.dp),
+            painter = painterResource(CoreRDrawable.ic_search),
+            contentDescription = null,
+            tint = Color.Unspecified,
+        )
+    }
+    BWHorDiv()
 }

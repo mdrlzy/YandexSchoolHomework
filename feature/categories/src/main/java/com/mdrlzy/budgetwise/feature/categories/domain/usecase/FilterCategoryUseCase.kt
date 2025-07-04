@@ -8,6 +8,6 @@ import javax.inject.Inject
 class FilterCategoryUseCase @Inject constructor() {
     suspend operator fun invoke(all: List<Category>, filter: String): List<Category> {
         return all
-            .filter { it.name.contains(filter) }
+            .filter { it.name.contains(filter, ignoreCase = true) }
     }
 }

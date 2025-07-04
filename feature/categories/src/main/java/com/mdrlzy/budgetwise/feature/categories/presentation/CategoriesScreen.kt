@@ -85,7 +85,7 @@ fun CategoriesScreen() {
                 is CategoriesScreenState.Success ->
                     Content(
                         state = state as CategoriesScreenState.Success,
-                        onSearchQueryChange = viewModel::onSearchQueryChange,
+                        onSearchQueryChange = viewModel::onFilterChange,
                     )
             }
         }
@@ -112,7 +112,7 @@ private fun Content(
                         Modifier
                             .weight(1f)
                             .padding(start = 16.dp),
-                    value = state.searchQuery,
+                    value = state.filter,
                     onValueChange = {
                         onSearchQueryChange(it)
                     },
@@ -123,7 +123,7 @@ private fun Content(
                 ) { innerTextField ->
                     val interactionSource = remember { MutableInteractionSource() }
                     TextFieldDefaults.DecorationBox(
-                        value = state.searchQuery,
+                        value = state.filter,
                         visualTransformation = VisualTransformation.None,
                         innerTextField = innerTextField,
                         singleLine = true,
@@ -157,7 +157,7 @@ private fun Content(
             }
             BWHorDiv()
         }
-        items(state.categories) {
+        items(state.filtered) {
             BWListItemEmoji(
                 leadingText = it.name,
                 emoji = it.emoji,

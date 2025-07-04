@@ -6,8 +6,9 @@ sealed class CategoriesScreenState {
     data object Loading : CategoriesScreenState()
 
     data class Success(
-        val categories: List<Category>,
-        val searchQuery: String = "",
+        val all: List<Category>,
+        val filter: String = "",
+        val filtered: List<Category>,
     ) : CategoriesScreenState()
 
     data class Error(val error: Throwable?) : CategoriesScreenState()

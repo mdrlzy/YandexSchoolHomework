@@ -2,6 +2,8 @@ package com.mdrlzy.budgetwise.feature.categories.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.mdrlzy.budgetwise.feature.categories.domain.repo.CategoryRepo
+import com.mdrlzy.budgetwise.feature.categories.domain.usecase.FilterCategoryUseCase
 import kotlinx.coroutines.Job
 import org.orbitmvi.orbit.Container
 import org.orbitmvi.orbit.ContainerHost
@@ -9,7 +11,8 @@ import org.orbitmvi.orbit.viewmodel.container
 import javax.inject.Inject
 
 class CategoriesViewModel(
-    private val categoryRepo: com.mdrlzy.budgetwise.feature.categories.domain.repo.CategoryRepo,
+    private val categoryRepo: CategoryRepo,
+    private val filterCategoryUseCase: FilterCategoryUseCase,
 ) : ViewModel(),
     ContainerHost<CategoriesScreenState, CategoriesScreenEffect> {
     override val container: Container<CategoriesScreenState, CategoriesScreenEffect> =
@@ -36,21 +39,27 @@ class CategoriesViewModel(
                             CategoriesScreenState.Error(it)
                         }
                     },
-                    ifRight = {
+                    ifRight = { categories ->
                         reduce {
-                            CategoriesScreenState.Success(it)
+                            CategoriesScreenState.Success(
+                                all = categories,
+                                filtered = categories
+                            )
                         }
                     },
                 )
             }
     }
 
-    fun onSearchQueryChange(query: String) =
+    fun onFilterChange(filter: String) =
         blockingIntent {
             if (state is CategoriesScreenState.Success) {
-                val newState =
-                    (state as CategoriesScreenState.Success)
-                        .copy(searchQuery = query)
+                val success = (state as CategoriesScreenState.Success)
+
+                val newState = success.copy(
+                    filter = filter,
+                    filtered = filterCategoryUseCase(success.all, filter)
+                )
                 reduce {
                     newState
                 }
@@ -58,12 +67,11 @@ class CategoriesViewModel(
         }
 }
 
-class CategoriesViewModelFactory
-    @Inject
-    constructor(
-        private val categoryRepo: com.mdrlzy.budgetwise.feature.categories.domain.repo.CategoryRepo,
-    ) : ViewModelProvider.Factory {
-        override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            return CategoriesViewModel(categoryRepo) as T
-        }
+class CategoriesViewModelFactory @Inject constructor(
+    private val categoryRepo: CategoryRepo,
+    private val filterCategoryUseCase: FilterCategoryUseCase,
+) : ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        return CategoriesViewModel(categoryRepo, filterCategoryUseCase) as T
     }
+}

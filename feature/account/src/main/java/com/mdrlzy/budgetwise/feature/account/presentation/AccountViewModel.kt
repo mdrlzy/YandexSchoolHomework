@@ -2,6 +2,7 @@ package com.mdrlzy.budgetwise.feature.account.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.mdrlzy.budgetwise.core.domain.model.Currency
 import com.mdrlzy.budgetwise.core.domain.repo.AccountRepo
 import kotlinx.coroutines.Job
 import org.orbitmvi.orbit.Container
@@ -44,14 +45,27 @@ class AccountViewModel(
                 )
             }
     }
+
+    fun onChangeCurrency(currency: Currency) = intent {
+        accountRepo.updateCurrency(currency).fold(
+            ifLeft = {
+                reduce {
+                    AccountScreenState.Error(it)
+                }
+            },
+            ifRight = {
+                reduce {
+                    AccountScreenState.Success(it)
+                }
+            },
+        )
+    }
 }
 
-class AccountViewModelFactory
-    @Inject
-    constructor(
-        private val accountRepo: AccountRepo,
-    ) : ViewModelProvider.Factory {
-        override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            return AccountViewModel(accountRepo) as T
-        }
+class AccountViewModelFactory @Inject constructor(
+    private val accountRepo: AccountRepo,
+) : ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        return AccountViewModel(accountRepo) as T
     }
+}

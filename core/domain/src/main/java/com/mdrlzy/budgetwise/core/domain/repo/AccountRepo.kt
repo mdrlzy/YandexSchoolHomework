@@ -2,6 +2,8 @@ package com.mdrlzy.budgetwise.core.domain.repo
 
 import com.mdrlzy.budgetwise.core.domain.EitherT
 import com.mdrlzy.budgetwise.core.domain.model.Account
+import com.mdrlzy.budgetwise.core.domain.model.Currency
+import kotlinx.coroutines.flow.Flow
 
 /**
  * Repository for accessing account-related data.
@@ -25,4 +27,8 @@ interface AccountRepo {
      * @return [EitherT] containing the [Account] or an error.
      */
     suspend fun getAccount(): EitherT<Account>
+
+    suspend fun accountFlow(): Flow<Account>
+
+    suspend fun updateCurrency(currency: Currency): EitherT<Account>
 }

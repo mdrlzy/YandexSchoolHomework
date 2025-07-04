@@ -27,7 +27,7 @@ class AccountRepoImpl(
         }
     }
 
-    override suspend fun accountFlow(): Flow<Account> = flow.filterNotNull()
+    override fun accountFlow(): Flow<Account> = flow.filterNotNull()
 
     override suspend fun getAccountId(): EitherT<Long> {
         flow.first()?.let {

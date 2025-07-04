@@ -2,10 +2,13 @@ package com.mdrlzy.budgetwise.feature.transactions.presentation.screen.expenses
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import com.mdrlzy.budgetwise.core.domain.repo.AccountRepo
 import com.mdrlzy.budgetwise.feature.transactions.domain.usecase.GetExpenseTransactionsUseCase
 import com.mdrlzy.budgetwise.feature.transactions.presentation.model.toUiModel
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import org.orbitmvi.orbit.Container
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.viewmodel.container
@@ -21,6 +24,19 @@ class ExpensesViewModel(
         container(ExpensesScreenState.Loading)
 
     private var initJob: Job? = null
+
+    init {
+        accountRepo.accountFlow().onEach { account ->
+            intent {
+                val success = state
+                if (success is ExpensesScreenState.Success) {
+                    reduce {
+                        success.copy(currency = account.currency)
+                    }
+                }
+            }
+        }.launchIn(viewModelScope)
+    }
 
     fun onActive() = init()
 
@@ -69,13 +85,11 @@ class ExpensesViewModel(
     }
 }
 
-class ExpensesViewModelFactory
-    @Inject
-    constructor(
-        private val accountRepo: AccountRepo,
-        private val getExpenseTransactionsUseCase: GetExpenseTransactionsUseCase,
-    ) : ViewModelProvider.Factory {
-        override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            return ExpensesViewModel(accountRepo, getExpenseTransactionsUseCase) as T
-        }
+class ExpensesViewModelFactory @Inject constructor(
+    private val accountRepo: AccountRepo,
+    private val getExpenseTransactionsUseCase: GetExpenseTransactionsUseCase,
+) : ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        return ExpensesViewModel(accountRepo, getExpenseTransactionsUseCase) as T
     }
+}

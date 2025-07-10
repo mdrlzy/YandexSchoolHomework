@@ -1,3 +1,3 @@
 plugins {
-    id("android-core-module")
+    id("android-api-module")
 }

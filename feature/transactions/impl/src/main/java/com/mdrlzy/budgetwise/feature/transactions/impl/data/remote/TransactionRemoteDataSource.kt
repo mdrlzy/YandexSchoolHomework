@@ -1,17 +1,16 @@
-package com.mdrlzy.budgetwise.feature.transactions.impl.data
+package com.mdrlzy.budgetwise.feature.transactions.impl.data.remote
 
 import com.mdrlzy.budgetwise.core.domain.EitherT
 import com.mdrlzy.budgetwise.core.domain.model.AccountBrief
 import com.mdrlzy.budgetwise.core.domain.model.Category
-import com.mdrlzy.budgetwise.core.network.BWApi
-import com.mdrlzy.budgetwise.core.network.response.TransactionDto
+import com.mdrlzy.budgetwise.feature.transactions.api.remote.TransactionDto
 import com.mdrlzy.budgetwise.feature.transactions.impl.domain.model.Transaction
 import java.time.OffsetDateTime
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 
 class TransactionRemoteDataSource @Inject constructor(
-    private val api: BWApi
+    private val api: BWTransactionsApi
 ) {
     suspend fun getByPeriod(
         accountId: Long,

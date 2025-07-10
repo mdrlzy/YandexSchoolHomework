@@ -1,5 +1,7 @@
-package com.mdrlzy.budgetwise.core.network.response
+package com.mdrlzy.budgetwise.feature.transactions.api.remote
 
+import com.mdrlzy.budgetwise.feature.account.api.remote.AccountBriefResponse
+import com.mdrlzy.budgetwise.feature.categories.api.remote.CategoryResponse
 import kotlinx.serialization.Serializable
 
 @Serializable

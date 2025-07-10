@@ -36,6 +36,13 @@ dependencies {
 
     implementation(libs.arrow.core)
 
+    implementation(libs.ktor.client.core)
+    implementation(libs.ktor.client.android)
+    implementation(libs.ktor.client.logging)
+    implementation(libs.ktor.client.auth)
+    implementation(libs.ktor.client.content.negotiation)
+    implementation(libs.ktor.serialization.json)
+
     implementation(libs.compose.destinations.core)
     ksp(libs.compose.destinations.compiler)
 

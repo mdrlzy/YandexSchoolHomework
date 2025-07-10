@@ -11,6 +11,8 @@ android {
 }
 
 dependencies {
+    implementation(project(":feature:categories:api"))
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

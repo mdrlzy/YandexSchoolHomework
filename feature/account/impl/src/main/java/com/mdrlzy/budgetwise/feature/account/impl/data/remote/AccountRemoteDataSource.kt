@@ -1,14 +1,14 @@
-package com.mdrlzy.budgetwise.feature.account.impl.data
+package com.mdrlzy.budgetwise.feature.account.impl.data.remote
 
 import com.mdrlzy.budgetwise.core.domain.EitherT
 import com.mdrlzy.budgetwise.core.domain.model.Account
-import com.mdrlzy.budgetwise.core.network.BWApi
-import com.mdrlzy.budgetwise.core.network.response.AccountDto
-import com.mdrlzy.budgetwise.core.network.response.AccountUpdateRequest
+import com.mdrlzy.budgetwise.feature.account.api.remote.AccountDto
+import com.mdrlzy.budgetwise.feature.account.api.remote.AccountUpdateRequest
 import java.time.OffsetDateTime
+import javax.inject.Inject
 
-class AccountRemoteDataSource(
-    private val api: BWApi
+class AccountRemoteDataSource @Inject constructor(
+    private val api: BWAccountApi
 ) {
     suspend fun getAccount(): EitherT<Account> {
         return api.getAccounts().map {

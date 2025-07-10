@@ -1,4 +1,4 @@
-package com.mdrlzy.budgetwise.core.network.response
+package com.mdrlzy.budgetwise.feature.categories.api.remote
 
 import kotlinx.serialization.Serializable
 

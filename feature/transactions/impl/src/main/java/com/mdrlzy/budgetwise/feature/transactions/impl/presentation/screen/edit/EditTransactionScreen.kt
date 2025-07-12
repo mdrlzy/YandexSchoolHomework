@@ -86,6 +86,8 @@ fun EditTransactionScreen(
         viewModel.onCategorySelected(it)
     }
 
+    val isSuccess = state is EditTransactionScreenState.Success
+
     Scaffold(
         topBar = {
             val title = stringResource(
@@ -94,7 +96,7 @@ fun EditTransactionScreen(
             BWTopBar(
                 title = title,
                 leadingIcon = painterResource(CoreRDrawable.ic_close),
-                trailingIcon = painterResource(CoreRDrawable.ic_done),
+                trailingIcon = if (isSuccess) painterResource(CoreRDrawable.ic_done) else null,
                 onLeadingIconClick = viewModel::onCancel,
                 onTrailingIconClick = viewModel::onDone,
             )
@@ -226,93 +228,5 @@ private fun EditListItem(
         height = 70.dp,
         onClick = onClick,
     )
-}
-
-@Composable
-private fun AmountField(
-    value: String,
-    onValueChanged: (String) -> Unit
-) {
-    BasicTextField(
-        modifier = Modifier,
-        value = value,
-        onValueChange = {
-            onValueChanged(it)
-        },
-        keyboardOptions =
-            KeyboardOptions.Default.copy(
-                imeAction = ImeAction.Done,
-                keyboardType = KeyboardType.Number,
-            ),
-        textStyle = MaterialTheme.typography.bodyLarge.copy(
-            textAlign = TextAlign.End
-        ),
-        maxLines = 1,
-    ) { innerTextField ->
-        val interactionSource = remember { MutableInteractionSource() }
-        TextFieldDefaults.DecorationBox(
-            value = value,
-            visualTransformation = VisualTransformation.None,
-            innerTextField = innerTextField,
-            singleLine = true,
-            enabled = true,
-            interactionSource = interactionSource,
-            contentPadding = PaddingValues(0.dp),
-            colors =
-                TextFieldDefaults.colors(
-                    focusedContainerColor = Color.Transparent,
-                    unfocusedContainerColor = Color.Transparent,
-                    focusedIndicatorColor = Color.Transparent,
-                    unfocusedIndicatorColor = Color.Transparent,
-                ),
-        )
-    }
-}
-
-@Composable
-private fun CommentField(
-    modifier: Modifier,
-    value: String,
-    onValueChanged: (String) -> Unit,
-) {
-    BasicTextField(
-        modifier = modifier,
-        value = value,
-        onValueChange = {
-            onValueChanged(it)
-        },
-        keyboardOptions =
-            KeyboardOptions.Default.copy(
-                imeAction = ImeAction.Done,
-            ),
-        textStyle = MaterialTheme.typography.bodyLarge,
-    ) { innerTextField ->
-        val interactionSource = remember { MutableInteractionSource() }
-        TextFieldDefaults.DecorationBox(
-            value = value,
-            visualTransformation = VisualTransformation.None,
-            innerTextField = innerTextField,
-            singleLine = false,
-            enabled = true,
-            interactionSource = interactionSource,
-            contentPadding = PaddingValues(0.dp),
-            placeholder = {
-                if (value.isEmpty()) {
-                    Text(
-                        text = "Комментарий",
-                        style = MaterialTheme.typography.bodyLarge.copy(color = Color.Gray),
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                }
-            },
-            colors =
-                TextFieldDefaults.colors(
-                    focusedContainerColor = Color.Transparent,
-                    unfocusedContainerColor = Color.Transparent,
-                    focusedIndicatorColor = Color.Transparent,
-                    unfocusedIndicatorColor = Color.Transparent,
-                ),
-        )
-    }
 }
 

@@ -2,8 +2,6 @@ package com.mdrlzy.budgetwise.feature.transactions.impl.data.remote
 
 import com.mdrlzy.budgetwise.core.domain.EitherT
 import com.mdrlzy.budgetwise.core.network.BWApiClient
-import com.mdrlzy.budgetwise.feature.transactions.api.remote.TransactionDto
-import com.mdrlzy.budgetwise.feature.transactions.api.remote.TransactionRequestDto
 import io.ktor.client.call.body
 import io.ktor.client.request.delete
 import io.ktor.client.request.get

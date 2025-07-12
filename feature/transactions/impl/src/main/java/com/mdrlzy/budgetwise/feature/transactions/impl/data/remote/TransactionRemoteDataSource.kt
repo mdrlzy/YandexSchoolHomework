@@ -1,10 +1,8 @@
 package com.mdrlzy.budgetwise.feature.transactions.impl.data.remote
 
 import com.mdrlzy.budgetwise.core.domain.EitherT
-import com.mdrlzy.budgetwise.core.domain.model.AccountBrief
-import com.mdrlzy.budgetwise.core.domain.model.Category
-import com.mdrlzy.budgetwise.feature.transactions.api.remote.TransactionDto
-import com.mdrlzy.budgetwise.feature.transactions.api.remote.TransactionRequestDto
+import com.mdrlzy.budgetwise.feature.account.api.AccountBrief
+import com.mdrlzy.budgetwise.feature.categories.api.Category
 import com.mdrlzy.budgetwise.feature.transactions.impl.domain.model.TransactionResponse
 import com.mdrlzy.budgetwise.feature.transactions.impl.domain.model.TransactionRequest
 import java.time.OffsetDateTime

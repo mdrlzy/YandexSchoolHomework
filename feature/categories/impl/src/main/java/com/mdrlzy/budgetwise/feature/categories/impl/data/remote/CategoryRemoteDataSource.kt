@@ -1,7 +1,7 @@
 package com.mdrlzy.budgetwise.feature.categories.impl.data.remote
 
 import com.mdrlzy.budgetwise.core.domain.EitherT
-import com.mdrlzy.budgetwise.core.domain.model.Category
+import com.mdrlzy.budgetwise.feature.categories.api.Category
 import com.mdrlzy.budgetwise.feature.categories.api.remote.CategoryResponse
 import javax.inject.Inject
 

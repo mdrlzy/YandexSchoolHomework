@@ -1,4 +1,4 @@
-package com.mdrlzy.budgetwise.feature.transactions.api.remote
+package com.mdrlzy.budgetwise.feature.transactions.impl.data.remote
 
 import com.mdrlzy.budgetwise.feature.account.api.remote.AccountBriefResponse
 import com.mdrlzy.budgetwise.feature.categories.api.remote.CategoryResponse

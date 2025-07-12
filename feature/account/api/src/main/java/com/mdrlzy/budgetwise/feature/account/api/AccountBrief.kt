@@ -1,4 +1,4 @@
-package com.mdrlzy.budgetwise.core.domain.model
+package com.mdrlzy.budgetwise.feature.account.api
 
 /**
  * A lightweight representation of an account, typically used for lists or previews.

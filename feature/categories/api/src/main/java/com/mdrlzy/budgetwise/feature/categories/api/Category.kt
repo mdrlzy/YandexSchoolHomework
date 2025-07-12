@@ -1,4 +1,4 @@
-package com.mdrlzy.budgetwise.core.domain.model
+package com.mdrlzy.budgetwise.feature.categories.api
 
 /**
  * Represents a transaction category used for organizing expenses or income.

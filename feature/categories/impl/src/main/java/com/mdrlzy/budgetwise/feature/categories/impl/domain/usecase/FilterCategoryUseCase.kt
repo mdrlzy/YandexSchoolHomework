@@ -1,6 +1,6 @@
 package com.mdrlzy.budgetwise.feature.categories.impl.domain.usecase
 
-import com.mdrlzy.budgetwise.core.domain.model.Category
+import com.mdrlzy.budgetwise.feature.categories.api.Category
 import com.mdrlzy.budgetwise.feature.categories.impl.di.CategoriesScope
 import javax.inject.Inject
 

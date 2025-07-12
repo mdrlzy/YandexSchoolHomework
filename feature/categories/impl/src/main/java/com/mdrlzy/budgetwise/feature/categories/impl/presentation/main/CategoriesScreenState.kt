@@ -1,6 +1,6 @@
 package com.mdrlzy.budgetwise.feature.categories.impl.presentation.main
 
-import com.mdrlzy.budgetwise.core.domain.model.Category
+import com.mdrlzy.budgetwise.feature.categories.api.Category
 
 sealed class CategoriesScreenState {
     data object Loading : CategoriesScreenState()

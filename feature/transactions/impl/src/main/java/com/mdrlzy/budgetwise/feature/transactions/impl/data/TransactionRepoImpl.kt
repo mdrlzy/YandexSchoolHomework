@@ -43,8 +43,9 @@ class TransactionRepoImpl @Inject constructor(
         }
     }
 
-    override suspend fun delete(id: Long) {
-        remote.delete(id)
-        _changesFlow.emit(Unit)
+    override suspend fun delete(id: Long): EitherT<Unit> {
+        return remote.delete(id).onRight {
+            _changesFlow.emit(Unit)
+        }
     }
 }

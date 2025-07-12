@@ -104,7 +104,7 @@ fun EditTransactionScreen(
             when (val s = state) {
                 is EditTransactionScreenState.Error -> BWErrorRetryScreen(
                     error = s.error,
-                    onRetry = {}
+                    onRetry = { viewModel.onRetry(s.success) }
                 )
 
                 EditTransactionScreenState.Loading -> BWLoadingScreen()

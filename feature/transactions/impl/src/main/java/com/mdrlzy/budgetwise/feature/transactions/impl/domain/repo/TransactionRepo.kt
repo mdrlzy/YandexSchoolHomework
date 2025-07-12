@@ -24,5 +24,5 @@ interface TransactionRepo {
         transactionRequest: TransactionRequest
     ): EitherT<TransactionResponse>
 
-    suspend fun delete(id: Long)
+    suspend fun delete(id: Long): EitherT<Unit>
 }

@@ -2,6 +2,7 @@ package com.mdrlzy.budgetwise.feature.transactions.impl.presentation.screen.edit
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import arrow.core.getOrElse
 import com.mdrlzy.budgetwise.core.domain.CurrUtils
 import com.mdrlzy.budgetwise.core.domain.repo.AccountRepo
 import com.mdrlzy.budgetwise.feature.categories.api.CategoryRepo
@@ -30,51 +31,79 @@ class EditTransactionViewModel(
         container(EditTransactionScreenState.Loading)
 
     init {
-        intent {
-            val account = accountRepo.getAccount().getOrNull()!!
-            val categories = categoryRepo.getAll().getOrNull()!!
-            if (isCreateNotEditMode) {
-                reduce {
-                    EditTransactionScreenState.Success(
-                        account = account,
-                        date = OffsetDateTime.now(),
-                        category = categories.first(),
-                        amount = "",
-                        comment = "",
-                    )
-                }
-            } else {
-                val transaction = transactionRepo.getById(transactionId!!).getOrNull()!!
+        init()
+    }
 
+    private fun init() = intent {
+        val account = accountRepo.getAccount().getOrElse { err ->
+            val success = state as? EditTransactionScreenState.Success
+            reduce {
+                EditTransactionScreenState.Error(err, success)
+            }
+            return@intent
+        }
+        val categories = categoryRepo.getAll().getOrElse { err ->
+            val success = state as? EditTransactionScreenState.Success
+            reduce {
+                EditTransactionScreenState.Error(err, success)
+            }
+            return@intent
+        }
+        if (isCreateNotEditMode) {
+            reduce {
+                EditTransactionScreenState.Success(
+                    account = account,
+                    date = OffsetDateTime.now(),
+                    category = categories.first(),
+                    amount = "0",
+                    comment = "",
+                )
+            }
+        } else {
+            val transaction = transactionRepo.getById(transactionId!!).getOrElse { err ->
+                val success = state as? EditTransactionScreenState.Success
                 reduce {
-                    EditTransactionScreenState.Success(
-                        account = account,
-                        date = transaction.transactionDate,
-                        category = transaction.category,
-                        amount = transaction.amount,
-                        comment = transaction.comment.orEmpty(),
-                    )
+                    EditTransactionScreenState.Error(err, success)
                 }
+                return@intent
+            }
+
+            reduce {
+                EditTransactionScreenState.Success(
+                    account = account,
+                    date = transaction.transactionDate,
+                    category = transaction.category,
+                    amount = transaction.amount,
+                    comment = transaction.comment.orEmpty(),
+                )
             }
         }
     }
 
+    fun onRetry(prevSuccess: EditTransactionScreenState.Success?) = intent {
+        prevSuccess?.let {
+            reduce {
+                it
+            }
+        } ?: init()
+    }
+
     fun onAmountChanged(new: String) = blockingIntent {
-        val success = state as EditTransactionScreenState.Success? ?: return@blockingIntent
+        val success = state as? EditTransactionScreenState.Success ?: return@blockingIntent
         reduce {
             success.copy(amount = CurrUtils.validateInput(success.amount, new))
         }
     }
 
     fun onCommentChanged(input: String) = blockingIntent {
-        val success = state as EditTransactionScreenState.Success? ?: return@blockingIntent
+        val success = state as? EditTransactionScreenState.Success ?: return@blockingIntent
         reduce {
             success.copy(comment = input)
         }
     }
 
     fun onCategorySelected(id: Long) = intent {
-        val success = state as EditTransactionScreenState.Success? ?: return@intent
+        val success = state as? EditTransactionScreenState.Success ?: return@intent
         val category = categoryRepo.getAll().getOrNull()!!.find { it.id == id }!!
         reduce {
             success.copy(category = category)
@@ -82,7 +111,7 @@ class EditTransactionViewModel(
     }
 
     fun onDateChange(millis: Long?) = intent {
-        val success = state as EditTransactionScreenState.Success? ?: return@intent
+        val success = state as? EditTransactionScreenState.Success ?: return@intent
         millis?.let {
             val oldDate = success.date
             val date = Instant.ofEpochMilli(millis)
@@ -100,7 +129,13 @@ class EditTransactionViewModel(
     }
 
     fun onDelete() = intent {
-        transactionRepo.delete(transactionId!!)
+        transactionRepo.delete(transactionId!!).getOrElse { err ->
+            val success = state as? EditTransactionScreenState.Success
+            reduce {
+                EditTransactionScreenState.Error(err, success)
+            }
+            return@intent
+        }
         postSideEffect(EditTransactionScreenEffect.NavigateBack)
     }
 
@@ -110,11 +145,21 @@ class EditTransactionViewModel(
 
 
     fun onDone() = intent {
-        val success = state as EditTransactionScreenState.Success? ?: return@intent
+        val success = state as? EditTransactionScreenState.Success ?: return@intent
         if (isCreateNotEditMode) {
-            transactionRepo.create(success.toRequest())
+            transactionRepo.create(success.toRequest()).getOrElse { err ->
+                reduce {
+                    EditTransactionScreenState.Error(err, success)
+                }
+                return@intent
+            }
         } else {
-            transactionRepo.update(transactionId!!, success.toRequest())
+            transactionRepo.update(transactionId!!, success.toRequest()).getOrElse { err ->
+                reduce {
+                    EditTransactionScreenState.Error(err, success)
+                }
+                return@intent
+            }
         }
         postSideEffect(EditTransactionScreenEffect.NavigateBack)
     }

@@ -42,8 +42,8 @@ class TransactionRemoteDataSource @Inject constructor(
         return api.updateTransaction(id, transactionRequest.toDto()).map { it.toDomain() }
     }
 
-    suspend fun delete(id: Long) {
-        api.deleteTransaction(id)
+    suspend fun delete(id: Long): EitherT<Unit> {
+        return api.deleteTransaction(id)
     }
 }
 

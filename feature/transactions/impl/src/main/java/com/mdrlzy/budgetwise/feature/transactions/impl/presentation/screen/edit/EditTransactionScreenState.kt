@@ -16,7 +16,7 @@ sealed class EditTransactionScreenState {
         val comment: String,
     ) : EditTransactionScreenState()
 
-    data class Error(val error: Throwable?) : EditTransactionScreenState()
+    data class Error(val error: Throwable?, val success: Success?) : EditTransactionScreenState()
 }
 
 sealed class EditTransactionScreenEffect {
@@ -26,7 +26,7 @@ sealed class EditTransactionScreenEffect {
 fun EditTransactionScreenState.Success.toRequest() = TransactionRequest(
     accountId = account.id,
     categoryId = category.id,
-    amount = amount.toString(),
+    amount = amount,
     transactionDate = date,
     comment = comment.ifEmpty { null }
 )

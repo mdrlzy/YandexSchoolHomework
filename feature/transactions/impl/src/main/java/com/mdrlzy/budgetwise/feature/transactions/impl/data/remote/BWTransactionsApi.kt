@@ -59,10 +59,10 @@ class BWTransactionsApi @Inject constructor(
             }.body()
         }
 
-    suspend fun deleteTransaction(id: Long) =
+    suspend fun deleteTransaction(id: Long): EitherT<Unit> =
         client.makeRequest { httpClient, baseUrl ->
             httpClient.delete {
                 url("$baseUrl/transactions/$id")
-            }
+            }.body()
         }
 }

@@ -3,7 +3,7 @@ package com.mdrlzy.budgetwise.core.di.module
 import android.content.Context
 import com.mdrlzy.budgetwise.core.domain.BuildConfigFields
 import com.mdrlzy.budgetwise.core.domain.repo.NetworkStatus
-import com.mdrlzy.budgetwise.core.network.BWApi
+import com.mdrlzy.budgetwise.core.network.BWApiClient
 import com.mdrlzy.budgetwise.core.network.HttpClientBuilder
 import com.mdrlzy.budgetwise.core.network.NetworkStatusImpl
 import dagger.Module
@@ -19,10 +19,10 @@ class NetworkModule {
 
     @Singleton
     @Provides
-    fun bwApi(
+    fun bwApiClient(
         client: HttpClient,
         networkStatus: NetworkStatus,
-    ) = BWApi(client, networkStatus)
+    ) = BWApiClient(client, networkStatus)
 
     @Singleton
     @Provides

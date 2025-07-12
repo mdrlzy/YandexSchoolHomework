@@ -9,7 +9,7 @@
     <string name="all">Всего</string>
     <string name="balance">Баланс</string>
     <string name="currency">Валюта</string>
-    <string name="my_expenses">Мои статьи</string>
+    <string name="my_categories">Мои статьи</string>
     <string name="find_expense">Найти статью</string>
     <string name="settings">Настройки</string>
     <string name="sounds">Звуки</string>
@@ -36,4 +36,15 @@
     <string name="account_symbol_title_rub">Российский рубль ₽</string>
     <string name="account_symbol_title_usd">Американский доллар $</string>
     <string name="account_symbol_title_eur">Евро</string>
+
+    <string name="account">Счет</string>
+    <string name="category">Статья</string>
+    <string name="comment">Комментарий</string>
+    <string name="amount">Сумма</string>
+    <string name="date">Дата</string>
+    <string name="time">Время</string>
+    <string name="delete_expense">Удалить расход</string>
+    <string name="my_expenses">Мои расходы</string>
+    <string name="my_income">Мои доходы</string>
+
 </resources>

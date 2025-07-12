@@ -27,7 +27,8 @@ object HttpClientBuilder {
             install(ContentNegotiation) {
                 json(
                     Json {
-                        explicitNulls = false
+                        encodeDefaults = true
+                        explicitNulls = true
                         ignoreUnknownKeys = true
                     },
                 )

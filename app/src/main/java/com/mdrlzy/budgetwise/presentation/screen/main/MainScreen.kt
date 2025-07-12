@@ -15,17 +15,25 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.mdrlzy.budgetwise.core.di.CoreComponentProvider
 import com.mdrlzy.budgetwise.core.ui.utils.keyboardAsState
+import com.mdrlzy.budgetwise.feature.transactions.impl.presentation.navigation.TransactionsExternalNavigator
+import com.mdrlzy.budgetwise.feature.transactions.impl.presentation.screen.edit.EditTransactionScreen
 import com.mdrlzy.budgetwise.presentation.navigation.AnimatedBottomNavigation
 import com.ramcosta.composedestinations.DestinationsNavHost
 import com.ramcosta.composedestinations.generated.NavGraphs
+import com.ramcosta.composedestinations.generated.categories.destinations.SearchCategoryScreenDestination
 import com.ramcosta.composedestinations.generated.destinations.SplashScreenDestination
+import com.ramcosta.composedestinations.generated.transactions.destinations.EditTransactionScreenDestination
 import com.ramcosta.composedestinations.generated.transactions.destinations.ExpensesScreenDestination
+import com.ramcosta.composedestinations.manualcomposablecalls.composable
+import com.ramcosta.composedestinations.navargs.primitives.longNavType
 import com.ramcosta.composedestinations.rememberNavHostEngine
+import com.ramcosta.composedestinations.scope.resultRecipient
 import kotlinx.coroutines.flow.drop
 
 private val noBottomBarRoutes =
     listOf(
         SplashScreenDestination.route,
+        SearchCategoryScreenDestination.route,
     )
 
 @Composable
@@ -97,6 +105,24 @@ fun MainScreen() {
             engine = engine,
             navController = navController,
             navGraph = NavGraphs.main,
-        )
+        ) {
+            composable(EditTransactionScreenDestination) {
+                val externalNavigator = remember {
+                    object : TransactionsExternalNavigator {
+                        override fun navigateToSearchCategory() {
+                            destinationsNavigator.navigate(SearchCategoryScreenDestination)
+                        }
+                    }
+                }
+
+                EditTransactionScreen(
+                    navigator = destinationsNavigator,
+                    isIncomeMode = navArgs.isIncomeMode,
+                    transactionId = navArgs.transactionId,
+                    externalNavigator = externalNavigator,
+                    resultRecipient = resultRecipient<SearchCategoryScreenDestination, Long>(longNavType),
+                )
+            }
+        }
     }
 }

@@ -31,9 +31,12 @@ android {
 }
 
 dependencies {
-    implementation(project(":feature:transactions"))
-    implementation(project(":feature:account"))
-    implementation(project(":feature:categories"))
+    implementation(project(":feature:account:api"))
+    implementation(project(":feature:account:impl"))
+    implementation(project(":feature:categories:api"))
+    implementation(project(":feature:categories:impl"))
+    implementation(project(":feature:transactions:api"))
+    implementation(project(":feature:transactions:impl"))
     implementation(project(":feature:settings"))
 
     implementation(libs.lottie.compose)

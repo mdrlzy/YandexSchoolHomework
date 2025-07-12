@@ -32,6 +32,7 @@ import com.mdrlzy.budgetwise.core.ui.utils.CurrencyUtils
 import com.mdrlzy.budgetwise.feature.transactions.impl.di.TransactionsComponentHolder
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.ExternalModuleGraph
+import com.ramcosta.composedestinations.generated.transactions.destinations.EditTransactionScreenDestination
 import com.ramcosta.composedestinations.generated.transactions.destinations.TransactionHistoryScreenDestination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import org.orbitmvi.orbit.compose.collectAsState
@@ -73,7 +74,11 @@ fun ExpensesScreen(
         },
         floatingActionButton = {
             if (state is ExpensesScreenState.Success) {
-                BWAddFab { }
+                BWAddFab {
+                    navigator.navigate(
+                        EditTransactionScreenDestination(false, null)
+                    )
+                }
             }
         },
     ) {
@@ -86,14 +91,27 @@ fun ExpensesScreen(
 
                 ExpensesScreenState.Loading -> BWLoadingScreen()
 
-                is ExpensesScreenState.Success -> Content(state as ExpensesScreenState.Success)
+                is ExpensesScreenState.Success -> Content(
+                    state as ExpensesScreenState.Success,
+                    onItemClick = { id ->
+                        navigator.navigate(
+                            EditTransactionScreenDestination(
+                                false,
+                                id
+                            )
+                        )
+                    }
+                )
             }
         }
     }
 }
 
 @Composable
-private fun Content(state: ExpensesScreenState.Success) {
+private fun Content(
+    state: ExpensesScreenState.Success,
+    onItemClick: (id: Long) -> Unit,
+) {
     LazyColumn {
         item {
             BWListItem(
@@ -112,7 +130,7 @@ private fun Content(state: ExpensesScreenState.Success) {
                 emoji = it.emoji,
                 height = 70.dp,
                 trailingIcon = painterResource(CoreRDrawable.ic_more),
-                onClick = {},
+                onClick = { onItemClick(it.id) },
             )
             BWHorDiv()
         }

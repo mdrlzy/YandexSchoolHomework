@@ -27,8 +27,10 @@ import com.mdrlzy.budgetwise.core.ui.composable.BWTopBar
 import com.mdrlzy.budgetwise.core.ui.composable.ListenActiveScreenEffect
 import com.mdrlzy.budgetwise.core.ui.utils.CurrencyUtils
 import com.mdrlzy.budgetwise.feature.transactions.impl.di.TransactionsComponentHolder
+import com.mdrlzy.budgetwise.feature.transactions.impl.presentation.screen.edit.EditTransactionScreen
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.ExternalModuleGraph
+import com.ramcosta.composedestinations.generated.transactions.destinations.EditTransactionScreenDestination
 import com.ramcosta.composedestinations.generated.transactions.destinations.TransactionHistoryScreenDestination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import org.orbitmvi.orbit.compose.collectAsState
@@ -66,7 +68,11 @@ fun IncomeScreen(navigator: DestinationsNavigator) {
         },
         floatingActionButton = {
             if (state is IncomeScreenState.Success) {
-                BWAddFab { }
+                BWAddFab {
+                    navigator.navigate(
+                        EditTransactionScreenDestination(true, null)
+                    )
+                }
             }
         },
     ) {
@@ -79,14 +85,27 @@ fun IncomeScreen(navigator: DestinationsNavigator) {
 
                 IncomeScreenState.Loading -> BWLoadingScreen()
 
-                is IncomeScreenState.Success -> Content(state as IncomeScreenState.Success)
+                is IncomeScreenState.Success -> Content(
+                    state = state as IncomeScreenState.Success,
+                    onItemClick = { id ->
+                        navigator.navigate(
+                            EditTransactionScreenDestination(
+                                true,
+                                id
+                            )
+                        )
+                    }
+                )
             }
         }
     }
 }
 
 @Composable
-private fun Content(state: IncomeScreenState.Success) {
+private fun Content(
+    state: IncomeScreenState.Success,
+    onItemClick: (id: Long) -> Unit,
+) {
     LazyColumn {
         item {
             BWListItem(
@@ -103,7 +122,7 @@ private fun Content(state: IncomeScreenState.Success) {
                 trailingText = it.amount,
                 height = 70.dp,
                 trailingIcon = painterResource(CoreRDrawable.ic_more),
-                onClick = {},
+                onClick = { onItemClick(it.id) },
             )
             BWHorDiv()
         }

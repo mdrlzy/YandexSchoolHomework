@@ -31,6 +31,7 @@ import com.mdrlzy.budgetwise.core.ui.utils.DateTimeHelper
 import com.mdrlzy.budgetwise.feature.transactions.impl.di.TransactionsComponentHolder
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.ExternalModuleGraph
+import com.ramcosta.composedestinations.generated.transactions.destinations.EditTransactionScreenDestination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import org.orbitmvi.orbit.compose.collectAsState
 
@@ -76,6 +77,14 @@ fun TransactionHistoryScreen(
                         state = state as TransactionHistoryScreenState.Success,
                         onStartDateSelected = viewModel::onStartDateSelected,
                         onEndDateSelected = viewModel::onEndDateSelected,
+                        onItemClick = { id ->
+                            navigator.navigate(
+                                EditTransactionScreenDestination(
+                                    isIncomeMode,
+                                    id
+                                )
+                            )
+                        }
                     )
             }
         }
@@ -87,6 +96,7 @@ private fun Content(
     state: TransactionHistoryScreenState.Success,
     onStartDateSelected: (Long?) -> Unit,
     onEndDateSelected: (Long?) -> Unit,
+    onItemClick: (id: Long) -> Unit,
 ) {
     var showStartDatePicker by remember { mutableStateOf(false) }
     var showEndDatePicker by remember { mutableStateOf(false) }

@@ -23,6 +23,6 @@ class BWApiClient(
     }
 
     companion object {
-        val baseUrl = "https://shmr-finance.ru/api/v1/"
+        val baseUrl = "https://shmr-finance.ru/api/v1"
     }
 }

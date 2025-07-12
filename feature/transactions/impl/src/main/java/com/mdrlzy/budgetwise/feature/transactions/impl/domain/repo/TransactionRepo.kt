@@ -1,7 +1,8 @@
 package com.mdrlzy.budgetwise.feature.transactions.impl.domain.repo
 
 import com.mdrlzy.budgetwise.core.domain.EitherT
-import com.mdrlzy.budgetwise.feature.transactions.impl.domain.model.Transaction
+import com.mdrlzy.budgetwise.feature.transactions.impl.domain.model.TransactionRequest
+import com.mdrlzy.budgetwise.feature.transactions.impl.domain.model.TransactionResponse
 import java.time.OffsetDateTime
 
 interface TransactionRepo {
@@ -9,7 +10,16 @@ interface TransactionRepo {
         accountId: Long,
         start: OffsetDateTime,
         end: OffsetDateTime,
-    ): EitherT<List<Transaction>>
+    ): EitherT<List<TransactionResponse>>
 
-    suspend fun getById(id: Long): EitherT<Transaction>
+    suspend fun getById(id: Long): EitherT<TransactionResponse>
+
+    suspend fun create(transactionRequest: TransactionRequest): EitherT<TransactionResponse>
+
+    suspend fun update(
+        id: Long,
+        transactionRequest: TransactionRequest
+    ): EitherT<TransactionResponse>
+
+    suspend fun delete(id: Long)
 }

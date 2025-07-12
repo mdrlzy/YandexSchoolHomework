@@ -1,7 +1,7 @@
 package com.mdrlzy.budgetwise.feature.categories.impl.di
 
 import com.mdrlzy.budgetwise.feature.categories.impl.data.CategoryRepoImpl
-import com.mdrlzy.budgetwise.feature.categories.impl.domain.repo.CategoryRepo
+import com.mdrlzy.budgetwise.feature.categories.api.CategoryRepo
 import dagger.Binds
 import dagger.Module
 

@@ -2,7 +2,7 @@ package com.mdrlzy.budgetwise.feature.categories.impl.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.mdrlzy.budgetwise.feature.categories.impl.domain.repo.CategoryRepo
+import com.mdrlzy.budgetwise.feature.categories.api.CategoryRepo
 import com.mdrlzy.budgetwise.feature.categories.impl.domain.usecase.FilterCategoryUseCase
 import kotlinx.coroutines.Job
 import org.orbitmvi.orbit.Container

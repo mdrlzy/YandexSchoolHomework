@@ -11,5 +11,7 @@ configure<LibraryExtension> {
 }
 
 dependencies {
+    implementation(project(":core:domain"))
     implementation(libs.kotlinx.serialization.core)
+    implementation(libs.arrow.core)
 }

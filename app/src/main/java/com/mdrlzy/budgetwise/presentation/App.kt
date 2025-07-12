@@ -6,8 +6,12 @@ import com.mdrlzy.budgetwise.core.di.CoreComponent
 import com.mdrlzy.budgetwise.core.di.CoreComponentProvider
 import com.mdrlzy.budgetwise.core.domain.BuildConfigFields
 import com.mdrlzy.budgetwise.di.DaggerAppComponent
+import com.mdrlzy.budgetwise.feature.categories.api.CategoryRepo
+import com.mdrlzy.budgetwise.feature.categories.api.di.CategoriesFeatureApi
+import com.mdrlzy.budgetwise.feature.categories.api.di.CategoriesFeatureApiProvider
+import com.mdrlzy.budgetwise.feature.categories.impl.di.CategoriesComponentHolder
 
-class App : Application(), CoreComponentProvider {
+class App : Application(), CoreComponentProvider, CategoriesFeatureApiProvider {
     lateinit var component: CoreComponent
         private set
 
@@ -21,4 +25,8 @@ class App : Application(), CoreComponentProvider {
     }
 
     override fun provideCoreComponent() = component
+
+    override fun provideCategoriesFeatureApi() = CategoriesComponentHolder.provide(this)
+
+
 }

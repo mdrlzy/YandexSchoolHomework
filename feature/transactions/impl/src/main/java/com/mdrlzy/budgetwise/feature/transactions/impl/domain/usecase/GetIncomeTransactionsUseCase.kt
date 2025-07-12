@@ -3,7 +3,7 @@ package com.mdrlzy.budgetwise.feature.transactions.impl.domain.usecase
 import arrow.core.flatMap
 import com.mdrlzy.budgetwise.core.domain.EitherT
 import com.mdrlzy.budgetwise.core.domain.repo.AccountRepo
-import com.mdrlzy.budgetwise.feature.transactions.impl.domain.model.Transaction
+import com.mdrlzy.budgetwise.feature.transactions.impl.domain.model.TransactionResponse
 import com.mdrlzy.budgetwise.feature.transactions.impl.domain.repo.TransactionRepo
 import java.time.OffsetDateTime
 import javax.inject.Inject
@@ -15,7 +15,7 @@ class GetIncomeTransactionsUseCase @Inject constructor(
     suspend operator fun invoke(
         start: OffsetDateTime,
         end: OffsetDateTime,
-    ): EitherT<List<Transaction>> {
+    ): EitherT<List<TransactionResponse>> {
         return accountRepo.getAccountId().flatMap {
             transactionRepo.getByPeriod(
                 it,

@@ -69,7 +69,7 @@ fun CategoriesScreen() {
     Scaffold(
         topBar = {
             BWTopBar(
-                title = stringResource(CoreRString.my_expenses),
+                title = stringResource(CoreRString.my_categories),
             )
         },
     ) {

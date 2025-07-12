@@ -5,9 +5,11 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.mdrlzy.budgetwise.core.domain.repo.AccountRepo
 import com.mdrlzy.budgetwise.core.ui.utils.DateTimeHelper
+import com.mdrlzy.budgetwise.feature.transactions.impl.domain.repo.TransactionRepo
 import com.mdrlzy.budgetwise.feature.transactions.impl.domain.usecase.GetExpenseTransactionsUseCase
 import com.mdrlzy.budgetwise.feature.transactions.impl.domain.usecase.GetIncomeTransactionsUseCase
 import com.mdrlzy.budgetwise.feature.transactions.impl.presentation.model.toUiModel
+import com.mdrlzy.budgetwise.feature.transactions.impl.presentation.screen.expenses.ExpensesScreenState
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -24,6 +26,7 @@ import java.time.ZoneId
 class TransactionHistoryViewModel(
     private val isIncomeMode: Boolean,
     private val accountRepo: AccountRepo,
+    private val transactionRepo: TransactionRepo,
     private val getIncomeTransactionsUseCase: GetIncomeTransactionsUseCase,
     private val getExpenseTransactionsUseCase: GetExpenseTransactionsUseCase,
 ) : ViewModel(), ContainerHost<TransactionHistoryScreenState, TransactionHistoryScreenEffect> {
@@ -44,6 +47,10 @@ class TransactionHistoryViewModel(
                     }
                 }
             }
+        }.launchIn(viewModelScope)
+
+        transactionRepo.changesFlow.onEach {
+            init()
         }.launchIn(viewModelScope)
     }
 
@@ -137,6 +144,7 @@ class TransactionHistoryViewModel(
 class TransactionHistoryViewModelFactory @AssistedInject constructor(
     @Assisted private val isIncomeMode: Boolean,
     private val accountRepo: AccountRepo,
+    private val transactionRepo: TransactionRepo,
     private val getIncomeTransactionsUseCase: GetIncomeTransactionsUseCase,
     private val getExpenseTransactionsUseCase: GetExpenseTransactionsUseCase,
 ) : ViewModelProvider.Factory {
@@ -144,6 +152,7 @@ class TransactionHistoryViewModelFactory @AssistedInject constructor(
         return TransactionHistoryViewModel(
             isIncomeMode,
             accountRepo,
+            transactionRepo,
             getIncomeTransactionsUseCase,
             getExpenseTransactionsUseCase,
         ) as T

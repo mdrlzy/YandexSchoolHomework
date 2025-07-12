@@ -158,7 +158,7 @@ private fun Content(
                 emoji = it.emoji,
                 height = 70.dp,
                 trailingIcon = painterResource(CoreRDrawable.ic_more),
-                onClick = {},
+                onClick = { onItemClick(it.id) },
             )
             BWHorDiv()
         }

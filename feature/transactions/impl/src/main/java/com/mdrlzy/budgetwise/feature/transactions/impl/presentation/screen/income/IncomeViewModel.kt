@@ -1,11 +1,14 @@
 package com.mdrlzy.budgetwise.feature.transactions.impl.presentation.screen.income
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.mdrlzy.budgetwise.core.domain.repo.AccountRepo
+import com.mdrlzy.budgetwise.feature.transactions.impl.domain.repo.TransactionRepo
 import com.mdrlzy.budgetwise.feature.transactions.impl.domain.usecase.GetIncomeTransactionsUseCase
 import com.mdrlzy.budgetwise.feature.transactions.impl.presentation.model.toUiModel
+import com.mdrlzy.budgetwise.feature.transactions.impl.presentation.screen.expenses.ExpensesScreenState
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -18,6 +21,7 @@ import javax.inject.Inject
 
 class IncomeViewModel(
     private val accountRepo: AccountRepo,
+    private val transactionRepo: TransactionRepo,
     private val getIncomeTransactionsUseCase: GetIncomeTransactionsUseCase,
 ) : ViewModel(), ContainerHost<IncomeScreenState, IncomeScreenEffect> {
     override val container: Container<IncomeScreenState, IncomeScreenEffect> =
@@ -36,6 +40,10 @@ class IncomeViewModel(
                 }
             }
         }.launchIn(viewModelScope)
+
+        transactionRepo.changesFlow.onEach {
+            load()
+        }.launchIn(viewModelScope)
     }
 
     fun onActive() = init()
@@ -51,45 +59,50 @@ class IncomeViewModel(
             intent {
                 if (state is IncomeScreenState.Success) return@intent
 
-                reduce {
-                    IncomeScreenState.Loading
-                }
-
-                val today = OffsetDateTime.now()
-                val transactionsResult =
-                    getIncomeTransactionsUseCase.invoke(
-                        today.withHour(0).withMinute(0),
-                        today.withHour(23).withMinute(59),
-                    )
-                val accountResult = accountRepo.getAccount()
-
-                if (transactionsResult.isRight() && accountResult.isRight()) {
-                    val transactions = transactionsResult.getOrNull()!!.map { it.toUiModel() }
-                    val account = accountResult.getOrNull()!!
-                    val sum = transactions.sumOf { BigDecimal(it.amount) }
-
-                    reduce {
-                        IncomeScreenState.Success(
-                            sum = sum,
-                            currency = account.currency,
-                            transactions = transactions,
-                        )
-                    }
-                } else {
-                    val left = transactionsResult.leftOrNull() ?: accountResult.leftOrNull()
-                    reduce {
-                        IncomeScreenState.Error(left)
-                    }
-                }
+                load()
             }
+    }
+
+    private fun load() = intent {
+        reduce {
+            IncomeScreenState.Loading
+        }
+
+        val today = OffsetDateTime.now()
+        val transactionsResult =
+            getIncomeTransactionsUseCase.invoke(
+                today.withHour(0).withMinute(0),
+                today.withHour(23).withMinute(59),
+            )
+        val accountResult = accountRepo.getAccount()
+
+        if (transactionsResult.isRight() && accountResult.isRight()) {
+            val transactions = transactionsResult.getOrNull()!!.map { it.toUiModel() }
+            val account = accountResult.getOrNull()!!
+            val sum = transactions.sumOf { BigDecimal(it.amount) }
+
+            reduce {
+                IncomeScreenState.Success(
+                    sum = sum,
+                    currency = account.currency,
+                    transactions = transactions,
+                )
+            }
+        } else {
+            val left = transactionsResult.leftOrNull() ?: accountResult.leftOrNull()
+            reduce {
+                IncomeScreenState.Error(left)
+            }
+        }
     }
 }
 
 class IncomeViewModelFactory @Inject constructor(
     private val accountRepo: AccountRepo,
+    private val transactionRepo: TransactionRepo,
     private val getIncomeTransactionsUseCase: GetIncomeTransactionsUseCase,
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return IncomeViewModel(accountRepo, getIncomeTransactionsUseCase) as T
+        return IncomeViewModel(accountRepo, transactionRepo, getIncomeTransactionsUseCase) as T
     }
 }

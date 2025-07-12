@@ -1,14 +1,12 @@
 package com.mdrlzy.budgetwise.feature.transactions.impl.data
 
 import com.mdrlzy.budgetwise.core.domain.EitherT
-import com.mdrlzy.budgetwise.core.domain.model.Account
 import com.mdrlzy.budgetwise.feature.transactions.impl.data.remote.TransactionRemoteDataSource
 import com.mdrlzy.budgetwise.feature.transactions.impl.domain.model.TransactionRequest
 import com.mdrlzy.budgetwise.feature.transactions.impl.domain.model.TransactionResponse
 import com.mdrlzy.budgetwise.feature.transactions.impl.domain.repo.TransactionRepo
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
 import java.time.OffsetDateTime
 import javax.inject.Inject
 
@@ -30,7 +28,7 @@ class TransactionRepoImpl @Inject constructor(
         return remote.getById(id)
     }
 
-    override suspend fun create(transactionRequest: TransactionRequest): EitherT<TransactionResponse> {
+    override suspend fun create(transactionRequest: TransactionRequest): EitherT<Unit> {
         return remote.create(transactionRequest).onRight {
             _changesFlow.emit(Unit)
         }

@@ -45,9 +45,12 @@ import com.mdrlzy.budgetwise.core.ui.composable.BWListItemIcon
 import com.mdrlzy.budgetwise.core.ui.composable.BWLoadingScreen
 import com.mdrlzy.budgetwise.core.ui.composable.BWTopBar
 import com.mdrlzy.budgetwise.feature.transactions.impl.di.TransactionsComponentHolder
+import com.mdrlzy.budgetwise.feature.transactions.impl.presentation.navigation.TransactionsExternalNavigator
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.ExternalModuleGraph
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import com.ramcosta.composedestinations.result.OpenResultRecipient
+import com.ramcosta.composedestinations.result.onResult
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 import java.time.format.DateTimeFormatter
@@ -58,6 +61,8 @@ fun EditTransactionScreen(
     navigator: DestinationsNavigator,
     isIncomeMode: Boolean,
     transactionId: Long?,
+    externalNavigator: TransactionsExternalNavigator,
+    resultRecipient: OpenResultRecipient<Long>,
 ) {
     val context = LocalContext.current
     val component =
@@ -75,6 +80,10 @@ fun EditTransactionScreen(
         when (effect) {
             EditTransactionScreenEffect.NavigateBack -> navigator.popBackStack()
         }
+    }
+
+    resultRecipient.onResult {
+        viewModel.onCategorySelected(it)
     }
 
     Scaffold(
@@ -104,7 +113,7 @@ fun EditTransactionScreen(
                     Content(
                         transactionId = transactionId,
                         state = s,
-                        onCategoryClick = {},
+                        onCategoryClick = { externalNavigator.navigateToSearchCategory() },
                         onAmountChanged = viewModel::onAmountChanged,
                         onCommentChanged = viewModel::onCommentChanged,
                         onDateSelected = viewModel::onDateChange,
@@ -151,7 +160,7 @@ private fun Content(
         EditListItem(
             leadText = stringResource(CoreRString.category),
             trailText = state.category.name,
-            onClick = {},
+            onClick = onCategoryClick,
         )
         BWHorDiv()
         BWListItem(
@@ -249,15 +258,6 @@ private fun AmountField(
             enabled = true,
             interactionSource = interactionSource,
             contentPadding = PaddingValues(0.dp),
-            placeholder = {
-                if (value.isEmpty()) {
-                    Text(
-                        text = stringResource(CoreRString.comment),
-                        style = MaterialTheme.typography.bodyLarge.copy(color = Color.Gray),
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                }
-            },
             colors =
                 TextFieldDefaults.colors(
                     focusedContainerColor = Color.Transparent,

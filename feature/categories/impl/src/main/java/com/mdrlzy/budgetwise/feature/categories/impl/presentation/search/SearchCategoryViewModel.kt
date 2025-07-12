@@ -1,54 +1,45 @@
-package com.mdrlzy.budgetwise.feature.categories.impl.presentation
+package com.mdrlzy.budgetwise.feature.categories.impl.presentation.search
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.mdrlzy.budgetwise.feature.categories.api.CategoryRepo
 import com.mdrlzy.budgetwise.feature.categories.impl.domain.usecase.FilterCategoryUseCase
-import kotlinx.coroutines.Job
+import com.mdrlzy.budgetwise.feature.categories.impl.presentation.main.CategoriesScreenEffect
+import com.mdrlzy.budgetwise.feature.categories.impl.presentation.main.CategoriesScreenState
 import org.orbitmvi.orbit.Container
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.viewmodel.container
 import javax.inject.Inject
 
-class CategoriesViewModel(
+class SearchCategoryViewModel(
     private val categoryRepo: CategoryRepo,
     private val filterCategoryUseCase: FilterCategoryUseCase,
-) : ViewModel(),
-    ContainerHost<CategoriesScreenState, CategoriesScreenEffect> {
+) : ViewModel(), ContainerHost<CategoriesScreenState, CategoriesScreenEffect> {
     override val container: Container<CategoriesScreenState, CategoriesScreenEffect> =
         container(CategoriesScreenState.Loading)
 
-    private var initJob: Job? = null
-
-    fun onActive() = init()
-
-    fun onInactive() {
-        initJob?.cancel()
+    init {
+        init()
     }
 
     fun onRetry() = init()
 
-    private fun init() {
-        initJob =
-            intent {
-                if (state is CategoriesScreenState.Success) return@intent
-
-                categoryRepo.getAll().fold(
-                    ifLeft = {
-                        reduce {
-                            CategoriesScreenState.Error(it)
-                        }
-                    },
-                    ifRight = { categories ->
-                        reduce {
-                            CategoriesScreenState.Success(
-                                all = categories,
-                                filtered = categories
-                            )
-                        }
-                    },
-                )
-            }
+    private fun init() = intent {
+        categoryRepo.getAll().fold(
+            ifLeft = {
+                reduce {
+                    CategoriesScreenState.Error(it)
+                }
+            },
+            ifRight = { categories ->
+                reduce {
+                    CategoriesScreenState.Success(
+                        all = categories,
+                        filtered = categories
+                    )
+                }
+            },
+        )
     }
 
     fun onFilterChange(filter: String) =
@@ -67,11 +58,11 @@ class CategoriesViewModel(
         }
 }
 
-class CategoriesViewModelFactory @Inject constructor(
+class SearchCategoryViewModelFactory @Inject constructor(
     private val categoryRepo: CategoryRepo,
     private val filterCategoryUseCase: FilterCategoryUseCase,
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return CategoriesViewModel(categoryRepo, filterCategoryUseCase) as T
+        return SearchCategoryViewModel(categoryRepo, filterCategoryUseCase) as T
     }
 }

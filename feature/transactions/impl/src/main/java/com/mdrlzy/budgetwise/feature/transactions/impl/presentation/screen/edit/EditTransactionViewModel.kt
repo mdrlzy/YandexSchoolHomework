@@ -73,8 +73,12 @@ class EditTransactionViewModel(
         }
     }
 
-    fun onCategoryChange() = intent {
-
+    fun onCategorySelected(id: Long) = intent {
+        val success = state as EditTransactionScreenState.Success? ?: return@intent
+        val category = categoryRepo.getAll().getOrNull()!!.find { it.id == id }!!
+        reduce {
+            success.copy(category = category)
+        }
     }
 
     fun onDateChange(millis: Long?) = intent {

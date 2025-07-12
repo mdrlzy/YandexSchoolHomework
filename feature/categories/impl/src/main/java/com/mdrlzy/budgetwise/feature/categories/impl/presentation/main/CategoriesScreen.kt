@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 
-package com.mdrlzy.budgetwise.feature.categories.impl.presentation
+package com.mdrlzy.budgetwise.feature.categories.impl.presentation.main
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -42,6 +42,7 @@ import com.mdrlzy.budgetwise.core.ui.composable.BWListItemEmoji
 import com.mdrlzy.budgetwise.core.ui.composable.BWLoadingScreen
 import com.mdrlzy.budgetwise.core.ui.composable.BWTopBar
 import com.mdrlzy.budgetwise.core.ui.composable.ListenActiveScreenEffect
+import com.mdrlzy.budgetwise.feature.categories.impl.di.CategoriesComponentHolder
 import com.mdrlzy.budgetwise.feature.categories.impl.di.DaggerCategoriesComponent
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.ExternalModuleGraph
@@ -53,9 +54,7 @@ fun CategoriesScreen() {
     val context = LocalContext.current
     val component =
         remember {
-            val coreComponent =
-                (context.applicationContext as CoreComponentProvider).provideCoreComponent()
-            DaggerCategoriesComponent.builder().coreComponent(coreComponent).build()
+            CategoriesComponentHolder.provide(context)
         }
     val viewModel: CategoriesViewModel =
         viewModel(factory = component.categoriesViewModelFactory())
@@ -114,7 +113,7 @@ private fun Content(
 }
 
 @Composable
-private fun FilterInput(
+fun FilterInput(
     filter: String,
     onSearchQueryChange: (String) -> Unit,
 ) {

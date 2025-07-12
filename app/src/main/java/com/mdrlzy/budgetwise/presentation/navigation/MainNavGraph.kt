@@ -5,6 +5,7 @@ import com.ramcosta.composedestinations.annotation.ExternalDestination
 import com.ramcosta.composedestinations.annotation.NavHostGraph
 import com.ramcosta.composedestinations.generated.account.destinations.AccountScreenDestination
 import com.ramcosta.composedestinations.generated.categories.destinations.CategoriesScreenDestination
+import com.ramcosta.composedestinations.generated.categories.destinations.SearchCategoryScreenDestination
 import com.ramcosta.composedestinations.generated.settings.destinations.SettingsScreenDestination
 import com.ramcosta.composedestinations.generated.transactions.destinations.EditTransactionScreenDestination
 import com.ramcosta.composedestinations.generated.transactions.destinations.ExpensesScreenDestination
@@ -15,6 +16,7 @@ import com.ramcosta.composedestinations.generated.transactions.destinations.Tran
     defaultTransitions = DefaultFadingTransitions::class,
 )
 annotation class MainNavGraph {
+    @ExternalDestination<SearchCategoryScreenDestination>
     @ExternalDestination<EditTransactionScreenDestination>
     @ExternalDestination<ExpensesScreenDestination>
     @ExternalDestination<IncomeScreenDestination>

@@ -1,4 +1,4 @@
-package com.mdrlzy.budgetwise.feature.categories.impl.presentation
+package com.mdrlzy.budgetwise.feature.categories.impl.presentation.main
 
 import com.mdrlzy.budgetwise.core.domain.model.Category
 

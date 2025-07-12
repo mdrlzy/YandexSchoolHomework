@@ -36,16 +36,14 @@ class EditTransactionViewModel(
 
     private fun init() = intent {
         val account = accountRepo.getAccount().getOrElse { err ->
-            val success = state as? EditTransactionScreenState.Success
             reduce {
-                EditTransactionScreenState.Error(err, success)
+                EditTransactionScreenState.Error(err, null)
             }
             return@intent
         }
         val categories = categoryRepo.getAll().getOrElse { err ->
-            val success = state as? EditTransactionScreenState.Success
             reduce {
-                EditTransactionScreenState.Error(err, success)
+                EditTransactionScreenState.Error(err, null)
             }
             return@intent
         }
@@ -61,9 +59,8 @@ class EditTransactionViewModel(
             }
         } else {
             val transaction = transactionRepo.getById(transactionId!!).getOrElse { err ->
-                val success = state as? EditTransactionScreenState.Success
                 reduce {
-                    EditTransactionScreenState.Error(err, success)
+                    EditTransactionScreenState.Error(err, null)
                 }
                 return@intent
             }

@@ -22,6 +22,7 @@ dependencies {
     api(project(":core:ui"))
     api(project(":core:network"))
     api(project(":core:di"))
+    api(project(":core:db"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

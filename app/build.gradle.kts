@@ -31,6 +31,7 @@ android {
 }
 
 dependencies {
+    implementation(project(":core:db"))
     implementation(project(":feature:account:api"))
     implementation(project(":feature:account:impl"))
     implementation(project(":feature:categories:api"))

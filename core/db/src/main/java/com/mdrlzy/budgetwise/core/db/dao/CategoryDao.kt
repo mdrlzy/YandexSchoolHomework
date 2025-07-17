@@ -13,6 +13,9 @@ interface CategoryDao {
     @Upsert
     suspend fun insert(category: CategoryEntity): Long
 
+    @Upsert
+    suspend fun insertAll(categories: List<CategoryEntity>): List<Long>
+
     @Query("SELECT * FROM CategoryEntity")
     suspend fun getAll(): List<CategoryEntity>
 

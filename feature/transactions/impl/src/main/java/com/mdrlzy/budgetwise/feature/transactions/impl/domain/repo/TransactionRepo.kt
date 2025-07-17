@@ -17,7 +17,7 @@ interface TransactionRepo {
 
     suspend fun getById(id: Long): EitherT<TransactionResponse>
 
-    suspend fun create(transactionRequest: TransactionRequest): EitherT<Unit>
+    suspend fun create(transactionRequest: TransactionRequest): EitherT<TransactionResponse>
 
     suspend fun update(
         id: Long,

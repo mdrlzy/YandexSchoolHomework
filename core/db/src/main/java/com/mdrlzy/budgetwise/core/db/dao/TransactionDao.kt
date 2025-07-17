@@ -13,6 +13,9 @@ interface TransactionDao {
     @Upsert
     suspend fun insert(transaction: TransactionEntity): Long
 
+    @Upsert
+    suspend fun insertAll(transactions: List<TransactionEntity>): List<Long>
+
     @Query("SELECT * FROM TransactionEntity")
     suspend fun getAll(): List<TransactionEntity>
 

@@ -29,8 +29,8 @@ class TransactionRemoteDataSource @Inject constructor(
         return api.getTransactionById(id).map { it.toDomain() }
     }
 
-    suspend fun create(transactionRequest: TransactionRequest): EitherT<Unit> {
-        return api.createTransaction(transactionRequest.toDto())
+    suspend fun create(transactionRequest: TransactionRequest): EitherT<TransactionResponse> {
+        return api.createTransaction(transactionRequest.toDto()).map { it.toDomain() }
     }
 
     suspend fun update(

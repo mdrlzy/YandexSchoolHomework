@@ -38,7 +38,7 @@ class BWTransactionsApi @Inject constructor(
 
     suspend fun createTransaction(
         transactionRequest: TransactionRequestDto
-    ): EitherT<Unit> =
+    ): EitherT<TransactionDto> =
         client.makeRequest { httpClient, baseUrl ->
             httpClient.post {
                 url("$baseUrl/transactions")

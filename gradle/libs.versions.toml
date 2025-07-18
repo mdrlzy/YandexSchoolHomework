@@ -22,6 +22,7 @@ detekt = "1.23.6"
 ktlint = "12.3.0"
 kotlinx-serialization = "1.6.3"
 room = "2.7.2"
+workRuntimeKtx = "2.8.1"
 
 [libraries]
 agp = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
@@ -45,6 +46,8 @@ androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-toolin
 androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
+
+androidx-work-runtime-ktx = { module = "androidx.work:work-runtime-ktx", version.ref = "workRuntimeKtx" }
 
 orbit-compose = { module = "org.orbit-mvi:orbit-compose", version.ref = "orbitMVI" }
 orbit-viewmodel = { module = "org.orbit-mvi:orbit-viewmodel", version.ref = "orbitMVI" }

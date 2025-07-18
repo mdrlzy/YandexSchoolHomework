@@ -40,6 +40,8 @@ dependencies {
     implementation(project(":feature:transactions:impl"))
     implementation(project(":feature:settings"))
 
+    implementation(libs.androidx.work.runtime.ktx)
+
     implementation(libs.lottie.compose)
 
     implementation(libs.ktor.client.core)

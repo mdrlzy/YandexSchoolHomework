@@ -2,6 +2,7 @@ package com.mdrlzy.budgetwise.feature.transactions.impl.di
 
 import com.mdrlzy.budgetwise.core.di.CoreComponent
 import com.mdrlzy.budgetwise.feature.categories.api.di.CategoriesFeatureApi
+import com.mdrlzy.budgetwise.feature.transactions.impl.domain.usecase.SyncTransactionsUseCase
 import com.mdrlzy.budgetwise.feature.transactions.impl.presentation.screen.analyze.AnalyzeTransactionsViewModelFactory
 import com.mdrlzy.budgetwise.feature.transactions.impl.presentation.screen.edit.EditTransactionViewModelFactory
 import com.mdrlzy.budgetwise.feature.transactions.impl.presentation.screen.expenses.ExpensesViewModelFactory
@@ -24,4 +25,6 @@ interface TransactionsComponent {
     fun editTransactionViewModelFactory(): EditTransactionViewModelFactory.Factory
 
     fun analyzeTransactionsViewModelFactory(): AnalyzeTransactionsViewModelFactory.Factory
+
+    fun syncTransactionsUseCase(): SyncTransactionsUseCase
 }

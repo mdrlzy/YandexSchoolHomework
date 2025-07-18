@@ -46,5 +46,10 @@
     <string name="delete_expense">Удалить расход</string>
     <string name="my_expenses">Мои расходы</string>
     <string name="my_income">Мои доходы</string>
+    <string name="no_data">Нет данных</string>
+    
+    <string name="analyze">Анализ</string>
+    <string name="period_start">Период: начало</string>
+    <string name="period_end">Период: конец</string>
 
 </resources>

@@ -144,12 +144,14 @@ class EditTransactionViewModel(
     fun onDone() = intent {
         val success = state as? EditTransactionScreenState.Success ?: return@intent
         if (isCreateNotEditMode) {
-            transactionRepo.create(success.toRequest()).getOrElse { err ->
-                reduce {
-                    EditTransactionScreenState.Error(err, success)
+            transactionRepo
+                .create(success.account, success.category, success.toRequest())
+                .getOrElse { err ->
+                    reduce {
+                        EditTransactionScreenState.Error(err, success)
+                    }
+                    return@intent
                 }
-                return@intent
-            }
         } else {
             transactionRepo.update(transactionId!!, success.toRequest()).getOrElse { err ->
                 reduce {

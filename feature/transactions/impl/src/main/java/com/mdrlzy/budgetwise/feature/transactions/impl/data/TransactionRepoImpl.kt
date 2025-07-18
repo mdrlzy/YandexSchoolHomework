@@ -2,7 +2,9 @@ package com.mdrlzy.budgetwise.feature.transactions.impl.data
 
 import arrow.core.right
 import com.mdrlzy.budgetwise.core.domain.EitherT
+import com.mdrlzy.budgetwise.core.domain.model.Account
 import com.mdrlzy.budgetwise.core.domain.repo.AccountRepo
+import com.mdrlzy.budgetwise.feature.categories.api.Category
 import com.mdrlzy.budgetwise.feature.categories.api.CategoryRepo
 import com.mdrlzy.budgetwise.feature.transactions.impl.data.local.TransactionLocalDataSource
 import com.mdrlzy.budgetwise.feature.transactions.impl.data.remote.TransactionRemoteDataSource
@@ -49,8 +51,12 @@ class TransactionRepoImpl @Inject constructor(
         return remote.getById(id)
     }
 
-    override suspend fun create(transactionRequest: TransactionRequest): EitherT<TransactionResponse> {
-        return remote.create(transactionRequest).onRight {
+    override suspend fun create(
+        account: Account,
+        category: Category,
+        transactionRequest: TransactionRequest
+    ): EitherT<TransactionResponse> {
+        return remote.create(account, category, transactionRequest).onRight {
             _changesFlow.emit(Unit)
             local.save(it)
         }

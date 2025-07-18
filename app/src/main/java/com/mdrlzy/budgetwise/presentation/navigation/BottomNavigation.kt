@@ -27,6 +27,7 @@ import com.mdrlzy.budgetwise.core.ui.CoreRString
 import com.ramcosta.composedestinations.generated.account.destinations.AccountScreenDestination
 import com.ramcosta.composedestinations.generated.categories.destinations.CategoriesScreenDestination
 import com.ramcosta.composedestinations.generated.settings.destinations.SettingsScreenDestination
+import com.ramcosta.composedestinations.generated.transactions.destinations.AnalyzeTransactionsScreenDestination
 import com.ramcosta.composedestinations.generated.transactions.destinations.EditTransactionScreenDestination
 import com.ramcosta.composedestinations.generated.transactions.destinations.ExpensesScreenDestination
 import com.ramcosta.composedestinations.generated.transactions.destinations.IncomeScreenDestination
@@ -117,6 +118,14 @@ fun BottomNavigation(
                     }
                 }
                 EditTransactionScreenDestination.route -> {
+                    val isIncome = navBackStackEntry?.arguments?.getBoolean("isIncomeMode")
+                    when (item) {
+                        BottomNavItem.Expenses -> isIncome?.not() ?: false
+                        BottomNavItem.Income -> isIncome ?: false
+                        else -> false
+                    }
+                }
+                AnalyzeTransactionsScreenDestination.route -> {
                     val isIncome = navBackStackEntry?.arguments?.getBoolean("isIncomeMode")
                     when (item) {
                         BottomNavItem.Expenses -> isIncome?.not() ?: false

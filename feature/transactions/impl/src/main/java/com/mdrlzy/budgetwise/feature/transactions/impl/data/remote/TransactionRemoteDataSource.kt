@@ -1,6 +1,7 @@
 package com.mdrlzy.budgetwise.feature.transactions.impl.data.remote
 
 import com.mdrlzy.budgetwise.core.domain.EitherT
+import com.mdrlzy.budgetwise.core.domain.model.Account
 import com.mdrlzy.budgetwise.feature.account.api.AccountBrief
 import com.mdrlzy.budgetwise.feature.categories.api.Category
 import com.mdrlzy.budgetwise.feature.transactions.impl.domain.model.TransactionResponse
@@ -29,8 +30,13 @@ class TransactionRemoteDataSource @Inject constructor(
         return api.getTransactionById(id).map { it.toDomain() }
     }
 
-    suspend fun create(transactionRequest: TransactionRequest): EitherT<TransactionResponse> {
-        return api.createTransaction(transactionRequest.toDto()).map { it.toDomain() }
+    suspend fun create(
+        account: Account,
+        category: Category,
+        transactionRequest: TransactionRequest
+    ): EitherT<TransactionResponse> {
+        return api.createTransaction(transactionRequest.toDto())
+            .map { it.toDomain(account, category) }
     }
 
     suspend fun update(
@@ -61,6 +67,25 @@ private fun TransactionDto.toDomain() =
         createdAt = OffsetDateTime.parse(createdAt),
         updatedAt = OffsetDateTime.parse(updatedAt),
     )
+
+private fun TransactionSimpleDto.toDomain(
+    account: Account,
+    category: Category,
+) = TransactionResponse(
+    id = id,
+    account = AccountBrief(
+        account.id,
+        account.name,
+        account.balance,
+        account.currency
+    ),
+    category = Category(category.id, category.name, category.emoji, category.isIncome),
+    amount = amount,
+    transactionDate = OffsetDateTime.parse(transactionDate),
+    comment = comment,
+    createdAt = OffsetDateTime.parse(createdAt),
+    updatedAt = OffsetDateTime.parse(updatedAt),
+)
 
 private fun TransactionRequest.toDto(): TransactionRequestDto {
     val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSX")

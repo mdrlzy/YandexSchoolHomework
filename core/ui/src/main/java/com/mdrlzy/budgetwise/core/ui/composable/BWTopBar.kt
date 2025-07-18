@@ -10,6 +10,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 
 @Composable
@@ -19,6 +20,7 @@ fun BWTopBar(
     trailingIcon: Painter? = null,
     onLeadingIconClick: (() -> Unit)? = null,
     onTrailingIconClick: (() -> Unit)? = null,
+    containerColor: Color = MaterialTheme.colorScheme.primary
 ) {
     CenterAlignedTopAppBar(
         title = {
@@ -55,6 +57,6 @@ fun BWTopBar(
                 }
             }
         },
-        colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.primary),
+        colors = TopAppBarDefaults.topAppBarColors(containerColor = containerColor),
     )
 }

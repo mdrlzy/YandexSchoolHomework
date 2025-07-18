@@ -3,6 +3,7 @@ package com.mdrlzy.budgetwise.core.di
 import com.mdrlzy.budgetwise.core.db.BWDatabase
 import com.mdrlzy.budgetwise.core.db.dao.AccountDao
 import com.mdrlzy.budgetwise.core.db.dao.CategoryDao
+import com.mdrlzy.budgetwise.core.db.dao.PendingTransactionDao
 import com.mdrlzy.budgetwise.core.db.dao.TransactionDao
 import com.mdrlzy.budgetwise.core.domain.BuildConfigFields
 import com.mdrlzy.budgetwise.core.domain.repo.AccountRepo
@@ -24,4 +25,6 @@ interface CoreComponent {
     fun categoryDao(): CategoryDao
 
     fun transactionDao(): TransactionDao
+
+    fun pendingTransactionDao(): PendingTransactionDao
 }

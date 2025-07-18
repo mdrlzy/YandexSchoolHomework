@@ -21,4 +21,7 @@ class DBModule {
 
     @Provides
     fun transactionDao(db: BWDatabase) = db.transactionDao()
+
+    @Provides
+    fun pendingTransactionDao(db: BWDatabase) = db.pendingTransactionDao()
 }

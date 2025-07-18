@@ -17,7 +17,10 @@ interface TransactionRepo {
         end: OffsetDateTime,
     ): EitherT<List<Transaction>>
 
-    suspend fun getById(id: Long): EitherT<Transaction>
+    suspend fun getById(
+        id: Long,
+        account: Account,
+    ): EitherT<Transaction>
 
     suspend fun create(
         account: Account,
@@ -27,8 +30,14 @@ interface TransactionRepo {
 
     suspend fun update(
         id: Long,
+        account: Account,
+        category: Category,
         transactionRequest: TransactionRequest
     ): EitherT<Transaction>
 
-    suspend fun delete(id: Long): EitherT<Unit>
+    suspend fun delete(
+        id: Long,
+        account: Account,
+        category: Category,
+    ): EitherT<Unit>
 }

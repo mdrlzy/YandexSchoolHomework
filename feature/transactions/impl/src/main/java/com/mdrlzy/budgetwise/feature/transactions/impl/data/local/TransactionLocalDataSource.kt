@@ -20,12 +20,22 @@ class TransactionLocalDataSource @Inject constructor(
     ): List<Transaction> {
         return dao
             .getAll()
-            .map { it.toTransaction(account, categories) }
+            .map { transaction ->
+                transaction.toTransaction(account, categories)
+            }
             //TODO: store date as long and filter by sql
             .filter { transaction ->
-                transaction.transactionDate.isAfter(start) && transaction.transactionDate.isBefore(end)
+                transaction.transactionDate.isAfter(start) && transaction.transactionDate.isBefore(
+                    end
+                )
             }
     }
+
+    suspend fun getById(
+        id: Long,
+        account: Account,
+        categories: List<Category>,
+    ) = dao.findById(id)?.toTransaction(account, categories)
 
     suspend fun save(transaction: Transaction) {
         dao.insert(transaction.toEntity())
@@ -34,6 +44,8 @@ class TransactionLocalDataSource @Inject constructor(
     suspend fun save(transactions: List<Transaction>) {
         dao.insertAll(transactions.map { it.toEntity() })
     }
+
+    suspend fun delete(id: Long) = dao.delete(id)
 }
 
 private fun Transaction.toEntity() = TransactionEntity(
@@ -48,7 +60,8 @@ private fun Transaction.toEntity() = TransactionEntity(
 )
 
 private fun TransactionEntity.toTransaction(
-    account: Account, categories: List<Category>
+    account: Account,
+    categories: List<Category>,
 ) = Transaction(
     id,
     AccountBrief(account.id, account.name, account.balance, account.currency),

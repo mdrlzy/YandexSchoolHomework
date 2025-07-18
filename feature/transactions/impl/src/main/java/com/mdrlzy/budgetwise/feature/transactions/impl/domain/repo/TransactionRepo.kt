@@ -4,7 +4,7 @@ import com.mdrlzy.budgetwise.core.domain.EitherT
 import com.mdrlzy.budgetwise.core.domain.model.Account
 import com.mdrlzy.budgetwise.feature.categories.api.Category
 import com.mdrlzy.budgetwise.feature.transactions.impl.domain.model.TransactionRequest
-import com.mdrlzy.budgetwise.feature.transactions.impl.domain.model.TransactionResponse
+import com.mdrlzy.budgetwise.feature.transactions.impl.domain.model.Transaction
 import kotlinx.coroutines.flow.Flow
 import java.time.OffsetDateTime
 
@@ -15,20 +15,20 @@ interface TransactionRepo {
         accountId: Long,
         start: OffsetDateTime,
         end: OffsetDateTime,
-    ): EitherT<List<TransactionResponse>>
+    ): EitherT<List<Transaction>>
 
-    suspend fun getById(id: Long): EitherT<TransactionResponse>
+    suspend fun getById(id: Long): EitherT<Transaction>
 
     suspend fun create(
         account: Account,
         category: Category,
         transactionRequest: TransactionRequest
-    ): EitherT<TransactionResponse>
+    ): EitherT<Transaction>
 
     suspend fun update(
         id: Long,
         transactionRequest: TransactionRequest
-    ): EitherT<TransactionResponse>
+    ): EitherT<Transaction>
 
     suspend fun delete(id: Long): EitherT<Unit>
 }

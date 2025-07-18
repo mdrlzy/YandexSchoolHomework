@@ -1,6 +1,6 @@
 package com.mdrlzy.budgetwise.feature.transactions.impl.presentation.model
 
-import com.mdrlzy.budgetwise.feature.transactions.impl.domain.model.TransactionResponse
+import com.mdrlzy.budgetwise.feature.transactions.impl.domain.model.Transaction
 import java.time.OffsetDateTime
 
 data class TransactionUiModel(
@@ -12,7 +12,7 @@ data class TransactionUiModel(
     val comment: String?,
 )
 
-fun TransactionResponse.toUiModel() =
+fun Transaction.toUiModel() =
     TransactionUiModel(
         id = id,
         categoryName = category.name,

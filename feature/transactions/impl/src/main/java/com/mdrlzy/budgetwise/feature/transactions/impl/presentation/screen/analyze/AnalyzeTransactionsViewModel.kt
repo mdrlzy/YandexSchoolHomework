@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import arrow.core.getOrElse
 import com.mdrlzy.budgetwise.core.domain.repo.AccountRepo
 import com.mdrlzy.budgetwise.core.ui.utils.DateTimeHelper
-import com.mdrlzy.budgetwise.feature.transactions.impl.domain.model.TransactionResponse
+import com.mdrlzy.budgetwise.feature.transactions.impl.domain.model.Transaction
 import com.mdrlzy.budgetwise.feature.transactions.impl.domain.repo.TransactionRepo
 import com.mdrlzy.budgetwise.feature.transactions.impl.domain.usecase.GetExpenseTransactionsUseCase
 import com.mdrlzy.budgetwise.feature.transactions.impl.domain.usecase.GetIncomeTransactionsUseCase
@@ -140,7 +140,7 @@ class AnalyzeTransactionsViewModel(
     }
 
     private fun analyze(
-        transactions: List<TransactionResponse>
+        transactions: List<Transaction>
     ): List<CategorySummary> {
         val parsedTransactions = transactions.map {
             it.category to BigDecimal(it.amount)

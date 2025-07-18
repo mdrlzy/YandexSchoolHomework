@@ -5,7 +5,7 @@ import com.mdrlzy.budgetwise.core.db.entity.TransactionEntity
 import com.mdrlzy.budgetwise.core.domain.model.Account
 import com.mdrlzy.budgetwise.feature.account.api.AccountBrief
 import com.mdrlzy.budgetwise.feature.categories.api.Category
-import com.mdrlzy.budgetwise.feature.transactions.impl.domain.model.TransactionResponse
+import com.mdrlzy.budgetwise.feature.transactions.impl.domain.model.Transaction
 import java.time.OffsetDateTime
 import javax.inject.Inject
 
@@ -17,7 +17,7 @@ class TransactionLocalDataSource @Inject constructor(
         categories: List<Category>,
         start: OffsetDateTime,
         end: OffsetDateTime,
-    ): List<TransactionResponse> {
+    ): List<Transaction> {
         return dao
             .getAll()
             .map { it.toTransaction(account, categories) }
@@ -27,16 +27,16 @@ class TransactionLocalDataSource @Inject constructor(
             }
     }
 
-    suspend fun save(transaction: TransactionResponse) {
+    suspend fun save(transaction: Transaction) {
         dao.insert(transaction.toEntity())
     }
 
-    suspend fun save(transactions: List<TransactionResponse>) {
+    suspend fun save(transactions: List<Transaction>) {
         dao.insertAll(transactions.map { it.toEntity() })
     }
 }
 
-private fun TransactionResponse.toEntity() = TransactionEntity(
+private fun Transaction.toEntity() = TransactionEntity(
     id,
     account.id,
     category.id,
@@ -49,7 +49,7 @@ private fun TransactionResponse.toEntity() = TransactionEntity(
 
 private fun TransactionEntity.toTransaction(
     account: Account, categories: List<Category>
-) = TransactionResponse(
+) = Transaction(
     id,
     AccountBrief(account.id, account.name, account.balance, account.currency),
     categories.find { it.id == categoryId }!!,

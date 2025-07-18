@@ -4,7 +4,7 @@ import com.mdrlzy.budgetwise.core.domain.EitherT
 import com.mdrlzy.budgetwise.core.domain.model.Account
 import com.mdrlzy.budgetwise.feature.account.api.AccountBrief
 import com.mdrlzy.budgetwise.feature.categories.api.Category
-import com.mdrlzy.budgetwise.feature.transactions.impl.domain.model.TransactionResponse
+import com.mdrlzy.budgetwise.feature.transactions.impl.domain.model.Transaction
 import com.mdrlzy.budgetwise.feature.transactions.impl.domain.model.TransactionRequest
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
@@ -18,7 +18,7 @@ class TransactionRemoteDataSource @Inject constructor(
         accountId: Long,
         start: OffsetDateTime,
         end: OffsetDateTime,
-    ): EitherT<List<TransactionResponse>> {
+    ): EitherT<List<Transaction>> {
         return api.getTransactionsByPeriod(
             accountId,
             start.format(DateTimeFormatter.ISO_LOCAL_DATE),
@@ -26,7 +26,7 @@ class TransactionRemoteDataSource @Inject constructor(
         ).map { transactions -> transactions.map { it.toDomain() } }
     }
 
-    suspend fun getById(id: Long): EitherT<TransactionResponse> {
+    suspend fun getById(id: Long): EitherT<Transaction> {
         return api.getTransactionById(id).map { it.toDomain() }
     }
 
@@ -34,7 +34,7 @@ class TransactionRemoteDataSource @Inject constructor(
         account: Account,
         category: Category,
         transactionRequest: TransactionRequest
-    ): EitherT<TransactionResponse> {
+    ): EitherT<Transaction> {
         return api.createTransaction(transactionRequest.toDto())
             .map { it.toDomain(account, category) }
     }
@@ -42,7 +42,7 @@ class TransactionRemoteDataSource @Inject constructor(
     suspend fun update(
         id: Long,
         transactionRequest: TransactionRequest
-    ): EitherT<TransactionResponse> {
+    ): EitherT<Transaction> {
         return api.updateTransaction(id, transactionRequest.toDto()).map { it.toDomain() }
     }
 
@@ -52,7 +52,7 @@ class TransactionRemoteDataSource @Inject constructor(
 }
 
 private fun TransactionDto.toDomain() =
-    TransactionResponse(
+    Transaction(
         id = id,
         account = AccountBrief(
             account.id,
@@ -71,7 +71,7 @@ private fun TransactionDto.toDomain() =
 private fun TransactionSimpleDto.toDomain(
     account: Account,
     category: Category,
-) = TransactionResponse(
+) = Transaction(
     id = id,
     account = AccountBrief(
         account.id,

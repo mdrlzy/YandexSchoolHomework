@@ -9,7 +9,7 @@ import com.mdrlzy.budgetwise.feature.categories.api.CategoryRepo
 import com.mdrlzy.budgetwise.feature.transactions.impl.data.local.TransactionLocalDataSource
 import com.mdrlzy.budgetwise.feature.transactions.impl.data.remote.TransactionRemoteDataSource
 import com.mdrlzy.budgetwise.feature.transactions.impl.domain.model.TransactionRequest
-import com.mdrlzy.budgetwise.feature.transactions.impl.domain.model.TransactionResponse
+import com.mdrlzy.budgetwise.feature.transactions.impl.domain.model.Transaction
 import com.mdrlzy.budgetwise.feature.transactions.impl.domain.repo.TransactionRepo
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -29,7 +29,7 @@ class TransactionRepoImpl @Inject constructor(
         accountId: Long,
         start: OffsetDateTime,
         end: OffsetDateTime,
-    ): EitherT<List<TransactionResponse>> {
+    ): EitherT<List<Transaction>> {
         return remote.getByPeriod(accountId, start, end).fold(
             ifLeft = {
                 //TODO!!!!
@@ -47,7 +47,7 @@ class TransactionRepoImpl @Inject constructor(
         )
     }
 
-    override suspend fun getById(id: Long): EitherT<TransactionResponse> {
+    override suspend fun getById(id: Long): EitherT<Transaction> {
         return remote.getById(id)
     }
 
@@ -55,7 +55,7 @@ class TransactionRepoImpl @Inject constructor(
         account: Account,
         category: Category,
         transactionRequest: TransactionRequest
-    ): EitherT<TransactionResponse> {
+    ): EitherT<Transaction> {
         return remote.create(account, category, transactionRequest).onRight {
             _changesFlow.emit(Unit)
             local.save(it)
@@ -65,7 +65,7 @@ class TransactionRepoImpl @Inject constructor(
     override suspend fun update(
         id: Long,
         transactionRequest: TransactionRequest
-    ): EitherT<TransactionResponse> {
+    ): EitherT<Transaction> {
         return remote.update(id, transactionRequest).onRight {
             _changesFlow.emit(Unit)
         }

@@ -48,12 +48,13 @@ class EditTransactionViewModel(
             }
             return@intent
         }
+        val category = categories.first { it.isIncome == isIncomeMode }
         if (isCreateNotEditMode) {
             reduce {
                 EditTransactionScreenState.Success(
                     account = account,
                     date = OffsetDateTime.now(),
-                    category = categories.first(),
+                    category = category,
                     amount = "0",
                     comment = "",
                 )

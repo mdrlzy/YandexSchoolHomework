@@ -31,6 +31,7 @@ import org.orbitmvi.orbit.compose.collectAsState
 @Composable
 fun SearchCategoryScreen(
     resultNavigator: ResultBackNavigator<Long>,
+    isIncomeMode: Boolean,
 ) {
     val context = LocalContext.current
     val component =
@@ -39,7 +40,7 @@ fun SearchCategoryScreen(
         }
 
     val viewModel: SearchCategoryViewModel =
-        viewModel(factory = component.searchCategoryViewModelFactory())
+        viewModel(factory = component.searchCategoryViewModelFactory().create(isIncomeMode))
     val state by viewModel.collectAsState()
 
     Scaffold(

@@ -117,8 +117,8 @@ fun MainScreen() {
             composable(EditTransactionScreenDestination) {
                 val externalNavigator = remember {
                     object : TransactionsExternalNavigator {
-                        override fun navigateToSearchCategory() {
-                            destinationsNavigator.navigate(SearchCategoryScreenDestination)
+                        override fun navigateToSearchCategory(isIncomeMode: Boolean) {
+                            destinationsNavigator.navigate(SearchCategoryScreenDestination(isIncomeMode))
                         }
                     }
                 }

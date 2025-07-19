@@ -115,7 +115,7 @@ fun EditTransactionScreen(
                     Content(
                         transactionId = transactionId,
                         state = s,
-                        onCategoryClick = { externalNavigator.navigateToSearchCategory() },
+                        onCategoryClick = { externalNavigator.navigateToSearchCategory(isIncomeMode) },
                         onAmountChanged = viewModel::onAmountChanged,
                         onCommentChanged = viewModel::onCommentChanged,
                         onDateSelected = viewModel::onDateChange,

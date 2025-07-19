@@ -6,8 +6,11 @@ import arrow.core.left
 import arrow.core.right
 import com.mdrlzy.budgetwise.core.domain.EitherT
 import com.mdrlzy.budgetwise.core.domain.PendingType
+import com.mdrlzy.budgetwise.core.domain.Prefs
+import com.mdrlzy.budgetwise.core.domain.expection.NoInternetException
 import com.mdrlzy.budgetwise.core.domain.model.Account
 import com.mdrlzy.budgetwise.core.domain.repo.AccountRepo
+import com.mdrlzy.budgetwise.core.domain.repo.NetworkStatus
 import com.mdrlzy.budgetwise.feature.account.api.AccountBrief
 import com.mdrlzy.budgetwise.feature.categories.api.CategoryRepo
 import com.mdrlzy.budgetwise.feature.transactions.impl.data.local.PendingTransactionLocalDataSource
@@ -16,6 +19,7 @@ import com.mdrlzy.budgetwise.feature.transactions.impl.data.remote.TransactionRe
 import com.mdrlzy.budgetwise.feature.transactions.impl.domain.model.PendingTransaction
 import com.mdrlzy.budgetwise.feature.transactions.impl.domain.model.TransactionRequest
 import com.mdrlzy.budgetwise.feature.transactions.impl.domain.repo.TransactionRepo
+import java.time.OffsetDateTime
 import javax.inject.Inject
 
 class SyncTransactionsUseCase @Inject constructor(
@@ -24,10 +28,15 @@ class SyncTransactionsUseCase @Inject constructor(
     private val remoteDataSource: TransactionRemoteDataSource,
     private val pendingDataSource: PendingTransactionLocalDataSource,
     private val localDataSource: TransactionLocalDataSource,
+    private val networkStatus: NetworkStatus,
+    private val prefs: Prefs,
 ) {
     suspend operator fun invoke(): EitherT<Unit> {
         val account = accountRepo.getAccount().getOrElse { return it.left() }
         val categories = categoriesRepo.getAll().getOrElse { return it.left() }
+
+        if (networkStatus.isOnline().not())
+            return NoInternetException().left()
 
         val pending = pendingDataSource.getAll(account, categories)
         Log.i(LOG_TAG, "Starting sync, pending count: ${pending.size}")
@@ -39,6 +48,7 @@ class SyncTransactionsUseCase @Inject constructor(
             }
         }
 
+        prefs.saveLastSync(OffsetDateTime.now())
         Log.i(LOG_TAG, "Sync finished")
         return Unit.right()
     }

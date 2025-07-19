@@ -6,6 +6,7 @@ import com.mdrlzy.budgetwise.core.db.dao.CategoryDao
 import com.mdrlzy.budgetwise.core.db.dao.PendingTransactionDao
 import com.mdrlzy.budgetwise.core.db.dao.TransactionDao
 import com.mdrlzy.budgetwise.core.domain.BuildConfigFields
+import com.mdrlzy.budgetwise.core.domain.Prefs
 import com.mdrlzy.budgetwise.core.domain.repo.AccountRepo
 import com.mdrlzy.budgetwise.core.domain.repo.NetworkStatus
 import com.mdrlzy.budgetwise.core.network.BWApiClient
@@ -27,4 +28,6 @@ interface CoreComponent {
     fun transactionDao(): TransactionDao
 
     fun pendingTransactionDao(): PendingTransactionDao
+
+    fun prefs(): Prefs
 }

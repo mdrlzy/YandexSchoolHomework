@@ -52,4 +52,6 @@
     <string name="period_start">Период: начало</string>
     <string name="period_end">Период: конец</string>
 
+    <string name="sync">Синхронизация</string>
+
 </resources>

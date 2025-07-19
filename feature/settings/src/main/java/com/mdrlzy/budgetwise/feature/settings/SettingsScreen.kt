@@ -6,11 +6,14 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Switch
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.mdrlzy.budgetwise.core.di.CoreComponentProvider
 import com.mdrlzy.budgetwise.core.ui.CoreRDrawable
 import com.mdrlzy.budgetwise.core.ui.CoreRString
 import com.mdrlzy.budgetwise.core.ui.composable.BWHorDiv
@@ -20,12 +23,22 @@ import com.mdrlzy.budgetwise.core.ui.composable.BWTopBar
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.ExternalModuleGraph
 import org.orbitmvi.orbit.compose.collectAsState
+import java.time.format.DateTimeFormatter
 
 @Destination<ExternalModuleGraph>
 @Composable
 fun SettingsScreen() {
-    val viewModel: SettingsViewModel = viewModel()
+    val context = LocalContext.current
+    val viewModel: SettingsViewModel = viewModel(
+        factory = SettingsViewModelFactory(
+            (context.applicationContext as CoreComponentProvider).provideCoreComponent().prefs()
+        )
+    )
     val state by viewModel.collectAsState()
+
+    val syncFormatter = remember {
+        DateTimeFormatter.ofPattern("HH:mm d.MM.yyyy")
+    }
 
     Scaffold(
         topBar = {
@@ -44,6 +57,13 @@ fun SettingsScreen() {
                         onCheckedChange = viewModel::onToggleDarkTheme,
                     )
                 },
+            )
+            BWHorDiv()
+            BWListItem(
+                leadingText = stringResource(CoreRString.sync),
+                trailingText = state.lastSync?.let { syncFormatter.format(state.lastSync) }
+                    ?: stringResource(CoreRString.no_data),
+                height = 56.dp
             )
             BWHorDiv()
             SettingsListItem(stringResource(CoreRString.sounds)) { }

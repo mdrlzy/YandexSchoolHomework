@@ -16,14 +16,20 @@ import com.mdrlzy.budgetwise.feature.categories.api.CategoryRepo
 import com.mdrlzy.budgetwise.feature.categories.api.di.CategoriesFeatureApi
 import com.mdrlzy.budgetwise.feature.categories.api.di.CategoriesFeatureApiProvider
 import com.mdrlzy.budgetwise.feature.categories.impl.di.CategoriesComponentHolder
+import com.mdrlzy.budgetwise.feature.transactions.impl.di.TransactionsComponentHolder
 import com.mdrlzy.budgetwise.feature.transactions.impl.presentation.worker.SyncTransactionsWorker
 import com.mdrlzy.budgetwise.presentation.worker.AppWorkerFactory
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
 
 class App :
     Application(), CoreComponentProvider, CategoriesFeatureApiProvider, Configuration.Provider {
     lateinit var component: CoreComponent
         private set
+
+    private val appIOScope = CoroutineScope(Dispatchers.IO)
 
     override fun onCreate() {
         super.onCreate()
@@ -32,6 +38,9 @@ class App :
             DaggerAppComponent
                 .factory()
                 .create(this, this.applicationContext, buildConfigFields)
+        appIOScope.launch {
+            TransactionsComponentHolder.provide(this@App).syncTransactionsUseCase().invoke()
+        }
         initWorker()
     }
 

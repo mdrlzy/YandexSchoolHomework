@@ -1,5 +1,6 @@
 package com.mdrlzy.budgetwise.feature.transactions.impl.domain.usecase
 
+import android.util.Log
 import arrow.core.getOrElse
 import arrow.core.left
 import arrow.core.right
@@ -29,6 +30,7 @@ class SyncTransactionsUseCase @Inject constructor(
         val categories = categoriesRepo.getAll().getOrElse { return it.left() }
 
         val pending = pendingDataSource.getAll(account, categories)
+        Log.i(LOG_TAG, "Starting sync, pending count: ${pending.size}")
         pending.forEach { pendingTransaction ->
             when (pendingTransaction.pendingType) {
                 PendingType.CREATE -> create(account, pendingTransaction)
@@ -37,10 +39,12 @@ class SyncTransactionsUseCase @Inject constructor(
             }
         }
 
+        Log.i(LOG_TAG, "Sync finished")
         return Unit.right()
     }
 
     private suspend fun create(account: Account, pendingTransaction: PendingTransaction) {
+        Log.i(LOG_TAG, "[Sync] Creating transaction: $pendingTransaction")
         remoteDataSource.create(
             account,
             pendingTransaction.category,
@@ -53,6 +57,9 @@ class SyncTransactionsUseCase @Inject constructor(
             )
         ).onRight {
             pendingDataSource.delete(pendingTransaction.localId)
+            Log.i(LOG_TAG, "[Sync] Created $pendingTransaction")
+        }.onLeft {
+            Log.i(LOG_TAG, "[Sync] Failed to create: err[${it.message}] $pendingTransaction")
         }
     }
 
@@ -60,6 +67,7 @@ class SyncTransactionsUseCase @Inject constructor(
         account: Account,
         pendingTransaction: PendingTransaction
     ) {
+        Log.i(LOG_TAG, "[Sync] Editing transaction: $pendingTransaction")
         pendingTransaction.remoteId?.let {
             remoteDataSource.update(
                 pendingTransaction.remoteId,
@@ -72,11 +80,15 @@ class SyncTransactionsUseCase @Inject constructor(
                 )
             ).onRight {
                 pendingDataSource.delete(pendingTransaction.localId)
+                Log.i(LOG_TAG, "[Sync] Edited $pendingTransaction")
+            }.onLeft {
+                Log.i(LOG_TAG, "[Sync] Failed to edit: err[${it.message}] $pendingTransaction")
             }
         } ?: create(account, pendingTransaction)
     }
 
     private suspend fun delete(pendingTransaction: PendingTransaction) {
+        Log.i(LOG_TAG, "[Sync] Deleting transaction: $pendingTransaction")
         if (pendingTransaction.remoteId == null) {
             pendingDataSource.delete(pendingTransaction.localId)
             return
@@ -86,6 +98,12 @@ class SyncTransactionsUseCase @Inject constructor(
             remoteDataSource.delete(it)
         }.onRight {
             pendingDataSource.delete(pendingTransaction.localId)
+            Log.i(LOG_TAG, "[Sync] Deleted $pendingTransaction")
+        }.onLeft {
+            Log.i(LOG_TAG, "[Sync] Failed to delete: err[${it.message}] $pendingTransaction")
         }
+    }
+    companion object {
+        private val LOG_TAG = "SyncTransactionsUseCase"
     }
 }

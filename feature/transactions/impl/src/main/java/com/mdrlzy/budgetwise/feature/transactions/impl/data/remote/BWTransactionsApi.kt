@@ -24,8 +24,8 @@ class BWTransactionsApi @Inject constructor(
         client.makeRequest { httpClient, baseUrl ->
             httpClient.get {
                 url("$baseUrl/transactions/account/$accountId/period")
-                parameter("startDate", startDate?.format(DateTimeFormatter.ISO_LOCAL_DATE))
-                parameter("endDate", endDate?.format(DateTimeFormatter.ISO_LOCAL_DATE))
+                parameter("startDate", startDate)
+                parameter("endDate", endDate)
             }.body()
         }
 

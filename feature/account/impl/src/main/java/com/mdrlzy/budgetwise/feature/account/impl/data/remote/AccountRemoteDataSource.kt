@@ -2,6 +2,7 @@ package com.mdrlzy.budgetwise.feature.account.impl.data.remote
 
 import com.mdrlzy.budgetwise.core.domain.EitherT
 import com.mdrlzy.budgetwise.core.domain.model.Account
+import com.mdrlzy.budgetwise.core.network.NetworkUtils
 import com.mdrlzy.budgetwise.feature.account.api.remote.AccountDto
 import com.mdrlzy.budgetwise.feature.account.api.remote.AccountUpdateRequest
 import java.time.OffsetDateTime
@@ -36,8 +37,8 @@ private fun AccountDto.toDomain() =
         name,
         balance,
         currency,
-        OffsetDateTime.parse(createdAt),
-        OffsetDateTime.parse(updatedAt),
+        NetworkUtils.fromUtcString(createdAt),
+        NetworkUtils.fromUtcString(updatedAt),
     )
 
 private fun Account.toUpdateRequest() = AccountUpdateRequest(

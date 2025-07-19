@@ -95,14 +95,20 @@ class AnalyzeTransactionsViewModel(
             if (state is AnalyzeTransactionsScreenState.Success) {
                 (state as AnalyzeTransactionsScreenState.Success).start
             } else {
-                OffsetDateTime.ofInstant(Instant.ofEpochMilli(initialStartDate), ZoneOffset.UTC)
+                OffsetDateTime.ofInstant(
+                    Instant.ofEpochMilli(initialStartDate),
+                    ZoneId.systemDefault()
+                )
             }
 
         val end =
             if (state is AnalyzeTransactionsScreenState.Success) {
                 (state as AnalyzeTransactionsScreenState.Success).end
             } else {
-                OffsetDateTime.ofInstant(Instant.ofEpochMilli(initialEndDate), ZoneOffset.UTC)
+                OffsetDateTime.ofInstant(
+                    Instant.ofEpochMilli(initialEndDate),
+                    ZoneId.systemDefault()
+                )
             }
 
         val account = accountRepo.getAccount().getOrElse { err ->

@@ -2,6 +2,7 @@ package com.mdrlzy.budgetwise.feature.transactions.impl.data.remote
 
 import com.mdrlzy.budgetwise.core.domain.EitherT
 import com.mdrlzy.budgetwise.core.domain.model.Account
+import com.mdrlzy.budgetwise.core.network.NetworkUtils
 import com.mdrlzy.budgetwise.feature.account.api.AccountBrief
 import com.mdrlzy.budgetwise.feature.categories.api.Category
 import com.mdrlzy.budgetwise.feature.transactions.impl.domain.model.Transaction
@@ -62,10 +63,10 @@ private fun TransactionDto.toDomain() =
         ),
         category = Category(category.id, category.name, category.emoji, category.isIncome),
         amount = amount,
-        transactionDate = OffsetDateTime.parse(transactionDate),
+        transactionDate = NetworkUtils.fromUtcString(transactionDate),
         comment = comment,
-        createdAt = OffsetDateTime.parse(createdAt),
-        updatedAt = OffsetDateTime.parse(updatedAt),
+        createdAt = NetworkUtils.fromUtcString(createdAt),
+        updatedAt = NetworkUtils.fromUtcString(updatedAt),
     )
 
 private fun TransactionSimpleDto.toDomain(
@@ -81,16 +82,18 @@ private fun TransactionSimpleDto.toDomain(
     ),
     category = Category(category.id, category.name, category.emoji, category.isIncome),
     amount = amount,
-    transactionDate = OffsetDateTime.parse(transactionDate),
+    transactionDate = NetworkUtils.fromUtcString(transactionDate),
     comment = comment,
-    createdAt = OffsetDateTime.parse(createdAt),
-    updatedAt = OffsetDateTime.parse(updatedAt),
+    createdAt = NetworkUtils.fromUtcString(createdAt),
+    updatedAt = NetworkUtils.fromUtcString(updatedAt),
 )
 
 private fun TransactionRequest.toDto(): TransactionRequestDto {
-    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSX")
-    val utcDateTime = transactionDate.withOffsetSameInstant(ZoneOffset.UTC)
-    val formatted = utcDateTime.format(formatter)
-
-    return TransactionRequestDto(accountId, categoryId, amount, formatted, comment)
+    return TransactionRequestDto(
+        accountId,
+        categoryId,
+        amount,
+        NetworkUtils.toUtcString(transactionDate),
+        comment
+    )
 }

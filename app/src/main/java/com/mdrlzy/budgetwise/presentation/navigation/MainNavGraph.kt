@@ -7,6 +7,7 @@ import com.ramcosta.composedestinations.generated.account.destinations.AccountSc
 import com.ramcosta.composedestinations.generated.categories.destinations.CategoriesScreenDestination
 import com.ramcosta.composedestinations.generated.categories.destinations.SearchCategoryScreenDestination
 import com.ramcosta.composedestinations.generated.settings.destinations.SettingsScreenDestination
+import com.ramcosta.composedestinations.generated.transactions.destinations.AnalyzeTransactionsScreenDestination
 import com.ramcosta.composedestinations.generated.transactions.destinations.EditTransactionScreenDestination
 import com.ramcosta.composedestinations.generated.transactions.destinations.ExpensesScreenDestination
 import com.ramcosta.composedestinations.generated.transactions.destinations.IncomeScreenDestination
@@ -18,6 +19,7 @@ import com.ramcosta.composedestinations.generated.transactions.destinations.Tran
 annotation class MainNavGraph {
     @ExternalDestination<SearchCategoryScreenDestination>
     @ExternalDestination<EditTransactionScreenDestination>
+    @ExternalDestination<AnalyzeTransactionsScreenDestination>
     @ExternalDestination<ExpensesScreenDestination>
     @ExternalDestination<IncomeScreenDestination>
     @ExternalDestination<TransactionHistoryScreenDestination>

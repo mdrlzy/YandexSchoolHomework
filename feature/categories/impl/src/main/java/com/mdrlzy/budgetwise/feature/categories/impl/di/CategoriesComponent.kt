@@ -10,5 +10,5 @@ import dagger.Component
 @Component(dependencies = [CoreComponent::class], modules = [CategoriesModule::class])
 interface CategoriesComponent: CategoriesFeatureApi {
     fun categoriesViewModelFactory(): CategoriesViewModelFactory
-    fun searchCategoryViewModelFactory(): SearchCategoryViewModelFactory
+    fun searchCategoryViewModelFactory(): SearchCategoryViewModelFactory.Factory
 }

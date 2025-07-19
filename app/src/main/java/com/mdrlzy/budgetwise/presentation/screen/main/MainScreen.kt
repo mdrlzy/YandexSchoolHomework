@@ -1,7 +1,15 @@
 package com.mdrlzy.budgetwise.presentation.screen.main
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawingPadding
+import androidx.compose.foundation.layout.statusBars
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -71,7 +79,7 @@ fun MainScreen() {
     if (isKeyboardOpen) {
         bottomBarVisible.value = false
     }
-
+    
     Scaffold(
         modifier = Modifier.safeDrawingPadding(),
         snackbarHost = {
@@ -109,8 +117,8 @@ fun MainScreen() {
             composable(EditTransactionScreenDestination) {
                 val externalNavigator = remember {
                     object : TransactionsExternalNavigator {
-                        override fun navigateToSearchCategory() {
-                            destinationsNavigator.navigate(SearchCategoryScreenDestination)
+                        override fun navigateToSearchCategory(isIncomeMode: Boolean) {
+                            destinationsNavigator.navigate(SearchCategoryScreenDestination(isIncomeMode))
                         }
                     }
                 }

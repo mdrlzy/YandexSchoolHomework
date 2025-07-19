@@ -1,9 +1,11 @@
 package com.mdrlzy.budgetwise.feature.transactions.impl.data.remote
 
 import com.mdrlzy.budgetwise.core.domain.EitherT
+import com.mdrlzy.budgetwise.core.domain.model.Account
+import com.mdrlzy.budgetwise.core.network.NetworkUtils
 import com.mdrlzy.budgetwise.feature.account.api.AccountBrief
 import com.mdrlzy.budgetwise.feature.categories.api.Category
-import com.mdrlzy.budgetwise.feature.transactions.impl.domain.model.TransactionResponse
+import com.mdrlzy.budgetwise.feature.transactions.impl.domain.model.Transaction
 import com.mdrlzy.budgetwise.feature.transactions.impl.domain.model.TransactionRequest
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
@@ -17,7 +19,7 @@ class TransactionRemoteDataSource @Inject constructor(
         accountId: Long,
         start: OffsetDateTime,
         end: OffsetDateTime,
-    ): EitherT<List<TransactionResponse>> {
+    ): EitherT<List<Transaction>> {
         return api.getTransactionsByPeriod(
             accountId,
             start.format(DateTimeFormatter.ISO_LOCAL_DATE),
@@ -25,18 +27,23 @@ class TransactionRemoteDataSource @Inject constructor(
         ).map { transactions -> transactions.map { it.toDomain() } }
     }
 
-    suspend fun getById(id: Long): EitherT<TransactionResponse> {
+    suspend fun getById(id: Long): EitherT<Transaction> {
         return api.getTransactionById(id).map { it.toDomain() }
     }
 
-    suspend fun create(transactionRequest: TransactionRequest): EitherT<Unit> {
+    suspend fun create(
+        account: Account,
+        category: Category,
+        transactionRequest: TransactionRequest
+    ): EitherT<Transaction> {
         return api.createTransaction(transactionRequest.toDto())
+            .map { it.toDomain(account, category) }
     }
 
     suspend fun update(
         id: Long,
         transactionRequest: TransactionRequest
-    ): EitherT<TransactionResponse> {
+    ): EitherT<Transaction> {
         return api.updateTransaction(id, transactionRequest.toDto()).map { it.toDomain() }
     }
 
@@ -46,7 +53,7 @@ class TransactionRemoteDataSource @Inject constructor(
 }
 
 private fun TransactionDto.toDomain() =
-    TransactionResponse(
+    Transaction(
         id = id,
         account = AccountBrief(
             account.id,
@@ -56,16 +63,37 @@ private fun TransactionDto.toDomain() =
         ),
         category = Category(category.id, category.name, category.emoji, category.isIncome),
         amount = amount,
-        transactionDate = OffsetDateTime.parse(transactionDate),
+        transactionDate = NetworkUtils.fromUtcString(transactionDate),
         comment = comment,
-        createdAt = OffsetDateTime.parse(createdAt),
-        updatedAt = OffsetDateTime.parse(updatedAt),
+        createdAt = NetworkUtils.fromUtcString(createdAt),
+        updatedAt = NetworkUtils.fromUtcString(updatedAt),
     )
 
-private fun TransactionRequest.toDto(): TransactionRequestDto {
-    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSX")
-    val utcDateTime = transactionDate.withOffsetSameInstant(ZoneOffset.UTC)
-    val formatted = utcDateTime.format(formatter)
+private fun TransactionSimpleDto.toDomain(
+    account: Account,
+    category: Category,
+) = Transaction(
+    id = id,
+    account = AccountBrief(
+        account.id,
+        account.name,
+        account.balance,
+        account.currency
+    ),
+    category = Category(category.id, category.name, category.emoji, category.isIncome),
+    amount = amount,
+    transactionDate = NetworkUtils.fromUtcString(transactionDate),
+    comment = comment,
+    createdAt = NetworkUtils.fromUtcString(createdAt),
+    updatedAt = NetworkUtils.fromUtcString(updatedAt),
+)
 
-    return TransactionRequestDto(accountId, categoryId, amount, formatted, comment)
+private fun TransactionRequest.toDto(): TransactionRequestDto {
+    return TransactionRequestDto(
+        accountId,
+        categoryId,
+        amount,
+        NetworkUtils.toUtcString(transactionDate),
+        comment
+    )
 }

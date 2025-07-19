@@ -31,6 +31,7 @@ android {
 }
 
 dependencies {
+    implementation(project(":core:db"))
     implementation(project(":feature:account:api"))
     implementation(project(":feature:account:impl"))
     implementation(project(":feature:categories:api"))
@@ -38,6 +39,8 @@ dependencies {
     implementation(project(":feature:transactions:api"))
     implementation(project(":feature:transactions:impl"))
     implementation(project(":feature:settings"))
+
+    implementation(libs.androidx.work.runtime.ktx)
 
     implementation(libs.lottie.compose)
 

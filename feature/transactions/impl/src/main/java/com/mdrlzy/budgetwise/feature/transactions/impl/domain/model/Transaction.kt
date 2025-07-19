@@ -4,7 +4,7 @@ import com.mdrlzy.budgetwise.feature.account.api.AccountBrief
 import com.mdrlzy.budgetwise.feature.categories.api.Category
 import java.time.OffsetDateTime
 
-data class TransactionResponse(
+data class Transaction(
     val id: Long,
     val account: AccountBrief,
     val category: Category,

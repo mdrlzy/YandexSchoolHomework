@@ -1,5 +1,6 @@
 package com.mdrlzy.budgetwise.feature.transactions.impl.presentation.screen.edit
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import arrow.core.getOrElse
@@ -47,23 +48,25 @@ class EditTransactionViewModel(
             }
             return@intent
         }
+        val category = categories.first { it.isIncome == isIncomeMode }
         if (isCreateNotEditMode) {
             reduce {
                 EditTransactionScreenState.Success(
                     account = account,
                     date = OffsetDateTime.now(),
-                    category = categories.first(),
+                    category = category,
                     amount = "0",
                     comment = "",
                 )
             }
         } else {
-            val transaction = transactionRepo.getById(transactionId!!).getOrElse { err ->
-                reduce {
-                    EditTransactionScreenState.Error(err, null)
+            val transaction = transactionRepo
+                .getById(transactionId!!, account).getOrElse { err ->
+                    reduce {
+                        EditTransactionScreenState.Error(err, null)
+                    }
+                    return@intent
                 }
-                return@intent
-            }
 
             reduce {
                 EditTransactionScreenState.Success(
@@ -126,7 +129,13 @@ class EditTransactionViewModel(
     }
 
     fun onDelete() = intent {
-        transactionRepo.delete(transactionId!!).getOrElse { err ->
+        val success = state as? EditTransactionScreenState.Success ?: return@intent
+
+        transactionRepo.delete(
+            transactionId!!,
+            success.account,
+            success.category
+        ).getOrElse { err ->
             val success = state as? EditTransactionScreenState.Success
             reduce {
                 EditTransactionScreenState.Error(err, success)
@@ -144,14 +153,21 @@ class EditTransactionViewModel(
     fun onDone() = intent {
         val success = state as? EditTransactionScreenState.Success ?: return@intent
         if (isCreateNotEditMode) {
-            transactionRepo.create(success.toRequest()).getOrElse { err ->
-                reduce {
-                    EditTransactionScreenState.Error(err, success)
+            transactionRepo
+                .create(success.account, success.category, success.toRequest())
+                .getOrElse { err ->
+                    reduce {
+                        EditTransactionScreenState.Error(err, success)
+                    }
+                    return@intent
                 }
-                return@intent
-            }
         } else {
-            transactionRepo.update(transactionId!!, success.toRequest()).getOrElse { err ->
+            transactionRepo.update(
+                transactionId!!,
+                success.account,
+                success.category,
+                success.toRequest()
+            ).getOrElse { err ->
                 reduce {
                     EditTransactionScreenState.Error(err, success)
                 }

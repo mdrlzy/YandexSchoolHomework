@@ -31,6 +31,7 @@ import com.mdrlzy.budgetwise.core.ui.utils.DateTimeHelper
 import com.mdrlzy.budgetwise.feature.transactions.impl.di.TransactionsComponentHolder
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.ExternalModuleGraph
+import com.ramcosta.composedestinations.generated.transactions.destinations.AnalyzeTransactionsScreenDestination
 import com.ramcosta.composedestinations.generated.transactions.destinations.EditTransactionScreenDestination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import org.orbitmvi.orbit.compose.collectAsState
@@ -52,14 +53,27 @@ fun TransactionHistoryScreen(
         )
     val state by viewModel.collectAsState()
 
+    val isSuccess = state is TransactionHistoryScreenState.Success
+
     Scaffold(
         topBar = {
             BWTopBar(
                 title = stringResource(CoreRString.my_history),
                 leadingIcon = painterResource(CoreRDrawable.ic_back),
-                trailingIcon = painterResource(CoreRDrawable.ic_analyse),
+                trailingIcon = if (isSuccess) painterResource(CoreRDrawable.ic_analyse) else null,
                 onLeadingIconClick = { navigator.popBackStack() },
-                onTrailingIconClick = {},
+                onTrailingIconClick = {
+                    val s = state as? TransactionHistoryScreenState.Success
+                    s?.let { success ->
+                        navigator.navigate(
+                            AnalyzeTransactionsScreenDestination(
+                                isIncomeMode = isIncomeMode,
+                                startDate = success.startDate.toInstant().toEpochMilli(),
+                                endDate = success.endDate.toInstant().toEpochMilli()
+                            )
+                        )
+                    }
+                },
             )
         },
     ) {

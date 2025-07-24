@@ -2,7 +2,7 @@ package com.mdrlzy.budgetwise.feature.transactions.impl.presentation.screen.edit
 
 import com.mdrlzy.budgetwise.core.domain.model.Account
 import com.mdrlzy.budgetwise.feature.categories.api.Category
-import com.mdrlzy.budgetwise.feature.transactions.impl.domain.model.TransactionRequest
+import com.mdrlzy.budgetwise.feature.transactions.api.TransactionRequest
 import java.time.OffsetDateTime
 
 sealed class EditTransactionScreenState {

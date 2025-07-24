@@ -12,6 +12,7 @@ val SurfaceContainerHigh = Color(0xFFECE6F0)
 val OnSurface = Color(0xFF1D1B20)
 val OnSurfaceVariant = Color(0xFF49454F)
 val Error = Color(0xFFE46962)
+val ErrorContainer = Color(0xFFFF5F00)
 val OnPrimary = Color.White
 
 val Purple80 = Color(0xFFD0BCFF)

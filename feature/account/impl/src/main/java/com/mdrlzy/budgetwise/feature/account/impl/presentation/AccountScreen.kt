@@ -33,10 +33,18 @@ import com.mdrlzy.budgetwise.core.ui.composable.BWListItemIcon
 import com.mdrlzy.budgetwise.core.ui.composable.BWLoadingScreen
 import com.mdrlzy.budgetwise.core.ui.composable.BWTopBar
 import com.mdrlzy.budgetwise.core.ui.composable.ListenActiveScreenEffect
+import com.mdrlzy.budgetwise.core.ui.composable.chart.BWBarChart
+import com.mdrlzy.budgetwise.core.ui.composable.chart.ChartDataEntry
 import com.mdrlzy.budgetwise.core.ui.utils.CurrencyUtils
+import com.mdrlzy.budgetwise.feature.account.impl.domain.usecase.BuildMonthAccountStatsUseCase
+import com.mdrlzy.budgetwise.feature.transactions.api.di.TransactionFeatureApiProvider
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.ExternalModuleGraph
 import org.orbitmvi.orbit.compose.collectAsState
+import java.math.BigDecimal
+import java.time.OffsetDateTime
+import java.time.format.DateTimeFormatter
+import kotlin.math.absoluteValue
 
 @Destination<ExternalModuleGraph>
 @Composable
@@ -46,8 +54,19 @@ fun AccountScreen() {
         remember {
             (context.applicationContext as CoreComponentProvider).provideCoreComponent()
         }
+    val transactionsFeatureApi = remember {
+        (context.applicationContext as TransactionFeatureApiProvider).provideTransactionFeatureApi()
+    }
     val viewModel: AccountViewModel =
-        viewModel(factory = AccountViewModelFactory(coreComponent.accountRepo()))
+        viewModel(
+            factory = AccountViewModelFactory(
+                coreComponent.accountRepo(),
+                BuildMonthAccountStatsUseCase(
+                    transactionsFeatureApi.transactionRepo(),
+                    coreComponent.accountRepo()
+                )
+            )
+        )
     val state by viewModel.collectAsState()
 
     ListenActiveScreenEffect(
@@ -140,5 +159,28 @@ private fun Content(
             trailingIcon = painterResource(CoreRDrawable.ic_more),
             onClick = { showCurrencySheet = true },
         )
+        BWBarChart(
+            modifier = Modifier.padding(top = 16.dp),
+            height = 220.dp,
+            data = state.chartData.mapToChartData(
+                positive = MaterialTheme.colorScheme.primary,
+                negative = MaterialTheme.colorScheme.errorContainer,
+            )
+        )
     }
+}
+
+private val chartFormatter = DateTimeFormatter.ofPattern("dd.MM")
+
+private fun Map<OffsetDateTime, BigDecimal>.mapToChartData(
+    positive: Color,
+    negative: Color
+) = map { (date, value) ->
+    val color = if (value > BigDecimal.ZERO) positive else negative
+    val label = if (date.dayOfMonth % 10 == 0) {
+        date.format(chartFormatter)
+    } else {
+        null
+    }
+    ChartDataEntry(value.toFloat().absoluteValue, color, label)
 }

@@ -5,7 +5,7 @@ import com.mdrlzy.budgetwise.core.db.entity.TransactionEntity
 import com.mdrlzy.budgetwise.core.domain.model.Account
 import com.mdrlzy.budgetwise.feature.account.api.AccountBrief
 import com.mdrlzy.budgetwise.feature.categories.api.Category
-import com.mdrlzy.budgetwise.feature.transactions.impl.domain.model.Transaction
+import com.mdrlzy.budgetwise.feature.transactions.api.Transaction
 import java.time.OffsetDateTime
 import javax.inject.Inject
 

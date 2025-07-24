@@ -15,6 +15,8 @@ import com.mdrlzy.budgetwise.core.domain.BuildConfigFields
 import com.mdrlzy.budgetwise.di.DaggerAppComponent
 import com.mdrlzy.budgetwise.feature.categories.api.di.CategoriesFeatureApiProvider
 import com.mdrlzy.budgetwise.feature.categories.impl.di.CategoriesComponentHolder
+import com.mdrlzy.budgetwise.feature.transactions.api.di.TransactionFeatureApiProvider
+import com.mdrlzy.budgetwise.feature.transactions.api.di.TransactionsFeatureApi
 import com.mdrlzy.budgetwise.feature.transactions.impl.di.TransactionsComponentHolder
 import com.mdrlzy.budgetwise.feature.transactions.impl.presentation.worker.SyncTransactionsWorker
 import com.mdrlzy.budgetwise.presentation.worker.AppWorkerFactory
@@ -27,7 +29,8 @@ import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
 
 class App :
-    Application(), CoreComponentProvider, CategoriesFeatureApiProvider, Configuration.Provider {
+    Application(), CoreComponentProvider, CategoriesFeatureApiProvider,
+    TransactionFeatureApiProvider, Configuration.Provider {
     lateinit var component: CoreComponent
         private set
 
@@ -86,4 +89,6 @@ class App :
             .setMinimumLoggingLevel(android.util.Log.INFO)
             .setWorkerFactory(AppWorkerFactory())
             .build()
+
+    override fun provideTransactionFeatureApi() = TransactionsComponentHolder.provide(this)
 }

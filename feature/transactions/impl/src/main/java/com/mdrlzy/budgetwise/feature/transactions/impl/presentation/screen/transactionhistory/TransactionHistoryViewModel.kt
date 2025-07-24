@@ -5,11 +5,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.mdrlzy.budgetwise.core.domain.repo.AccountRepo
 import com.mdrlzy.budgetwise.core.ui.utils.DateTimeHelper
-import com.mdrlzy.budgetwise.feature.transactions.impl.domain.repo.TransactionRepo
+import com.mdrlzy.budgetwise.feature.transactions.api.TransactionRepo
 import com.mdrlzy.budgetwise.feature.transactions.impl.domain.usecase.GetExpenseTransactionsUseCase
 import com.mdrlzy.budgetwise.feature.transactions.impl.domain.usecase.GetIncomeTransactionsUseCase
 import com.mdrlzy.budgetwise.feature.transactions.impl.presentation.model.toUiModel
-import com.mdrlzy.budgetwise.feature.transactions.impl.presentation.screen.expenses.ExpensesScreenState
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject

@@ -18,6 +18,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -32,6 +33,8 @@ import com.mdrlzy.budgetwise.core.ui.composable.BWListItem
 import com.mdrlzy.budgetwise.core.ui.composable.BWListItemEmoji
 import com.mdrlzy.budgetwise.core.ui.composable.BWLoadingScreen
 import com.mdrlzy.budgetwise.core.ui.composable.BWTopBar
+import com.mdrlzy.budgetwise.core.ui.composable.chart.BWDonutChart
+import com.mdrlzy.budgetwise.core.ui.composable.chart.ChartDataEntry
 import com.mdrlzy.budgetwise.core.ui.utils.DateTimeHelper
 import com.mdrlzy.budgetwise.feature.transactions.impl.di.TransactionsComponentHolder
 import com.ramcosta.composedestinations.annotation.Destination
@@ -170,6 +173,13 @@ private fun Content(
                 height = 56.dp,
             )
             BWHorDiv()
+            BWDonutChart(
+                modifier = Modifier.fillMaxWidth().padding(vertical = 20.dp),
+                data = state.categories.toChartData(),
+                strokeWidth = 8.dp,
+                circleRadius = 90.dp
+            )
+            BWHorDiv()
         }
         if (state.categories.isNotEmpty()) {
             items(state.categories) { categorySummary ->
@@ -198,4 +208,25 @@ private fun Content(
             }
         }
     }
+}
+
+private val defaultColors = listOf(
+    Color(0xFFE91E63),
+    Color(0xFFFFC107),
+    Color(0xFF4CAF50),
+    Color(0xFF2196F3),
+    Color(0xFFFF5722),
+    Color(0xFF9C27B0),
+    Color(0xFF00BCD4),
+    Color(0xFFCDDC39),
+    Color(0xFFFF9800),
+    Color(0xFF3F51B5),
+)
+
+private fun List<CategorySummary>.toChartData() = mapIndexed { index, category ->
+    ChartDataEntry(
+        value = category.categoryTotal.toFloat(),
+        color = defaultColors[index % defaultColors.size],
+        label = "${category.percentage.toInt()}% ${category.category.name}"
+    )
 }

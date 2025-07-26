@@ -147,7 +147,11 @@ fun MainScreen() {
                 val externalNavigator = remember {
                     object : SettingsExternalNavigator {
                         override fun navigateAfterPinCode() {
-                            destinationsNavigator.navigate(ExpensesScreenDestination)
+                            destinationsNavigator.navigate(ExpensesScreenDestination) {
+                                popUpTo(EnterPinCodeScreenDestination) {
+                                    inclusive = true
+                                }
+                            }
                         }
                     }
                 }

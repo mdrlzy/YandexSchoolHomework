@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.mdrlzy.budgetwise.core.domain.expection.NoInternetException
+import com.mdrlzy.budgetwise.core.ui.theme.OnSurfaceVariant
 import com.mdrlzy.budgetwise.ui.R
 
 @Composable
@@ -38,6 +39,7 @@ fun BWErrorRetryScreen(
                 Text(
                     text = stringResource(R.string.retry),
                     style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             }
         }

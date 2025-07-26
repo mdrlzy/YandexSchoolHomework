@@ -3,6 +3,7 @@ package com.mdrlzy.budgetwise.feature.settings.presentation.screen.settings
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.mdrlzy.budgetwise.core.domain.Prefs
+import kotlinx.coroutines.flow.first
 import org.orbitmvi.orbit.Container
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.viewmodel.container
@@ -15,14 +16,19 @@ class SettingsViewModel(
 
     init {
         intent {
+            val isDarkTheme = prefs.isDarkTheme.first()
             reduce {
-                state.copy(lastSync = prefs.getLastSync())
+                state.copy(
+                    lastSync = prefs.getLastSync(),
+                    isDarkTheme = isDarkTheme
+                )
             }
         }
     }
 
     fun onToggleDarkTheme(new: Boolean) =
         intent {
+            prefs.setDarkTheme(new)
             reduce {
                 state.copy(isDarkTheme = new)
             }

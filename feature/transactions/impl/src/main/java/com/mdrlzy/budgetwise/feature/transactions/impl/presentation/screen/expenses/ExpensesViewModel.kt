@@ -1,11 +1,10 @@
 package com.mdrlzy.budgetwise.feature.transactions.impl.presentation.screen.expenses
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.mdrlzy.budgetwise.core.domain.repo.AccountRepo
-import com.mdrlzy.budgetwise.feature.transactions.impl.domain.repo.TransactionRepo
+import com.mdrlzy.budgetwise.feature.transactions.api.TransactionRepo
 import com.mdrlzy.budgetwise.feature.transactions.impl.domain.usecase.GetExpenseTransactionsUseCase
 import com.mdrlzy.budgetwise.feature.transactions.impl.presentation.model.toUiModel
 import kotlinx.coroutines.Job

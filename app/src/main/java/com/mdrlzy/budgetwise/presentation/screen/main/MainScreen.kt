@@ -20,16 +20,25 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.mdrlzy.budgetwise.core.di.CoreComponentProvider
 import com.mdrlzy.budgetwise.core.ui.utils.keyboardAsState
+import com.mdrlzy.budgetwise.feature.settings.presentation.screen.enterpincode.EnterPinCodeScreen
+import com.mdrlzy.budgetwise.feature.settings.presentation.navigation.SettingsExternalNavigator
+import com.mdrlzy.budgetwise.feature.settings.presentation.navigation.SettingsFeatureExternalDeps
+import com.mdrlzy.budgetwise.feature.settings.presentation.screen.settings.SettingsScreen
 import com.mdrlzy.budgetwise.feature.transactions.impl.presentation.navigation.TransactionsExternalNavigator
 import com.mdrlzy.budgetwise.feature.transactions.impl.presentation.screen.edit.EditTransactionScreen
 import com.mdrlzy.budgetwise.presentation.navigation.AnimatedBottomNavigation
+import com.mdrlzy.budgetwise.presentation.worker.WorkerInit
 import com.ramcosta.composedestinations.DestinationsNavHost
 import com.ramcosta.composedestinations.generated.NavGraphs
 import com.ramcosta.composedestinations.generated.categories.destinations.SearchCategoryScreenDestination
 import com.ramcosta.composedestinations.generated.destinations.SplashScreenDestination
+import com.ramcosta.composedestinations.generated.settings.destinations.EnterPinCodeScreenDestination
+import com.ramcosta.composedestinations.generated.settings.destinations.SetPinCodeScreenDestination
+import com.ramcosta.composedestinations.generated.settings.destinations.SettingsScreenDestination
 import com.ramcosta.composedestinations.generated.transactions.destinations.EditTransactionScreenDestination
 import com.ramcosta.composedestinations.generated.transactions.destinations.ExpensesScreenDestination
 import com.ramcosta.composedestinations.manualcomposablecalls.composable
@@ -42,6 +51,8 @@ private val noBottomBarRoutes =
     listOf(
         SplashScreenDestination.route,
         SearchCategoryScreenDestination.route,
+        EnterPinCodeScreenDestination.route,
+        SetPinCodeScreenDestination.route,
     )
 
 @Composable
@@ -130,6 +141,32 @@ fun MainScreen() {
                     externalNavigator = externalNavigator,
                     resultRecipient = resultRecipient<SearchCategoryScreenDestination, Long>(longNavType),
                 )
+            }
+
+            composable(EnterPinCodeScreenDestination) {
+                val externalNavigator = remember {
+                    object : SettingsExternalNavigator {
+                        override fun navigateAfterPinCode() {
+                            destinationsNavigator.navigate(ExpensesScreenDestination) {
+                                popUpTo(EnterPinCodeScreenDestination) {
+                                    inclusive = true
+                                }
+                            }
+                        }
+                    }
+                }
+
+                EnterPinCodeScreen(destinationsNavigator, externalNavigator)
+            }
+
+            composable(SettingsScreenDestination) {
+                val deps = object : SettingsFeatureExternalDeps {
+                    override fun launchSyncWorker(hoursPeriod: Float) {
+                        WorkerInit.initSyncWorker(ctx, hoursPeriod.toLong())
+                    }
+                }
+
+                SettingsScreen(destinationsNavigator, deps)
             }
         }
     }

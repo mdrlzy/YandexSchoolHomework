@@ -1,6 +1,6 @@
 package com.mdrlzy.budgetwise.feature.transactions.impl.presentation.model
 
-import com.mdrlzy.budgetwise.feature.transactions.impl.domain.model.Transaction
+import com.mdrlzy.budgetwise.feature.transactions.api.Transaction
 import java.time.OffsetDateTime
 
 data class TransactionUiModel(

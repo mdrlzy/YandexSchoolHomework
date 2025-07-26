@@ -1,10 +1,8 @@
-package com.mdrlzy.budgetwise.feature.transactions.impl.domain.repo
+package com.mdrlzy.budgetwise.feature.transactions.api
 
 import com.mdrlzy.budgetwise.core.domain.EitherT
 import com.mdrlzy.budgetwise.core.domain.model.Account
 import com.mdrlzy.budgetwise.feature.categories.api.Category
-import com.mdrlzy.budgetwise.feature.transactions.impl.domain.model.TransactionRequest
-import com.mdrlzy.budgetwise.feature.transactions.impl.domain.model.Transaction
 import kotlinx.coroutines.flow.Flow
 import java.time.OffsetDateTime
 

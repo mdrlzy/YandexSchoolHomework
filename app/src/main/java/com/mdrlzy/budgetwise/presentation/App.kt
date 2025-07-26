@@ -15,9 +15,12 @@ import com.mdrlzy.budgetwise.core.domain.BuildConfigFields
 import com.mdrlzy.budgetwise.di.DaggerAppComponent
 import com.mdrlzy.budgetwise.feature.categories.api.di.CategoriesFeatureApiProvider
 import com.mdrlzy.budgetwise.feature.categories.impl.di.CategoriesComponentHolder
+import com.mdrlzy.budgetwise.feature.transactions.api.di.TransactionFeatureApiProvider
+import com.mdrlzy.budgetwise.feature.transactions.api.di.TransactionsFeatureApi
 import com.mdrlzy.budgetwise.feature.transactions.impl.di.TransactionsComponentHolder
 import com.mdrlzy.budgetwise.feature.transactions.impl.presentation.worker.SyncTransactionsWorker
 import com.mdrlzy.budgetwise.presentation.worker.AppWorkerFactory
+import com.mdrlzy.budgetwise.presentation.worker.WorkerInit
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.drop
@@ -27,7 +30,8 @@ import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
 
 class App :
-    Application(), CoreComponentProvider, CategoriesFeatureApiProvider, Configuration.Provider {
+    Application(), CoreComponentProvider, CategoriesFeatureApiProvider,
+    TransactionFeatureApiProvider, Configuration.Provider {
     lateinit var component: CoreComponent
         private set
 
@@ -35,7 +39,10 @@ class App :
 
     override fun onCreate() {
         super.onCreate()
-        val buildConfigFields = BuildConfigFields(BuildConfig.BEARER_TOKEN)
+        val buildConfigFields = BuildConfigFields(
+            BuildConfig.BEARER_TOKEN,
+            BuildConfig.VERSION_NAME,
+        )
         component =
             DaggerAppComponent
                 .factory()
@@ -44,7 +51,7 @@ class App :
             TransactionsComponentHolder.provide(this@App).syncTransactionsUseCase().invoke()
         }
         setupSyncOnNetworkAvailable()
-        initWorker()
+        WorkerInit.initSyncWorker(this, component.prefs().getSyncFrequencyHours().toLong())
     }
 
     private fun setupSyncOnNetworkAvailable() {
@@ -53,28 +60,6 @@ class App :
                 TransactionsComponentHolder.provide(this@App).syncTransactionsUseCase().invoke()
             }
         }.launchIn(appIOScope)
-    }
-
-    private fun initWorker() {
-        val workManager = WorkManager.getInstance(this)
-        val constraints =
-            Constraints.Builder()
-                .setRequiredNetworkType(NetworkType.CONNECTED)
-                .build()
-
-        val workRequest =
-            PeriodicWorkRequest.Builder(
-                SyncTransactionsWorker::class.java,
-                2,
-                TimeUnit.HOURS,
-            ).setConstraints(constraints)
-                .build()
-
-        workManager.enqueueUniquePeriodicWork(
-            SyncTransactionsWorker.NAME,
-            ExistingPeriodicWorkPolicy.KEEP,
-            workRequest,
-        )
     }
 
     override fun provideCoreComponent() = component
@@ -86,4 +71,6 @@ class App :
             .setMinimumLoggingLevel(android.util.Log.INFO)
             .setWorkerFactory(AppWorkerFactory())
             .build()
+
+    override fun provideTransactionFeatureApi() = TransactionsComponentHolder.provide(this)
 }

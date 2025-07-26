@@ -3,8 +3,8 @@ package com.mdrlzy.budgetwise.feature.transactions.impl.domain.usecase
 import arrow.core.flatMap
 import com.mdrlzy.budgetwise.core.domain.EitherT
 import com.mdrlzy.budgetwise.core.domain.repo.AccountRepo
-import com.mdrlzy.budgetwise.feature.transactions.impl.domain.model.Transaction
-import com.mdrlzy.budgetwise.feature.transactions.impl.domain.repo.TransactionRepo
+import com.mdrlzy.budgetwise.feature.transactions.api.Transaction
+import com.mdrlzy.budgetwise.feature.transactions.api.TransactionRepo
 import java.time.OffsetDateTime
 import javax.inject.Inject
 

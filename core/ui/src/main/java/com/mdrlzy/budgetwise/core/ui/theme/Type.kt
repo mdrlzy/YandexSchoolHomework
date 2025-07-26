@@ -16,7 +16,6 @@ val Typography =
                 fontSize = 14.sp,
                 lineHeight = 20.sp,
                 letterSpacing = 0.25.sp,
-                color = OnSurfaceVariant,
             ),
         bodyLarge =
             TextStyle(
@@ -25,7 +24,6 @@ val Typography =
                 fontSize = 16.sp,
                 lineHeight = 24.sp,
                 letterSpacing = 0.5.sp,
-                color = OnSurface,
             ),
         titleLarge =
             TextStyle(
@@ -34,7 +32,6 @@ val Typography =
                 fontSize = 22.sp,
                 lineHeight = 28.sp,
                 letterSpacing = 0.sp,
-                color = OnSurface,
             ),
         labelMedium =
             TextStyle(
@@ -43,7 +40,6 @@ val Typography =
                 fontSize = 12.sp,
                 lineHeight = 16.sp,
                 letterSpacing = 0.5.sp,
-                color = Color(0xFF49454F),
             ),
         labelLarge =
             TextStyle(
@@ -52,6 +48,5 @@ val Typography =
                 fontSize = 14.sp,
                 lineHeight = 20.sp,
                 letterSpacing = 0.1.sp,
-                color = OnSurface,
             ),
     )

@@ -1,4 +1,4 @@
-package com.mdrlzy.budgetwise.feature.transactions.impl.domain.model
+package com.mdrlzy.budgetwise.feature.transactions.api
 
 import com.mdrlzy.budgetwise.feature.account.api.AccountBrief
 import com.mdrlzy.budgetwise.feature.categories.api.Category

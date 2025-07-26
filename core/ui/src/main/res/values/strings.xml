@@ -13,7 +13,8 @@
     <string name="find_expense">Найти статью</string>
     <string name="settings">Настройки</string>
     <string name="sounds">Звуки</string>
-    <string name="code_password">Код пароль</string>
+    <string name="set_pin_code">Установить код пароль</string>
+    <string name="reset_pin_code">Сбросить код пароль</string>
     <string name="language">Язык</string>
     <string name="about_app">О программе</string>
     <string name="dark_theme">Темная тема</string>
@@ -53,5 +54,13 @@
     <string name="period_end">Период: конец</string>
 
     <string name="sync">Синхронизация</string>
+
+    <string name="pin_toast_saved">PIN-код сохранен</string>
+    <string name="pin_set_title">Установка PIN-кода</string>
+    <string name="pin_set_input">Придумайте PIN-код</string>
+    <string name="pin_set_confirm">Подтвердите PIN-код</string>
+    <string name="pin_set_wrong">Неправильный PIN-код</string>
+    <string name="pin_enter_input">Введите PIN-код</string>
+    <string name="pin_enter_wrong">Неправильный PIN-код</string>
 
 </resources>

@@ -1,4 +1,4 @@
-package com.mdrlzy.budgetwise.feature.settings
+package com.mdrlzy.budgetwise.feature.settings.presentation.screen.settings
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -27,6 +27,10 @@ class SettingsViewModel(
                 state.copy(isDarkTheme = new)
             }
         }
+
+    fun onResetPinCode() {
+        prefs.clearPinCode()
+    }
 }
 
 class SettingsViewModelFactory(private val prefs: Prefs): ViewModelProvider.Factory {

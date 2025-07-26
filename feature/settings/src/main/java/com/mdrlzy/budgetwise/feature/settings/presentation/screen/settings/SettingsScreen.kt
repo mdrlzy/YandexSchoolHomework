@@ -1,4 +1,4 @@
-package com.mdrlzy.budgetwise.feature.settings
+package com.mdrlzy.budgetwise.feature.settings.presentation.screen.settings
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
@@ -22,12 +22,16 @@ import com.mdrlzy.budgetwise.core.ui.composable.BWListItemIcon
 import com.mdrlzy.budgetwise.core.ui.composable.BWTopBar
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.ExternalModuleGraph
+import com.ramcosta.composedestinations.generated.settings.destinations.SetPinCodeScreenDestination
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import org.orbitmvi.orbit.compose.collectAsState
 import java.time.format.DateTimeFormatter
 
 @Destination<ExternalModuleGraph>
 @Composable
-fun SettingsScreen() {
+fun SettingsScreen(
+    navigator: DestinationsNavigator,
+) {
     val context = LocalContext.current
     val viewModel: SettingsViewModel = viewModel(
         factory = SettingsViewModelFactory(
@@ -68,7 +72,15 @@ fun SettingsScreen() {
             BWHorDiv()
             SettingsListItem(stringResource(CoreRString.sounds)) { }
             BWHorDiv()
-            SettingsListItem(stringResource(CoreRString.code_password)) { }
+            SettingsListItem(stringResource(CoreRString.set_pin_code)) {
+                navigator.navigate(
+                    SetPinCodeScreenDestination
+                )
+            }
+            BWHorDiv()
+            SettingsListItem(stringResource(CoreRString.reset_pin_code)) {
+                viewModel.onResetPinCode()
+            }
             BWHorDiv()
             SettingsListItem(stringResource(CoreRString.language)) { }
             BWHorDiv()

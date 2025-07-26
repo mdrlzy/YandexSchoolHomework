@@ -1,4 +1,4 @@
-package com.mdrlzy.budgetwise.feature.settings
+package com.mdrlzy.budgetwise.feature.settings.presentation.screen.settings
 
 import java.time.OffsetDateTime
 

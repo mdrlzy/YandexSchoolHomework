@@ -10,6 +10,7 @@ class PrefsImpl(context: Context): Prefs {
 
     companion object {
         private const val KEY_LAST_SYNC = "last_sync"
+        private const val KEY_PIN_CODE = "pin_code"
     }
 
     override fun saveLastSync(date: OffsetDateTime) {
@@ -27,4 +28,21 @@ class PrefsImpl(context: Context): Prefs {
             }
         }
     }
+
+    override fun savePinCode(pin: String) {
+        prefs.edit()
+            .putString(KEY_PIN_CODE, pin)
+            .apply()
+    }
+
+    override fun getPinCode(): String? {
+        return prefs.getString(KEY_PIN_CODE, null)
+    }
+
+    override fun clearPinCode() {
+        prefs.edit()
+            .remove(KEY_PIN_CODE)
+            .apply()
+    }
+
 }

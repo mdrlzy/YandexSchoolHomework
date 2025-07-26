@@ -20,6 +20,7 @@ import com.mdrlzy.budgetwise.feature.transactions.api.di.TransactionsFeatureApi
 import com.mdrlzy.budgetwise.feature.transactions.impl.di.TransactionsComponentHolder
 import com.mdrlzy.budgetwise.feature.transactions.impl.presentation.worker.SyncTransactionsWorker
 import com.mdrlzy.budgetwise.presentation.worker.AppWorkerFactory
+import com.mdrlzy.budgetwise.presentation.worker.WorkerInit
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.drop
@@ -47,7 +48,7 @@ class App :
             TransactionsComponentHolder.provide(this@App).syncTransactionsUseCase().invoke()
         }
         setupSyncOnNetworkAvailable()
-        initWorker()
+        WorkerInit.initSyncWorker(this, component.prefs().getSyncFrequencyHours().toLong())
     }
 
     private fun setupSyncOnNetworkAvailable() {
@@ -56,28 +57,6 @@ class App :
                 TransactionsComponentHolder.provide(this@App).syncTransactionsUseCase().invoke()
             }
         }.launchIn(appIOScope)
-    }
-
-    private fun initWorker() {
-        val workManager = WorkManager.getInstance(this)
-        val constraints =
-            Constraints.Builder()
-                .setRequiredNetworkType(NetworkType.CONNECTED)
-                .build()
-
-        val workRequest =
-            PeriodicWorkRequest.Builder(
-                SyncTransactionsWorker::class.java,
-                2,
-                TimeUnit.HOURS,
-            ).setConstraints(constraints)
-                .build()
-
-        workManager.enqueueUniquePeriodicWork(
-            SyncTransactionsWorker.NAME,
-            ExistingPeriodicWorkPolicy.KEEP,
-            workRequest,
-        )
     }
 
     override fun provideCoreComponent() = component

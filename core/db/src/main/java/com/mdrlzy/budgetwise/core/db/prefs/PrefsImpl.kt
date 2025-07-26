@@ -18,6 +18,7 @@ class PrefsImpl(context: Context): Prefs {
         private const val KEY_IS_DARK_THEME = "is_dark_theme"
         private const val KEY_LAST_SYNC = "last_sync"
         private const val KEY_PIN_CODE = "pin_code"
+        private const val KEY_SYNC_FREQUENCY_HOURS = "sync_frequency_hours"
     }
 
     override val isDarkTheme: StateFlow<Boolean> = isDarkThemeFlow
@@ -60,6 +61,16 @@ class PrefsImpl(context: Context): Prefs {
             .remove(KEY_PIN_CODE)
             .apply()
     }
+
+    override fun getSyncFrequencyHours(): Float =
+        prefs.getFloat(KEY_SYNC_FREQUENCY_HOURS, 2f)
+
+    override fun setSyncFrequencyHours(value: Float) {
+        prefs.edit()
+            .putFloat(KEY_SYNC_FREQUENCY_HOURS, value)
+            .apply()
+    }
+
 
     private fun getInitialDarkTheme(): Boolean {
         return prefs.getBoolean(KEY_IS_DARK_THEME, false)

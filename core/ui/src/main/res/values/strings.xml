@@ -63,4 +63,6 @@
     <string name="pin_enter_input">Введите PIN-код</string>
     <string name="pin_enter_wrong">Неправильный PIN-код</string>
 
+    <string name="sync_every_hour">Синхронизация каждые %1$d ч</string>
+
 </resources>

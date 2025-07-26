@@ -15,4 +15,7 @@ interface Prefs {
     fun savePinCode(pin: String)
     fun getPinCode(): String?
     fun clearPinCode()
+
+    fun getSyncFrequencyHours(): Float
+    fun setSyncFrequencyHours(value: Float)
 }

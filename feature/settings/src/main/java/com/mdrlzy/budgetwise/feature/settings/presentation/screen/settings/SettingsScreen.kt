@@ -3,6 +3,7 @@ package com.mdrlzy.budgetwise.feature.settings.presentation.screen.settings
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Slider
 import androidx.compose.material3.Switch
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -20,17 +21,20 @@ import com.mdrlzy.budgetwise.core.ui.composable.BWHorDiv
 import com.mdrlzy.budgetwise.core.ui.composable.BWListItem
 import com.mdrlzy.budgetwise.core.ui.composable.BWListItemIcon
 import com.mdrlzy.budgetwise.core.ui.composable.BWTopBar
+import com.mdrlzy.budgetwise.feature.settings.presentation.navigation.SettingsFeatureExternalDeps
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.ExternalModuleGraph
 import com.ramcosta.composedestinations.generated.settings.destinations.SetPinCodeScreenDestination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import org.orbitmvi.orbit.compose.collectAsState
+import org.orbitmvi.orbit.compose.collectSideEffect
 import java.time.format.DateTimeFormatter
 
 @Destination<ExternalModuleGraph>
 @Composable
 fun SettingsScreen(
     navigator: DestinationsNavigator,
+    deps: SettingsFeatureExternalDeps
 ) {
     val context = LocalContext.current
     val viewModel: SettingsViewModel = viewModel(
@@ -42,6 +46,12 @@ fun SettingsScreen(
 
     val syncFormatter = remember {
         DateTimeFormatter.ofPattern("HH:mm d.MM.yyyy")
+    }
+
+    viewModel.collectSideEffect { effect ->
+        when (effect) {
+            is SettingsScreenEffect.LaunchSyncWorker -> deps.launchSyncWorker(effect.interval)
+        }
     }
 
     Scaffold(
@@ -82,6 +92,27 @@ fun SettingsScreen(
                 viewModel.onResetPinCode()
             }
             BWHorDiv()
+            BWListItem(
+                leadingText = stringResource(
+                    CoreRString.sync_every_hour,
+                    state.syncFrequency.toInt()
+                ),
+                height = 56.dp,
+            )
+            BWListItem(
+                leadingContent = {
+                    Slider(
+                        modifier = Modifier.padding(horizontal = 12.dp),
+                        value = state.syncFrequency,
+                        onValueChange = {
+                            viewModel.onChangeSyncFrequency(it)
+                        },
+                        valueRange = 1f..24f,
+                    )
+                },
+                leadingText = "",
+                height = 56.dp
+            )
             SettingsListItem(stringResource(CoreRString.language)) { }
             BWHorDiv()
             SettingsListItem(stringResource(CoreRString.about_app)) { }

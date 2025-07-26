@@ -17,6 +17,8 @@
     <string name="reset_pin_code">Сбросить код пароль</string>
     <string name="language">Язык</string>
     <string name="about_app">О программе</string>
+    <string name="version">Версия:</string>
+    <string name="last_update">Последнее обновление</string>
     <string name="dark_theme">Темная тема</string>
     <string name="expenses_today">Расходы сегодня</string>
     <string name="my_account">Мой счет</string>

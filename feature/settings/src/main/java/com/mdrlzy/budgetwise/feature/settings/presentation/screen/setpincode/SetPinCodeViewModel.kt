@@ -51,6 +51,7 @@ class SetPinCodeViewModel(
     }
 
     private fun navBack() = intent {
+        postSideEffect(SetPinCodeScreenEffect.ToastCodeSaved)
         postSideEffect(SetPinCodeScreenEffect.NavigateBack)
     }
 }

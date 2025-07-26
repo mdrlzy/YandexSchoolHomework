@@ -6,6 +6,7 @@ import com.ramcosta.composedestinations.annotation.NavHostGraph
 import com.ramcosta.composedestinations.generated.account.destinations.AccountScreenDestination
 import com.ramcosta.composedestinations.generated.categories.destinations.CategoriesScreenDestination
 import com.ramcosta.composedestinations.generated.categories.destinations.SearchCategoryScreenDestination
+import com.ramcosta.composedestinations.generated.settings.destinations.AboutScreenDestination
 import com.ramcosta.composedestinations.generated.settings.destinations.EnterPinCodeScreenDestination
 import com.ramcosta.composedestinations.generated.settings.destinations.SetPinCodeScreenDestination
 import com.ramcosta.composedestinations.generated.settings.destinations.SettingsScreenDestination
@@ -30,5 +31,6 @@ annotation class MainNavGraph {
     @ExternalDestination<SettingsScreenDestination>
     @ExternalDestination<SetPinCodeScreenDestination>
     @ExternalDestination<EnterPinCodeScreenDestination>
+    @ExternalDestination<AboutScreenDestination>
     companion object Includes
 }

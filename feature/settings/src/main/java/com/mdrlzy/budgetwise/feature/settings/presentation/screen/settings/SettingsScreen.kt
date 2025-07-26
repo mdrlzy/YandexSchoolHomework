@@ -2,6 +2,8 @@ package com.mdrlzy.budgetwise.feature.settings.presentation.screen.settings
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Switch
@@ -24,6 +26,7 @@ import com.mdrlzy.budgetwise.core.ui.composable.BWTopBar
 import com.mdrlzy.budgetwise.feature.settings.presentation.navigation.SettingsFeatureExternalDeps
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.ExternalModuleGraph
+import com.ramcosta.composedestinations.generated.settings.destinations.AboutScreenDestination
 import com.ramcosta.composedestinations.generated.settings.destinations.SetPinCodeScreenDestination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import org.orbitmvi.orbit.compose.collectAsState
@@ -61,7 +64,10 @@ fun SettingsScreen(
             )
         },
     ) {
-        Column(Modifier.padding(it)) {
+        Column(Modifier
+            .padding(it)
+            .verticalScroll(rememberScrollState())
+        ) {
             BWListItem(
                 leadingText = stringResource(CoreRString.dark_theme),
                 height = 56.dp,
@@ -71,13 +77,6 @@ fun SettingsScreen(
                         onCheckedChange = viewModel::onToggleDarkTheme,
                     )
                 },
-            )
-            BWHorDiv()
-            BWListItem(
-                leadingText = stringResource(CoreRString.sync),
-                trailingText = state.lastSync?.let { syncFormatter.format(state.lastSync) }
-                    ?: stringResource(CoreRString.no_data),
-                height = 56.dp
             )
             BWHorDiv()
             SettingsListItem(stringResource(CoreRString.sounds)) { }
@@ -91,6 +90,13 @@ fun SettingsScreen(
             SettingsListItem(stringResource(CoreRString.reset_pin_code)) {
                 viewModel.onResetPinCode()
             }
+            BWHorDiv()
+            BWListItem(
+                leadingText = stringResource(CoreRString.sync),
+                trailingText = state.lastSync?.let { syncFormatter.format(state.lastSync) }
+                    ?: stringResource(CoreRString.no_data),
+                height = 56.dp
+            )
             BWHorDiv()
             BWListItem(
                 leadingText = stringResource(
@@ -113,9 +119,12 @@ fun SettingsScreen(
                 leadingText = "",
                 height = 56.dp
             )
+            BWHorDiv()
             SettingsListItem(stringResource(CoreRString.language)) { }
             BWHorDiv()
-            SettingsListItem(stringResource(CoreRString.about_app)) { }
+            SettingsListItem(stringResource(CoreRString.about_app)) {
+                navigator.navigate(AboutScreenDestination)
+            }
             BWHorDiv()
         }
     }

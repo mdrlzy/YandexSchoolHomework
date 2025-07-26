@@ -39,7 +39,10 @@ class App :
 
     override fun onCreate() {
         super.onCreate()
-        val buildConfigFields = BuildConfigFields(BuildConfig.BEARER_TOKEN)
+        val buildConfigFields = BuildConfigFields(
+            BuildConfig.BEARER_TOKEN,
+            BuildConfig.VERSION_NAME,
+        )
         component =
             DaggerAppComponent
                 .factory()
